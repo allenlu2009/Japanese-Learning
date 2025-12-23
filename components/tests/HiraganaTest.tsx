@@ -53,8 +53,15 @@ export function HiraganaTest({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!answer.trim()) return;
 
+    // If already answered, Enter should go to next question
+    if (isAnswered) {
+      handleNext();
+      return;
+    }
+
+    // Otherwise, submit the answer
+    if (!answer.trim()) return;
     onSubmitAnswer(answer);
   };
 
@@ -110,7 +117,7 @@ export function HiraganaTest({
               value={answer}
               onChange={(e) => setAnswer(e.target.value)}
               placeholder="Type romanji here..."
-              disabled={isAnswered}
+              readOnly={isAnswered}
               className="text-lg text-center"
               autoComplete="off"
               autoFocus
@@ -189,7 +196,7 @@ export function HiraganaTest({
 
         {/* Keyboard Hint */}
         <div className="text-center text-sm text-gray-500">
-          Press <kbd className="px-2 py-1 bg-gray-100 rounded border border-gray-300 font-mono">Enter</kbd> to submit
+          Press <kbd className="px-2 py-1 bg-gray-100 rounded border border-gray-300 font-mono">Enter</kbd> to {isAnswered ? 'continue' : 'submit'}
         </div>
       </div>
     </Card>

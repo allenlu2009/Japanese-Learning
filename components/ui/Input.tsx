@@ -30,6 +30,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
               ? 'border-red-500 focus:ring-red-500'
               : 'border-gray-300',
             props.disabled && 'bg-gray-100 cursor-not-allowed',
+            props.readOnly && 'bg-gray-50 cursor-default',
             className
           )}
           {...props}
