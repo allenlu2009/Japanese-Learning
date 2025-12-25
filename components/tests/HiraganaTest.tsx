@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/Input';
 import { ArrowRight, CheckCircle, XCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { Question } from '@/lib/testGenerator';
+import { analyzeMultiCharAnswer, formatCorrectAnswerWithIndicators } from '@/lib/answerAnalysis';
 
 interface HiraganaTestProps {
   currentQuestion: Question | null;
@@ -160,14 +161,62 @@ export function HiraganaTest({
                     {currentQuestion.isCorrect ? 'Correct!' : 'Incorrect'}
                   </p>
                   {!currentQuestion.isCorrect && (
-                    <p className="text-sm text-red-700 mt-1">
-                      Correct answer: <span className="font-semibold">{currentQuestion.correctAnswers[0]}</span>
-                      {currentQuestion.correctAnswers.length > 1 && (
-                        <span className="text-red-600">
-                          {' '}(also accepted: {currentQuestion.correctAnswers.slice(1).join(', ')})
-                        </span>
+                    <div className="text-sm text-red-700 mt-1">
+                      <div className="mb-1">Correct answer:</div>
+                      {currentQuestion.characters.length === 3 && currentQuestion.userAnswer ? (
+                        // 3-character test: Show visual indicators for which syllables are wrong
+                        <div className="font-semibold text-base">
+                          {(() => {
+                            try {
+                              const analysis = analyzeMultiCharAnswer(
+                                currentQuestion.characters,
+                                currentQuestion.userAnswer
+                              );
+                              const formatted = formatCorrectAnswerWithIndicators(analysis);
+
+                              return formatted.map((part, idx) => (
+                                <span key={idx}>
+                                  {part.isWrong ? (
+                                    // Wrong syllable: Red background with brackets
+                                    <span style={{
+                                      backgroundColor: '#fecaca',
+                                      color: '#b91c1c',
+                                      padding: '2px 6px',
+                                      margin: '0 2px',
+                                      fontWeight: 'bold',
+                                      borderRadius: '4px',
+                                      border: '2px solid #991b1b'
+                                    }}>
+                                      [{part.syllable}]
+                                    </span>
+                                  ) : (
+                                    // Correct syllable: Green text
+                                    <span style={{
+                                      color: '#15803d',
+                                      padding: '2px 4px',
+                                      fontWeight: 'bold'
+                                    }}>
+                                      {part.syllable}
+                                    </span>
+                                  )}
+                                </span>
+                              ));
+                            } catch (error) {
+                              console.error('Error analyzing answer:', error);
+                              return <span className="font-semibold">{currentQuestion.correctAnswers[0]}</span>;
+                            }
+                          })()}
+                        </div>
+                      ) : (
+                        // 1-character test or no analysis: Show simple correct answer
+                        <span className="font-semibold">{currentQuestion.correctAnswers[0]}</span>
                       )}
-                    </p>
+                      {currentQuestion.correctAnswers.length > 1 && (
+                        <div className="text-xs text-red-600 mt-1">
+                          Also accepted: {currentQuestion.correctAnswers.slice(1).join(', ')}
+                        </div>
+                      )}
+                    </div>
                   )}
                 </div>
               </div>

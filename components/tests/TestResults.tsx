@@ -25,6 +25,7 @@ export function TestResults({ questions, score, testType, onSave, onRetry, onRev
   const totalCount = questions.length;
   const hasIncorrectAnswers = incorrectCount > 0;
 
+
   // Character insights state
   const [characterInsights, setCharacterInsights] = useState<Array<{
     character: string;
@@ -167,34 +168,52 @@ export function TestResults({ questions, score, testType, onSave, onRetry, onRev
                     {!question.isCorrect && (
                       <div>
                         <span className="font-medium text-gray-700">Correct answer: </span>
-                        {testType === '3-char' && question.userAnswer ? (
-                          <span className="font-semibold">
-                            {(() => {
+                        {(() => {
+                          if (testType === '3-char' && question.userAnswer && question.characters.length === 3) {
+                            try {
                               const analysis = analyzeMultiCharAnswer(
                                 question.characters,
                                 question.userAnswer
                               );
                               const formatted = formatCorrectAnswerWithIndicators(analysis);
 
-                              return formatted.map((part, idx) => (
-                                <span
-                                  key={idx}
-                                  className={cn(
-                                    part.isWrong
-                                      ? 'text-red-600 underline decoration-2 underline-offset-4'
-                                      : 'text-green-700'
-                                  )}
-                                >
-                                  {part.syllable}
+                              return (
+                                <span className="font-semibold">
+                                  {formatted.map((part, idx) => (
+                                    <span key={idx}>
+                                      {part.isWrong ? (
+                                        <span style={{
+                                          backgroundColor: '#fecaca',
+                                          color: '#b91c1c',
+                                          padding: '2px 6px',
+                                          margin: '0 2px',
+                                          fontWeight: 'bold',
+                                          borderRadius: '4px',
+                                          border: '2px solid #991b1b'
+                                        }}>
+                                          [{part.syllable}]
+                                        </span>
+                                      ) : (
+                                        <span style={{
+                                          color: '#15803d',
+                                          padding: '2px 4px',
+                                          fontWeight: 'bold'
+                                        }}>
+                                          {part.syllable}
+                                        </span>
+                                      )}
+                                    </span>
+                                  ))}
                                 </span>
-                              ));
-                            })()}
-                          </span>
-                        ) : (
-                          <span className="font-semibold text-green-700">
-                            {question.correctAnswers[0]}
-                          </span>
-                        )}
+                              );
+                            } catch (error) {
+                              console.error('Error analyzing answer:', error);
+                              return <span className="text-green-700">{question.correctAnswers[0]}</span>;
+                            }
+                          } else {
+                            return <span className="font-semibold text-green-700">{question.correctAnswers[0]}</span>;
+                          }
+                        })()}
                         {question.correctAnswers.length > 1 && (
                           <span className="text-gray-600 ml-2">
                             (also: {question.correctAnswers.slice(1).join(', ')})
