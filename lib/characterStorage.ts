@@ -87,6 +87,11 @@ export function addCharacterAttempts(newAttempts: CharacterAttempt[]): boolean {
   return saveCharacterAttempts(allAttempts);
 }
 
+// Replace all character attempts (used by import)
+export function replaceCharacterAttempts(attempts: CharacterAttempt[]): boolean {
+  return saveCharacterAttempts(attempts);
+}
+
 // Delete attempts associated with a test (for cleanup)
 export function deleteAttemptsByTestId(testId: string): boolean {
   const attempts = getCharacterAttempts();

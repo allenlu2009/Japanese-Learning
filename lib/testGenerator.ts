@@ -43,7 +43,7 @@ export function generateQuestions(
     // For 3-char tests, we'll create sequences of 3 random characters
     const includeTypes = difficulty === 'basic'
       ? ['basic' as const]
-      : ['basic' as const, 'dakuten' as const];  // Exclude combos for 3-char sequences
+      : ['basic' as const, 'dakuten' as const, 'combo' as const];
 
     for (let i = 0; i < count; i++) {
       const threeChars = getRandomHiragana(3, includeTypes);

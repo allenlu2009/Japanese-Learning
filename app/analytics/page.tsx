@@ -18,9 +18,19 @@ export default function CharacterAnalyticsPage() {
     sortOrder: 'asc',
   });
 
+  // State for showing all results vs. weak characters only (default: weak only)
+  const [showAllResults, setShowAllResults] = useState(false);
+
   const filteredStats = useMemo(() => {
-    return filterStats(filter);
-  }, [stats, filter, filterStats]);
+    const baseFiltered = filterStats(filter);
+
+    // Apply weak character filter if showAllResults is false
+    if (!showAllResults) {
+      return baseFiltered.filter(s => s.successRate <= 60);
+    }
+
+    return baseFiltered;
+  }, [stats, filter, filterStats, showAllResults]);
 
   const weakCharacters = useMemo(() => {
     return filteredStats.filter(s => s.successRate < 60);
@@ -134,6 +144,26 @@ export default function CharacterAnalyticsPage() {
             Combo
           </Button>
 
+          {/* Show All Results Checkbox */}
+          <div className="flex items-center gap-2 ml-4 pl-4 border-l border-gray-300">
+            <input
+              type="checkbox"
+              id="showAllResults"
+              checked={showAllResults}
+              onChange={(e) => setShowAllResults(e.target.checked)}
+              className="w-4 h-4 text-primary-600 bg-gray-100 border-gray-300 rounded focus:ring-primary-500"
+            />
+            <label
+              htmlFor="showAllResults"
+              className="text-sm font-medium text-gray-700 cursor-pointer"
+            >
+              Show all results
+            </label>
+            <span className="text-xs text-gray-500">
+              (default: ≤60%)
+            </span>
+          </div>
+
           <div className="ml-auto flex items-center gap-2">
             <span className="text-sm font-medium text-gray-700">Sort by:</span>
             <select
@@ -166,10 +196,29 @@ export default function CharacterAnalyticsPage() {
 
       {/* Character List */}
       <Card>
-        <h3 className="text-xl font-bold text-gray-900 mb-4">All Characters</h3>
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-xl font-bold text-gray-900">
+            {showAllResults ? 'All Characters' : 'Weak Characters (≤60%)'}
+          </h3>
+          <span className="text-sm text-gray-600">
+            Showing {filteredStats.length} of {stats.length} characters
+          </span>
+        </div>
 
-        <div className="space-y-2">
-          {filteredStats.map((stat) => {
+        {filteredStats.length === 0 && !showAllResults ? (
+          <div className="text-center py-12">
+            <p className="text-gray-600 mb-2">🎉 No weak characters found!</p>
+            <p className="text-sm text-gray-500">
+              All characters have &gt;60% success rate. Check &quot;Show all results&quot; to view all.
+            </p>
+          </div>
+        ) : filteredStats.length === 0 ? (
+          <div className="text-center py-12">
+            <p className="text-gray-600">No characters match the current filters.</p>
+          </div>
+        ) : (
+          <div className="space-y-2">
+            {filteredStats.map((stat) => {
             const TrendIcon = stat.trend === 'improving' ? TrendingUp :
                              stat.trend === 'declining' ? TrendingDown : Minus;
             const trendColor = stat.trend === 'improving' ? 'text-green-600' :
@@ -239,7 +288,8 @@ export default function CharacterAnalyticsPage() {
               </div>
             );
           })}
-        </div>
+          </div>
+        )}
       </Card>
     </div>
   );

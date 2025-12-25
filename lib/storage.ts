@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import { Test, StorageData } from './types';
 import { STORAGE_KEY, STORAGE_VERSION } from './constants';
+import { getCharacterAttempts, replaceCharacterAttempts } from './characterStorage';
 
 // Check if localStorage is available
 function isLocalStorageAvailable(): boolean {
@@ -49,7 +50,7 @@ export function getTestById(id: string): Test | null {
 }
 
 // Save all tests to localStorage
-function saveTests(tests: Test[]): boolean {
+export function saveTests(tests: Test[]): boolean {
   if (!isLocalStorageAvailable()) {
     console.error('localStorage is not available');
     return false;
@@ -174,6 +175,65 @@ export function importTests(jsonData: string): boolean {
     return saveTests(tests);
   } catch (error) {
     console.error('Error importing tests:', error);
+    return false;
+  }
+}
+
+// Export full app data (tests + character attempts)
+export function exportAppData(): string {
+  const payload = {
+    version: STORAGE_VERSION,
+    exportedAt: new Date().toISOString(),
+    tests: getTests(),
+    characterAttempts: getCharacterAttempts(),
+  };
+
+  return JSON.stringify(payload, null, 2);
+}
+
+// Import full app data (tests + character attempts)
+export function importAppData(jsonData: string): boolean {
+  try {
+    const parsed = JSON.parse(jsonData);
+
+    // Validate structure
+    if (!parsed || !Array.isArray(parsed.tests) || !Array.isArray(parsed.characterAttempts)) {
+      throw new Error('Invalid import payload structure');
+    }
+
+    // Validate each test has required fields
+    const testsValid = parsed.tests.every((test: any) =>
+      test.id &&
+      test.date &&
+      typeof test.score === 'number' &&
+      test.category &&
+      test.description
+    );
+
+    // Validate each character attempt has required fields
+    const attemptsValid = parsed.characterAttempts.every((attempt: any) =>
+      attempt.id &&
+      attempt.testId &&
+      attempt.timestamp &&
+      attempt.character &&
+      attempt.characterType &&
+      typeof attempt.userAnswer === 'string' &&
+      Array.isArray(attempt.correctAnswers) &&
+      typeof attempt.isCorrect === 'boolean' &&
+      attempt.questionType
+    );
+
+    if (!testsValid || !attemptsValid) {
+      throw new Error('Invalid import payload data');
+    }
+
+    // Save both datasets
+    const savedTests = saveTests(parsed.tests);
+    const savedAttempts = replaceCharacterAttempts(parsed.characterAttempts);
+
+    return savedTests && savedAttempts;
+  } catch (error) {
+    console.error('Error importing app data:', error);
     return false;
   }
 }

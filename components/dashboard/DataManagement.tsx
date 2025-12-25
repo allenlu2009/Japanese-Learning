@@ -4,7 +4,7 @@ import React, { useRef, useState } from 'react';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Download, Upload, Database, CheckCircle, XCircle } from 'lucide-react';
-import { exportTests, importTests } from '@/lib/storage';
+import { exportAppData, importAppData } from '@/lib/storage';
 
 interface DataManagementProps {
   onDataChange?: () => void; // Callback when data is imported
@@ -17,7 +17,7 @@ export function DataManagement({ onDataChange }: DataManagementProps) {
   // Handle export - download JSON file
   const handleExport = () => {
     try {
-      const jsonData = exportTests();
+      const jsonData = exportAppData();
       const blob = new Blob([jsonData], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
@@ -55,7 +55,7 @@ export function DataManagement({ onDataChange }: DataManagementProps) {
     reader.onload = (e) => {
       try {
         const jsonData = e.target?.result as string;
-        const success = importTests(jsonData);
+        const success = importAppData(jsonData);
 
         if (success) {
           setMessage({ type: 'success', text: 'Data imported successfully!' });

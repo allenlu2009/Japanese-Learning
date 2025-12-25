@@ -8,6 +8,7 @@ import {
   updateTest as updateTestInStorage,
   deleteTest as deleteTestFromStorage,
 } from '@/lib/storage';
+import { deleteAttemptsByTestId } from '@/lib/characterStorage';
 
 export function useTests() {
   const [tests, setTests] = useState<Test[]>([]);
@@ -75,6 +76,8 @@ export function useTests() {
     try {
       const success = deleteTestFromStorage(id);
       if (success) {
+        // Also delete associated character attempts to prevent orphaned data
+        deleteAttemptsByTestId(id);
         setTests(prev => prev.filter(test => test.id !== id));
         setError(null);
         return true;
