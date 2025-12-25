@@ -1,11 +1,13 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
-import { Award, CheckCircle, XCircle, RotateCcw, Save } from 'lucide-react';
+import { Award, CheckCircle, XCircle, RotateCcw, Save, TrendingUp, TrendingDown, Minus } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { Question } from '@/lib/testGenerator';
+import { getCharacterAttempts } from '@/lib/characterStorage';
+import { getCharacterInsight } from '@/lib/characterAnalytics';
 
 interface TestResultsProps {
   questions: Question[];
@@ -19,6 +21,37 @@ export function TestResults({ questions, score, testType, onSave, onRetry }: Tes
   const correctCount = questions.filter(q => q.isCorrect).length;
   const incorrectCount = questions.filter(q => !q.isCorrect).length;
   const totalCount = questions.length;
+
+  // Character insights state
+  const [characterInsights, setCharacterInsights] = useState<Array<{
+    character: string;
+    message: string;
+    trend: 'improving' | 'declining' | 'stable';
+    successRate: number;
+  }>>([]);
+
+  // Load character insights on mount
+  useEffect(() => {
+    const allAttempts = getCharacterAttempts();
+
+    // Get unique characters from current test
+    const uniqueChars = new Set<string>();
+    questions.forEach(q => {
+      if (testType === '1-char') {
+        uniqueChars.add(q.characters);
+      } else {
+        // For 3-char, split into individual characters
+        q.characters.split('').forEach(c => uniqueChars.add(c));
+      }
+    });
+
+    // Calculate insights for each character
+    const insights = Array.from(uniqueChars)
+      .map(char => getCharacterInsight(char, allAttempts))
+      .filter(insight => insight.total > 0); // Only show chars with history
+
+    setCharacterInsights(insights);
+  }, [questions, testType]);
 
   const getScoreColor = (score: number) => {
     if (score >= 90) return 'text-green-600';
@@ -142,6 +175,63 @@ export function TestResults({ questions, score, testType, onSave, onRetry }: Tes
           ))}
         </div>
       </Card>
+
+      {/* Character Performance Insights */}
+      {characterInsights.length > 0 && (
+        <Card>
+          <h3 className="text-xl font-bold text-gray-900 mb-2">
+            Character Performance History
+          </h3>
+          <p className="text-sm text-gray-600 mb-4">
+            See how you&apos;ve performed on these characters across all tests
+          </p>
+
+          <div className="grid gap-3">
+            {characterInsights.map((insight) => {
+              const TrendIcon = insight.trend === 'improving' ? TrendingUp :
+                               insight.trend === 'declining' ? TrendingDown : Minus;
+              const trendColor = insight.trend === 'improving' ? 'text-green-600' :
+                                insight.trend === 'declining' ? 'text-red-600' : 'text-gray-600';
+
+              return (
+                <div
+                  key={insight.character}
+                  className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+                >
+                  <div className="flex items-center gap-4">
+                    <span className="text-3xl font-bold text-gray-900">
+                      {insight.character}
+                    </span>
+                    <div>
+                      <p className="text-sm font-medium text-gray-900">
+                        {insight.message}
+                      </p>
+                      <div className="flex items-center gap-2 mt-1">
+                        <TrendIcon className={cn('h-4 w-4', trendColor)} />
+                        <span className={cn('text-xs font-medium', trendColor)}>
+                          {insight.trend === 'improving' ? 'Improving' :
+                           insight.trend === 'declining' ? 'Declining' : 'Stable'}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="text-right">
+                    <div className={cn(
+                      'text-2xl font-bold',
+                      insight.successRate >= 80 ? 'text-green-600' :
+                      insight.successRate >= 60 ? 'text-yellow-600' : 'text-red-600'
+                    )}>
+                      {insight.successRate}%
+                    </div>
+                    <div className="text-xs text-gray-500">success rate</div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </Card>
+      )}
     </div>
   );
 }

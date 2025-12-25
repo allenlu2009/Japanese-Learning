@@ -2,17 +2,84 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { v4 as uuidv4 } from 'uuid';
 import { useTests } from '@/hooks/useTests';
 import { useTestSession } from '@/hooks/useTestSession';
 import { InteractiveTestConfig } from './InteractiveTestConfig';
 import { HiraganaTest } from './HiraganaTest';
 import { TestResults } from './TestResults';
-import type { TestType, QuestionCount } from '@/lib/types';
+import type { TestType, QuestionCount, TestSession, CharacterAttempt } from '@/lib/types';
+import { addCharacterAttempts } from '@/lib/characterStorage';
+import { findHiragana, type HiraganaChar } from '@/lib/hiragana';
+import { splitUserAnswer } from '@/lib/syllableMatching';
 
 type TestState = 'config' | 'testing' | 'results';
 
 interface InteractiveTestContainerProps {
   onBack: () => void;
+}
+
+/**
+ * Helper: Extract character attempts from test session
+ * Handles both 1-char and 3-char questions
+ */
+function extractCharacterAttempts(
+  session: TestSession,
+  testId: string
+): CharacterAttempt[] {
+  const attempts: CharacterAttempt[] = [];
+  const timestamp = new Date().toISOString();
+
+  session.questions.forEach((question) => {
+    if (session.config.testType === '1-char') {
+      // Single character - straightforward
+      const hiraganaChar = findHiragana(question.characters);
+      if (!hiraganaChar) return;
+
+      attempts.push({
+        id: uuidv4(),
+        testId,
+        timestamp,
+        character: question.characters,
+        characterType: hiraganaChar.type,
+        userAnswer: question.userAnswer || '',
+        correctAnswers: question.correctAnswers,
+        isCorrect: question.isCorrect || false,
+        questionType: '1-char',
+      });
+    } else if (session.config.testType === '3-char') {
+      // Break into individual characters
+      const chars = question.characters.split('');
+      const hiraganaChars = chars.map(c => findHiragana(c));
+      const userAnswerParts = splitUserAnswer(question.userAnswer || '', hiraganaChars);
+
+      chars.forEach((char, index) => {
+        const hiraganaChar = hiraganaChars[index];
+        if (!hiraganaChar) return;
+
+        const userAnswerPart = userAnswerParts[index] || '';
+        const isCorrect = hiraganaChar.romanji.some(
+          valid => valid.toLowerCase() === userAnswerPart.toLowerCase()
+        );
+
+        attempts.push({
+          id: uuidv4(),
+          testId,
+          timestamp,
+          character: char,
+          characterType: hiraganaChar.type,
+          userAnswer: userAnswerPart,
+          correctAnswers: hiraganaChar.romanji,
+          isCorrect,
+          questionType: '3-char',
+          sequencePosition: index,
+          originalSequence: question.characters,
+        });
+      });
+    }
+  });
+
+  return attempts;
 }
 
 export function InteractiveTestContainer({ onBack }: InteractiveTestContainerProps) {
@@ -75,6 +142,15 @@ export function InteractiveTestContainer({ onBack }: InteractiveTestContainerPro
     });
 
     if (result) {
+      // NEW: Extract and save character attempts
+      const characterAttempts = extractCharacterAttempts(session, result.id);
+      const saveSuccess = addCharacterAttempts(characterAttempts);
+
+      if (!saveSuccess) {
+        console.error('Failed to save character attempts');
+        // Note: Test is already saved, so we don't block navigation
+      }
+
       // Redirect to dashboard
       router.push('/');
     }

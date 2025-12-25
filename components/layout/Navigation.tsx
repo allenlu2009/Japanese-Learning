@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, ListChecks, PlusCircle } from 'lucide-react';
+import { LayoutDashboard, ListChecks, PlusCircle, BarChart } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const navItems = [
@@ -21,6 +21,11 @@ const navItems = [
     href: '/tests/new',
     label: 'Add Test',
     icon: PlusCircle,
+  },
+  {
+    href: '/analytics',
+    label: 'Character Analytics',
+    icon: BarChart,
   },
 ];
 

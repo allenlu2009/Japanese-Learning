@@ -56,3 +56,13 @@ export const MAX_SCORE = 100;
 // Description limits
 export const MIN_DESCRIPTION_LENGTH = 1;
 export const MAX_DESCRIPTION_LENGTH = 500;
+
+// Character analytics storage
+export const CHARACTER_STORAGE_KEY = 'japanese-learning-character-attempts';
+export const CHARACTER_STORAGE_VERSION = '1.0';
+
+// Character analytics thresholds
+export const MIN_ATTEMPTS_FOR_TREND = 10;  // Need 10+ attempts to calculate trend
+export const RECENT_ATTEMPTS_WINDOW = 10;  // Last 10 attempts for "recent" stats
+export const WEAK_CHARACTER_THRESHOLD = 60;  // <60% success rate = weak
+export const TREND_IMPROVEMENT_THRESHOLD = 10;  // 10% improvement = improving trend

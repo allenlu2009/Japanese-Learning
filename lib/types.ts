@@ -92,3 +92,49 @@ export interface TestSession {
   startTime: Date;
   endTime?: Date;
 }
+
+// Character Analytics types
+export interface CharacterAttempt {
+  id: string;                    // UUID for the attempt
+  testId: string;                // Foreign key to Test.id
+  timestamp: string;             // ISO timestamp when answered
+  character: string;             // Single hiragana character (e.g., 'あ')
+  characterType: 'basic' | 'dakuten' | 'combo';
+  userAnswer: string;            // What user typed
+  correctAnswers: string[];      // Valid romanji options
+  isCorrect: boolean;            // Was the answer correct?
+  questionType: '1-char' | '3-char';
+  sequencePosition?: number;     // For 3-char: position (0, 1, 2)
+  originalSequence?: string;     // For 3-char: full sequence
+}
+
+export interface CharacterStats {
+  character: string;
+  characterType: 'basic' | 'dakuten' | 'combo';
+  totalAttempts: number;
+  correctAttempts: number;
+  incorrectAttempts: number;
+  successRate: number;           // 0-100
+  firstAttemptDate: string;
+  lastAttemptDate: string;
+  trend: 'improving' | 'declining' | 'stable';
+  commonMistakes: Array<{
+    answer: string;
+    count: number;
+  }>;
+  recentSuccessRate: number;     // Last 10 attempts
+  allTimeSuccessRate: number;    // Same as successRate (for clarity)
+}
+
+export interface CharacterStorageData {
+  attempts: CharacterAttempt[];
+  version: string;
+  lastUpdated: string;
+}
+
+export interface CharacterAnalyticsFilter {
+  characterType?: 'basic' | 'dakuten' | 'combo';
+  minAttempts?: number;
+  sortBy: 'character' | 'successRate' | 'totalAttempts' | 'recentPerformance';
+  sortOrder: 'asc' | 'desc';
+}
