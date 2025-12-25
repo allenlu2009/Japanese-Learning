@@ -341,5 +341,16 @@ describe('syllableMatching', () => {
       expect(result).toEqual(['ge', 'a', 'rya']);
       // ば gets 'ge' (wrong, should be 'ba'), あ gets 'a' (correct via resync), りゃ gets 'rya' (correct)
     });
+
+    it('should handle jyogowo for じゅごを (combo character splitting bug)', () => {
+      const hiragana = [
+        createMockHiragana('じゅ', ['ju', 'jyu', 'zyu']),
+        createMockHiragana('ご', ['go']),
+        createMockHiragana('を', ['wo', 'o']),
+      ];
+      const result = splitUserAnswer('jyogowo', hiragana);
+      expect(result).toEqual(['jyo', 'go', 'wo']);
+      // じゅ gets 'jyo' (wrong, should be 'ju'/'jyu'/'zyu'), ご gets 'go' (correct via resync), を gets 'wo' (correct)
+    });
   });
 });

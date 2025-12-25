@@ -10,22 +10,21 @@ export interface CharacterAnalysis {
 }
 
 /**
- * Count the number of hiragana characters in a string, treating combo characters as single units
- * For example: "ばありゃ" = 3 characters (ば, あ, りゃ) not 4
+ * Split hiragana text into individual hiragana character units (treating combos as single units)
+ * For example: "じゅごを" → ['じゅ', 'ご', 'を'] not ['じ', 'ゅ', 'ご', 'を']
  */
-export function countHiraganaCharacters(text: string): number {
-  let count = 0;
+export function splitHiraganaIntoCharacters(text: string): string[] {
+  const chars: string[] = [];
   let i = 0;
 
   while (i < text.length) {
-    // Try to match longest combo first (2 chars), then single char
     let matched = false;
 
-    // Try 2-character combo
+    // Try 2-character combo first
     if (i + 1 < text.length) {
       const twoChar = text.slice(i, i + 2);
       if (ALL_HIRAGANA.some((h: HiraganaChar) => h.hiragana === twoChar)) {
-        count++;
+        chars.push(twoChar);
         i += 2;
         matched = true;
       }
@@ -35,7 +34,7 @@ export function countHiraganaCharacters(text: string): number {
     if (!matched) {
       const oneChar = text[i];
       if (ALL_HIRAGANA.some((h: HiraganaChar) => h.hiragana === oneChar)) {
-        count++;
+        chars.push(oneChar);
         i += 1;
       } else {
         // Not a valid hiragana, skip
@@ -44,7 +43,15 @@ export function countHiraganaCharacters(text: string): number {
     }
   }
 
-  return count;
+  return chars;
+}
+
+/**
+ * Count the number of hiragana characters in a string, treating combo characters as single units
+ * For example: "ばありゃ" = 3 characters (ば, あ, りゃ) not 4
+ */
+export function countHiraganaCharacters(text: string): number {
+  return splitHiraganaIntoCharacters(text).length;
 }
 
 /**
@@ -58,7 +65,7 @@ export function analyzeMultiCharAnswer(
   hiraganaSequence: string,
   userAnswer: string
 ): CharacterAnalysis[] {
-  const chars = hiraganaSequence.split('');
+  const chars = splitHiraganaIntoCharacters(hiraganaSequence);
   const hiraganaChars = chars.map(c => findHiragana(c));
   const userSyllables = splitUserAnswer(userAnswer, hiraganaChars);
 
