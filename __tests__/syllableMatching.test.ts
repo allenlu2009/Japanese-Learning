@@ -330,5 +330,16 @@ describe('syllableMatching', () => {
       expect(result).toEqual(['woge', '', 'bo']);
       // わ gets 'woge' (wrong, should be 'wa'), ぱ gets '' (skipped), ぼ gets 'bo' (correct via resync at pos 0)
     });
+
+    it('should handle gearya for ばありゃ (combo character bug)', () => {
+      const hiragana = [
+        createMockHiragana('ば', ['ba']),
+        createMockHiragana('あ', ['a']),
+        createMockHiragana('りゃ', ['rya']),
+      ];
+      const result = splitUserAnswer('gearya', hiragana);
+      expect(result).toEqual(['ge', 'a', 'rya']);
+      // ば gets 'ge' (wrong, should be 'ba'), あ gets 'a' (correct via resync), りゃ gets 'rya' (correct)
+    });
   });
 });
