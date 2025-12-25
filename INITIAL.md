@@ -73,6 +73,16 @@ SPECIFIC FUNCTIONALITY IMPLEMENTED:
      * Provides precise feedback on which specific characters are wrong vs correct
      * Example: "banana" for かたな correctly identifies か wrong, た wrong, な correct
      * Supports all ~80+ valid romanji syllables including variants (shi/si, chi/ti, etc.)
+   - **Visual Error Indicators** (NEW):
+     * In test results, wrong characters are underlined in red
+     * Correct characters shown in green
+     * Users see exactly which syllables they confused
+     * Example: For "banana" → ka<u>ta</u>na shows first syllable underlined in red
+   - **Optional Review Mode** (NEW):
+     * After completing a test, review only incorrect answers
+     * Button shows count of wrong answers: "Review Wrong Answers (3)"
+     * Preserves original test results while practicing mistakes
+     * Can review multiple times until mastered
    - Comprehensive analytics dashboard showing:
      * Per-character success rates (all-time and recent performance)
      * Trend detection (improving/declining/stable based on temporal analysis)

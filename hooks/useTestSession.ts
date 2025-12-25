@@ -129,6 +129,31 @@ export function useTestSession() {
     return currentQuestion?.userAnswer !== undefined;
   }, [getCurrentQuestion]);
 
+  // Start a review session with only incorrect questions
+  const startReviewSession = useCallback(() => {
+    if (!session) return;
+
+    // Filter for incorrect questions and reset their answers
+    const incorrectQuestions = session.questions
+      .filter(q => !q.isCorrect)
+      .map(q => ({
+        ...q,
+        userAnswer: undefined,
+        isCorrect: undefined,
+      }));
+
+    if (incorrectQuestions.length === 0) return;
+
+    const reviewSession: TestSession = {
+      config: session.config,
+      questions: incorrectQuestions,
+      currentQuestionIndex: 0,
+      startTime: new Date(),
+    };
+
+    setSession(reviewSession);
+  }, [session]);
+
   return {
     session,
     startTest,
@@ -143,5 +168,6 @@ export function useTestSession() {
     getScore,
     getProgress,
     isCurrentQuestionAnswered,
+    startReviewSession,
   };
 }

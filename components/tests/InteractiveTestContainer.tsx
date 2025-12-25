@@ -96,9 +96,11 @@ export function InteractiveTestContainer({ onBack }: InteractiveTestContainerPro
     isCurrentQuestionAnswered,
     getProgress,
     getScore,
+    startReviewSession,
   } = useTestSession();
 
   const [testState, setTestState] = useState<TestState>('config');
+  const [completedSession, setCompletedSession] = useState<TestSession | null>(null);
 
   // Start the test
   const handleStartTest = (testType: TestType, questionCount: QuestionCount) => {
@@ -119,7 +121,16 @@ export function InteractiveTestContainer({ onBack }: InteractiveTestContainerPro
   // Finish the test and show results
   const handleFinishTest = () => {
     finishTest();
+    if (session) {
+      setCompletedSession(session);
+    }
     setTestState('results');
+  };
+
+  // Start review mode with incorrect answers
+  const handleStartReview = () => {
+    startReviewSession();
+    setTestState('testing');
   };
 
   // Save the test to localStorage
@@ -159,6 +170,7 @@ export function InteractiveTestContainer({ onBack }: InteractiveTestContainerPro
   // Retry the test (go back to config)
   const handleRetry = () => {
     resetTest();
+    setCompletedSession(null);
     setTestState('config');
   };
 
@@ -195,16 +207,18 @@ export function InteractiveTestContainer({ onBack }: InteractiveTestContainerPro
     );
   }
 
-  if (testState === 'results' && session) {
+  if (testState === 'results' && completedSession) {
     const score = getScore();
+    const incorrectCount = completedSession.questions.filter(q => !q.isCorrect).length;
 
     return (
       <TestResults
-        questions={session.questions}
+        questions={completedSession.questions}
         score={score}
-        testType={session.config.testType || '1-char'}
+        testType={completedSession.config.testType || '1-char'}
         onSave={handleSaveTest}
         onRetry={handleRetry}
+        onReview={incorrectCount > 0 ? handleStartReview : undefined}
       />
     );
   }

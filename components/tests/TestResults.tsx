@@ -3,11 +3,12 @@
 import React, { useEffect, useState } from 'react';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
-import { Award, CheckCircle, XCircle, RotateCcw, Save, TrendingUp, TrendingDown, Minus } from 'lucide-react';
+import { Award, CheckCircle, XCircle, RotateCcw, Save, TrendingUp, TrendingDown, Minus, RefreshCw } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { Question } from '@/lib/testGenerator';
 import { getCharacterAttempts } from '@/lib/characterStorage';
 import { getCharacterInsight } from '@/lib/characterAnalytics';
+import { analyzeMultiCharAnswer, formatCorrectAnswerWithIndicators } from '@/lib/answerAnalysis';
 
 interface TestResultsProps {
   questions: Question[];
@@ -15,12 +16,14 @@ interface TestResultsProps {
   testType: '1-char' | '3-char';
   onSave: () => void;
   onRetry: () => void;
+  onReview?: () => void;
 }
 
-export function TestResults({ questions, score, testType, onSave, onRetry }: TestResultsProps) {
+export function TestResults({ questions, score, testType, onSave, onRetry, onReview }: TestResultsProps) {
   const correctCount = questions.filter(q => q.isCorrect).length;
   const incorrectCount = questions.filter(q => !q.isCorrect).length;
   const totalCount = questions.length;
+  const hasIncorrectAnswers = incorrectCount > 0;
 
   // Character insights state
   const [characterInsights, setCharacterInsights] = useState<Array<{
@@ -101,11 +104,17 @@ export function TestResults({ questions, score, testType, onSave, onRetry }: Tes
             </div>
           </div>
 
-          <div className="flex gap-3 justify-center">
+          <div className="flex flex-wrap gap-3 justify-center">
             <Button onClick={onSave} size="lg">
               <Save className="h-5 w-5 mr-2" />
               Save Test
             </Button>
+            {hasIncorrectAnswers && onReview && (
+              <Button onClick={onReview} variant="secondary" size="lg">
+                <RefreshCw className="h-5 w-5 mr-2" />
+                Review Wrong Answers ({incorrectCount})
+              </Button>
+            )}
             <Button onClick={onRetry} variant="ghost" size="lg">
               <RotateCcw className="h-5 w-5 mr-2" />
               Try Again
@@ -158,9 +167,34 @@ export function TestResults({ questions, score, testType, onSave, onRetry }: Tes
                     {!question.isCorrect && (
                       <div>
                         <span className="font-medium text-gray-700">Correct answer: </span>
-                        <span className="font-semibold text-green-700">
-                          {question.correctAnswers[0]}
-                        </span>
+                        {testType === '3-char' && question.userAnswer ? (
+                          <span className="font-semibold">
+                            {(() => {
+                              const analysis = analyzeMultiCharAnswer(
+                                question.characters,
+                                question.userAnswer
+                              );
+                              const formatted = formatCorrectAnswerWithIndicators(analysis);
+
+                              return formatted.map((part, idx) => (
+                                <span
+                                  key={idx}
+                                  className={cn(
+                                    part.isWrong
+                                      ? 'text-red-600 underline decoration-2 underline-offset-4'
+                                      : 'text-green-700'
+                                  )}
+                                >
+                                  {part.syllable}
+                                </span>
+                              ));
+                            })()}
+                          </span>
+                        ) : (
+                          <span className="font-semibold text-green-700">
+                            {question.correctAnswers[0]}
+                          </span>
+                        )}
                         {question.correctAnswers.length > 1 && (
                           <span className="text-gray-600 ml-2">
                             (also: {question.correctAnswers.slice(1).join(', ')})
