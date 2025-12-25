@@ -21,7 +21,13 @@ export function DataManagement({ onDataChange }: DataManagementProps) {
       const blob = new Blob([jsonData], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
-      const timestamp = new Date().toISOString().split('T')[0];
+
+      // Create timestamp with date and time (YYYY-MM-DD-HH-MM-SS)
+      const now = new Date();
+      const timestamp = now.toISOString()
+        .replace(/T/, '-')
+        .replace(/:/g, '-')
+        .split('.')[0];
 
       link.href = url;
       link.download = `japanese-learning-tests-${timestamp}.json`;
@@ -30,7 +36,7 @@ export function DataManagement({ onDataChange }: DataManagementProps) {
       document.body.removeChild(link);
       URL.revokeObjectURL(url);
 
-      setMessage({ type: 'success', text: 'Data exported successfully!' });
+      setMessage({ type: 'success', text: 'Data exported successfully! Save to the data/ folder.' });
       setTimeout(() => setMessage(null), 3000);
     } catch (error) {
       console.error('Export error:', error);
@@ -144,7 +150,10 @@ export function DataManagement({ onDataChange }: DataManagementProps) {
         {/* Help Text */}
         <div className="text-xs text-gray-500 space-y-1 pt-2 border-t border-gray-200">
           <p>
-            <strong>Export:</strong> Download your test data as a JSON file for backup.
+            <strong>Export:</strong> Download your test data as a JSON file with timestamp.
+          </p>
+          <p>
+            <strong>Tip:</strong> Save exported files to the <code className="bg-gray-100 px-1 py-0.5 rounded">data/</code> folder in the project root.
           </p>
           <p>
             <strong>Import:</strong> Restore test data from a previously exported JSON file.

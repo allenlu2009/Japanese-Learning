@@ -44,19 +44,24 @@ export default function DashboardPage() {
 
   if (tests.length === 0) {
     return (
-      <EmptyState
-        title="Welcome to Japanese Learning Tracker"
-        description="Start tracking your Japanese language learning progress by adding your first test. Monitor your performance across reading, listening, writing, and speaking skills."
-        icon={<Award className="h-16 w-16" />}
-        action={
-          <Link href="/tests/new">
-            <Button size="lg">
-              <PlusCircle className="h-5 w-5 mr-2" />
-              Add Your First Test
-            </Button>
-          </Link>
-        }
-      />
+      <div className="space-y-8">
+        <EmptyState
+          title="Welcome to Japanese Learning Tracker"
+          description="Start tracking your Japanese language learning progress by adding your first test. Monitor your performance across reading, listening, writing, and speaking skills."
+          icon={<Award className="h-16 w-16" />}
+          action={
+            <Link href="/tests/new">
+              <Button size="lg">
+                <PlusCircle className="h-5 w-5 mr-2" />
+                Add Your First Test
+              </Button>
+            </Link>
+          }
+        />
+
+        {/* Allow importing data even when no tests exist */}
+        <DataManagement />
+      </div>
     );
   }
 

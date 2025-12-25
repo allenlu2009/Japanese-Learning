@@ -51,7 +51,7 @@ export function splitUserAnswer(
   const parts: string[] = [];
   let remaining = userAnswer.toLowerCase().trim();
 
-  hiraganaChars.forEach((hiraganaChar) => {
+  hiraganaChars.forEach((hiraganaChar, index) => {
     if (!hiraganaChar) {
       parts.push('');
       return;
@@ -69,8 +69,79 @@ export function splitUserAnswer(
       return;
     }
 
-    // SECOND: User's answer is wrong, but use syllable-aware extraction
-    // Try to extract a valid romanji syllable (greedy - longest first)
+    // SECOND: User's answer is wrong - try to extract intelligently
+    // Strategy: Look ahead to see if any future expected syllables appear in remaining string
+    // This helps us "resync" when there are typos
+
+    let bestMatch: { syllable: string; isValid: boolean } | null = null;
+
+    // Check if we can find any expected romanji for remaining characters
+    const remainingChars = hiraganaChars.slice(index + 1);
+    let syncPoint = -1;
+
+    for (let i = 0; i < remainingChars.length; i++) {
+      const nextChar = remainingChars[i];
+      if (!nextChar) continue;
+
+      for (const romanji of nextChar.romanji) {
+        const pos = remaining.toLowerCase().indexOf(romanji.toLowerCase());
+        if (pos >= 0) {
+          // Found a sync point
+          syncPoint = pos;
+          break;
+        }
+      }
+      if (syncPoint >= 0) break;
+    }
+
+    if (syncPoint > 0) {
+      // Found a sync point ahead - extract everything before it
+      const extracted = remaining.slice(0, syncPoint);
+      parts.push(extracted);
+      remaining = remaining.slice(syncPoint);
+      return;
+    }
+
+    // When syncPoint === 0, check if greedy syllable matches a future character's expectation
+    if (syncPoint === 0) {
+      // Find what greedy matching would extract
+      let greedySyllable: string | null = null;
+      for (let len = Math.min(3, remaining.length); len >= 1; len--) {
+        const candidate = remaining.slice(0, len);
+        if (VALID_ROMANJI_SYLLABLES.has(candidate)) {
+          greedySyllable = candidate;
+          break;
+        }
+      }
+
+      if (greedySyllable && remainingChars.length > 0) {
+        // Check if this syllable appears again later in the remaining string
+        // indexOf(syllable, 1) looks for the syllable starting from position 1
+        const appearsAgainLater = remaining.toLowerCase().indexOf(
+          greedySyllable.toLowerCase(),
+          greedySyllable.length
+        ) >= 0;
+
+        // If the syllable appears again, extract it for current character
+        // (e.g., "nana" has 'na' twice, so extract first 'na' for current char)
+        // If it doesn't appear again AND a future char expects it, skip current
+        // (e.g., "bo" appears once, belongs to future char)
+        if (!appearsAgainLater) {
+          const futureExpects = remainingChars.some(char =>
+            char && char.romanji.some(r => r.toLowerCase() === greedySyllable!.toLowerCase())
+          );
+
+          if (futureExpects) {
+            // Skip current - the syllable belongs to a future character
+            parts.push('');
+            return;
+          }
+        }
+      }
+      // Otherwise fall through to extract it
+    }
+
+    // No sync point found - try greedy valid syllable matching
     let extracted: string | null = null;
 
     // Try syllables from longest (3 chars) to shortest (1 char)

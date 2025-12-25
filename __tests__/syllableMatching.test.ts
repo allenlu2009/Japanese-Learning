@@ -245,7 +245,7 @@ describe('syllableMatching', () => {
         createMockHiragana('た', ['ta']),
       ];
       const result = splitUserAnswer('xyta', hiragana);
-      expect(result).toEqual(['x', 'y']); // Both 'x' and 'y' are invalid, each falls back to single char
+      expect(result).toEqual(['xy', 'ta']); // Resync finds 'ta' ahead, groups 'xy' as wrong input for か
     });
 
     it('should handle numbers and special characters', () => {
@@ -305,8 +305,30 @@ describe('syllableMatching', () => {
         createMockHiragana('う', ['u', 'o']),
       ];
       const result = splitUserAnswer('kiyu', hiragana);
-      expect(result).toEqual(['ki', 'yu']);
-      // Both wrong: きょ should be 'kyo' but got 'ki', う should be 'u' but got 'yu'
+      expect(result).toEqual(['kiy', 'u']);
+      // Resync finds 'u' ahead (correct for う), so きょ gets 'kiy' (wrong, should be 'kyo')
+    });
+
+    it('should handle kalude for かろで (user-reported bug)', () => {
+      const hiragana = [
+        createMockHiragana('か', ['ka']),
+        createMockHiragana('ろ', ['ro']),
+        createMockHiragana('で', ['de']),
+      ];
+      const result = splitUserAnswer('kalude', hiragana);
+      expect(result).toEqual(['ka', 'lu', 'de']);
+      // か gets 'ka' (correct), ろ gets 'lu' (wrong, should be 'ro'), で gets 'de' (correct via resync)
+    });
+
+    it('should handle wogebo for わぱぼ (user-reported bug #2)', () => {
+      const hiragana = [
+        createMockHiragana('わ', ['wa']),
+        createMockHiragana('ぱ', ['pa']),
+        createMockHiragana('ぼ', ['bo']),
+      ];
+      const result = splitUserAnswer('wogebo', hiragana);
+      expect(result).toEqual(['woge', '', 'bo']);
+      // わ gets 'woge' (wrong, should be 'wa'), ぱ gets '' (skipped), ぼ gets 'bo' (correct via resync at pos 0)
     });
   });
 });

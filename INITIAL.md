@@ -47,10 +47,15 @@ SPECIFIC FUNCTIONALITY IMPLEMENTED:
    - Automatic storage of completed interactive tests
 
 3. **Data Management**
-   - Export test data as JSON file with timestamp
+   - Export test data as JSON file with full timestamp (date + time)
    - Import test data from previously exported JSON files
+   - **Dedicated `data/` folder** for organizing exports/imports
+   - **Enhanced filename format**: `japanese-learning-tests-YYYY-MM-DD-HH-MM-SS.json`
+   - Multiple exports per day without filename conflicts
    - Data backup and restore across browsers/devices
+   - **Data Management visible on empty state** - import on first launch
    - Warning system to prevent accidental data loss
+   - Files automatically excluded from git (.gitignore)
 
 4. **Dashboard Analytics**
    - Overall statistics with total tests and average score
@@ -67,17 +72,21 @@ SPECIFIC FUNCTIONALITY IMPLEMENTED:
    - Automatic tracking of individual character performance across all interactive tests
    - Tracks both correct and incorrect answers for each hiragana character
    - 3-character test sequences automatically broken down into individual character attempts
-   - **Syllable-Aware Matching Algorithm**:
+   - **Advanced Syllable-Aware Matching Algorithm**:
      * Intelligently splits user answers into Japanese romanji syllables
      * Uses greedy matching (longest syllable first) for accurate character-by-character evaluation
-     * Provides precise feedback on which specific characters are wrong vs correct
-     * Example: "banana" for かたな correctly identifies か wrong, た wrong, な correct
+     * **Resynchronization algorithm** prevents cascading errors from typos
+     * Look-ahead sync points preserve correct syllables after mistakes
+     * Example 1: "kalude" for かろで → ka[lu]de (only 'lu' wrong, 'de' correctly preserved)
+     * Example 2: "wogebo" for わぱぼ → [woge]bo (skips middle char, preserves 'bo')
      * Supports all ~80+ valid romanji syllables including variants (shi/si, chi/ti, etc.)
-   - **Visual Error Indicators** (NEW):
-     * In test results, wrong characters are underlined in red
-     * Correct characters shown in green
-     * Users see exactly which syllables they confused
-     * Example: For "banana" → ka<u>ta</u>na shows first syllable underlined in red
+   - **Immediate Visual Feedback** (ENHANCED):
+     * Wrong syllables highlighted with red background and brackets: [syllable]
+     * Correct syllables shown in green text
+     * Feedback appears **immediately after each answer** during the test
+     * Also displayed in final test results for review
+     * Users see exactly which syllables they confused in real-time
+     * Example: For "banana" → [ba][na]na shows which syllables need practice
    - **Optional Review Mode** (NEW):
      * After completing a test, review only incorrect answers
      * Button shows count of wrong answers: "Review Wrong Answers (3)"
@@ -101,18 +110,21 @@ SPECIFIC FUNCTIONALITY IMPLEMENTED:
 7. **Unit Testing Infrastructure**
    - Jest testing framework with React Testing Library integration
    - TypeScript support for all tests
-   - Comprehensive test suite for syllable-aware matching algorithm (31 tests)
+   - Comprehensive test suite for syllable-aware matching algorithm (**33 tests, all passing**)
    - Test coverage includes:
      * 1-character and 3-character test scenarios
      * Variant spelling support (shi/si, chi/ti, tsu/tu, fu/hu)
      * Edge cases (empty input, invalid characters, whitespace)
      * Real-world hiragana words (sakana, gakkou, kyou)
      * Greedy matching validation
+     * **Resynchronization algorithm** (kalude, wogebo edge cases)
+     * **Multiple occurrence handling** (banana - duplicate syllables)
    - Modular architecture with testable utility functions
    - Test scripts:
      * `npm test` - Run all tests
      * `npm test:watch` - Watch mode for development
    - All tests passing with TypeScript compilation verification
+   - Continuous refinement based on real user feedback
 
 DEVELOPMENT NOTES:
 - Project works best on native WSL filesystem (/home/allen/projects/) for optimal performance
