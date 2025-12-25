@@ -1,4 +1,4 @@
-import { findHiragana } from './hiragana';
+import { findHiragana, ALL_HIRAGANA, type HiraganaChar } from './hiragana';
 import { splitUserAnswer } from './syllableMatching';
 
 export interface CharacterAnalysis {
@@ -7,6 +7,44 @@ export interface CharacterAnalysis {
   correctSyllables: string[];
   isCorrect: boolean;
   position: number;
+}
+
+/**
+ * Count the number of hiragana characters in a string, treating combo characters as single units
+ * For example: "ばありゃ" = 3 characters (ば, あ, りゃ) not 4
+ */
+export function countHiraganaCharacters(text: string): number {
+  let count = 0;
+  let i = 0;
+
+  while (i < text.length) {
+    // Try to match longest combo first (2 chars), then single char
+    let matched = false;
+
+    // Try 2-character combo
+    if (i + 1 < text.length) {
+      const twoChar = text.slice(i, i + 2);
+      if (ALL_HIRAGANA.some((h: HiraganaChar) => h.hiragana === twoChar)) {
+        count++;
+        i += 2;
+        matched = true;
+      }
+    }
+
+    // Try single character
+    if (!matched) {
+      const oneChar = text[i];
+      if (ALL_HIRAGANA.some((h: HiraganaChar) => h.hiragana === oneChar)) {
+        count++;
+        i += 1;
+      } else {
+        // Not a valid hiragana, skip
+        i += 1;
+      }
+    }
+  }
+
+  return count;
 }
 
 /**
