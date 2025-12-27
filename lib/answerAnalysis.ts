@@ -1,5 +1,6 @@
 import { findHiragana, ALL_HIRAGANA, type HiraganaChar } from './hiragana';
 import { splitUserAnswer } from './syllableMatching';
+import { ANSWER_ANALYSIS_STRATEGY } from './constants';
 
 export interface CharacterAnalysis {
   character: string;
@@ -55,13 +56,14 @@ export function countHiraganaCharacters(text: string): number {
 }
 
 /**
- * Analyzes a multi-character answer to determine which characters are correct/incorrect
+ * Analyzes a multi-character answer using syllable-matching strategy
+ * (Custom greedy matching + resynchronization algorithm)
  *
  * @param hiraganaSequence - The hiragana characters shown (e.g., "かたな")
  * @param userAnswer - The user's romanji answer (e.g., "banana")
  * @returns Array of analysis for each character
  */
-export function analyzeMultiCharAnswer(
+export function analyzeMultiCharAnswerWithSyllableMatching(
   hiraganaSequence: string,
   userAnswer: string
 ): CharacterAnalysis[] {
@@ -95,6 +97,28 @@ export function analyzeMultiCharAnswer(
       position: index,
     };
   });
+}
+
+/**
+ * Analyzes a multi-character answer using the configured strategy
+ * This is the main public API - dispatches to the appropriate implementation
+ *
+ * @param hiraganaSequence - The hiragana characters shown (e.g., "かたな")
+ * @param userAnswer - The user's romanji answer (e.g., "banana")
+ * @returns Array of analysis for each character
+ */
+export function analyzeMultiCharAnswer(
+  hiraganaSequence: string,
+  userAnswer: string
+): CharacterAnalysis[] {
+  if (ANSWER_ANALYSIS_STRATEGY === 'wanakana') {
+    // Import dynamically to avoid loading WanaKana if using syllable-matching
+    const { analyzeMultiCharAnswerWithWanaKana } = require('./answerAnalysisWanaKana');
+    return analyzeMultiCharAnswerWithWanaKana(hiraganaSequence, userAnswer);
+  }
+
+  // Default to syllable-matching strategy
+  return analyzeMultiCharAnswerWithSyllableMatching(hiraganaSequence, userAnswer);
 }
 
 /**

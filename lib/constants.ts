@@ -66,3 +66,19 @@ export const MIN_ATTEMPTS_FOR_TREND = 10;  // Need 10+ attempts to calculate tre
 export const RECENT_ATTEMPTS_WINDOW = 10;  // Last 10 attempts for "recent" stats
 export const WEAK_CHARACTER_THRESHOLD = 60;  // <60% success rate = weak
 export const TREND_IMPROVEMENT_THRESHOLD = 10;  // 10% improvement = improving trend
+
+// Answer analysis strategy
+export type AnswerAnalysisStrategy = 'wanakana' | 'syllable-matching';
+
+/**
+ * Which algorithm to use for analyzing multi-character answers
+ *
+ * - 'wanakana' (default): Simpler, uses WanaKana library to convert romaji→kana then compare
+ *   - Pros: Simpler code, auto-handles variants (shi/si), battle-tested library
+ *   - Cons: Shows correct answer (not exact user typo), graceful degradation on malformed input
+ *
+ * - 'syllable-matching': Original custom algorithm with greedy matching + resync
+ *   - Pros: Shows exact user typo (ka[lu]de shows "lu"), precise syllable-by-syllable feedback
+ *   - Cons: More complex code, manual variant handling
+ */
+export const ANSWER_ANALYSIS_STRATEGY: AnswerAnalysisStrategy = 'wanakana';
