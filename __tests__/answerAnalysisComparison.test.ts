@@ -183,9 +183,14 @@ describe('Answer Analysis Comparison: Current vs WanaKana', () => {
       expect(diagnostics.hasUnconverted).toBe(true);
       expect(diagnostics.unconvertedChars).toContain('z');
 
-      // Length mismatch should mark ALL as wrong
-      expect(wanaKanaResult.every(r => !r.isCorrect)).toBe(true);
-      console.log('WanaKana graceful degradation: All marked wrong ✓');
+      // UPDATED: Alignment now preserves correct characters instead of marking all wrong
+      // Before: [ba][na][ka][wa] (all wrong)
+      // After: ba[na]kawa (only 2nd character wrong, matches syllable-matching)
+      console.log('WanaKana alignment: Preserves correct characters ✓');
+      expect(wanaKanaResult[0].isCorrect).toBe(true);  // ば correct
+      expect(wanaKanaResult[1].isCorrect).toBe(false); // な wrong (got んん)
+      expect(wanaKanaResult[2].isCorrect).toBe(true);  // か correct
+      expect(wanaKanaResult[3].isCorrect).toBe(true);  // わ correct
     });
   });
 });
