@@ -72,14 +72,23 @@ SPECIFIC FUNCTIONALITY IMPLEMENTED:
    - Automatic tracking of individual character performance across all interactive tests
    - Tracks both correct and incorrect answers for each hiragana character
    - 3-character test sequences automatically broken down into individual character attempts
-   - **Advanced Syllable-Aware Matching Algorithm**:
-     * Intelligently splits user answers into Japanese romanji syllables
-     * Uses greedy matching (longest syllable first) for accurate character-by-character evaluation
-     * **Resynchronization algorithm** prevents cascading errors from typos
-     * Look-ahead sync points preserve correct syllables after mistakes
-     * Example 1: "kalude" for かろで → ka[lu]de (only 'lu' wrong, 'de' correctly preserved)
-     * Example 2: "wogebo" for わぱぼ → [woge]bo (skips middle char, preserves 'bo')
-     * Supports all ~80+ valid romanji syllables including variants (shi/si, chi/ti, etc.)
+   - **Dual Answer Analysis Strategy** (Configurable):
+     * **WanaKana Strategy (DEFAULT)**: Progressive approach using battle-tested WanaKana library
+       - Converts romaji→hiragana, then compares character-by-character
+       - Simpler code (~80 lines), auto-handles all variants and combo characters
+       - Graceful degradation: length mismatch → marks entire answer wrong
+       - Visual: Partial error `ka[ro]de`, Major error `[banakawa]` (all wrong)
+     * **Syllable-Matching Strategy (ALTERNATIVE)**: Original custom algorithm
+       - Intelligently splits user answers into Japanese romanji syllables
+       - Uses greedy matching (longest syllable first) for accurate character-by-character evaluation
+       - **Resynchronization algorithm** prevents cascading errors from typos
+       - Look-ahead sync points preserve correct syllables after mistakes
+       - Example 1: "kalude" for かろで → ka[lu]de (shows exact typo 'lu')
+       - Example 2: "wogebo" for わぱぼ → [woge]bo (skips middle char, preserves 'bo')
+       - Supports all ~80+ valid romanji syllables including variants (shi/si, chi/ti, etc.)
+     * **Easy switching**: Change single constant in `lib/constants.ts`
+     * **Both strategies tested**: 62 comprehensive tests ensure reliability
+     * See `ANSWER_ANALYSIS_STRATEGY.md` for detailed comparison and switching guide
    - **Immediate Visual Feedback** (ENHANCED):
      * Wrong syllables highlighted with red background and brackets: [syllable]
      * Correct syllables shown in green text
@@ -110,15 +119,28 @@ SPECIFIC FUNCTIONALITY IMPLEMENTED:
 7. **Unit Testing Infrastructure**
    - Jest testing framework with React Testing Library integration
    - TypeScript support for all tests
-   - Comprehensive test suite for syllable-aware matching algorithm (**33 tests, all passing**)
+   - Comprehensive test suite for answer analysis (**62 tests, all passing**)
    - Test coverage includes:
-     * 1-character and 3-character test scenarios
-     * Variant spelling support (shi/si, chi/ti, tsu/tu, fu/hu)
-     * Edge cases (empty input, invalid characters, whitespace)
-     * Real-world hiragana words (sakana, gakkou, kyou)
-     * Greedy matching validation
-     * **Resynchronization algorithm** (kalude, wogebo edge cases)
-     * **Multiple occurrence handling** (banana - duplicate syllables)
+     * **Syllable-Matching Strategy** (35 tests):
+       - 1-character and 3-character test scenarios
+       - Variant spelling support (shi/si, chi/ti, tsu/tu, fu/hu)
+       - Edge cases (empty input, invalid characters, whitespace)
+       - Real-world hiragana words (sakana, gakkou, kyou)
+       - Greedy matching validation
+       - **Resynchronization algorithm** (kalude, wogebo edge cases)
+       - **Multiple occurrence handling** (banana - duplicate syllables)
+       - **Combo character handling** (ばありゃ, じゅごを edge cases)
+     * **WanaKana Strategy** (16 robustness tests):
+       - Valid input, variants, combo characters
+       - Typos and malformed input handling
+       - Edge cases and boundary conditions
+     * **Strategy Comparison** (7 tests):
+       - Side-by-side validation of both strategies
+       - User-reported bug cases
+       - Malformed input scenarios
+     * **Strategy Configuration** (4 tests):
+       - Verifies default strategy (WanaKana)
+       - Validates switching mechanism
    - Modular architecture with testable utility functions
    - Test scripts:
      * `npm test` - Run all tests

@@ -11,6 +11,14 @@ A modern, professional web application for tracking Japanese language learning p
   - Configurable question counts (5, 10, or 20)
   - Auto-scoring with multiple romanji variant support
   - 104 hiragana characters (basic, dakuten, combinations)
+  - **Dual answer analysis strategies** (WanaKana default, syllable-matching alternative)
+  - **Immediate visual feedback** with wrong syllables highlighted
+  - **Review mode** for practicing incorrect answers
+- **Character-Level Analytics**: Track individual hiragana character performance
+  - Per-character success rates and trends (improving/declining/stable)
+  - Weak character identification (<60% success rate)
+  - Common mistakes tracking
+  - Dedicated analytics dashboard with filtering and sorting
 - **View All Tests**: Browse all tests with filtering and sorting capabilities
 - **Dashboard Analytics**: Visualize progress with interactive charts and statistics
 - **Data Management**: Export and import test data for backup and portability
@@ -69,6 +77,8 @@ A modern, professional web application for tracking Japanese language learning p
 - **Charts**: Recharts
 - **Icons**: Lucide React
 - **Storage**: localStorage
+- **Japanese Input**: WanaKana (romaji↔kana conversion)
+- **Testing**: Jest + React Testing Library
 - **Utilities**: date-fns, uuid
 
 ## Installation & Setup
@@ -209,14 +219,19 @@ japanese/
 │   ├── tests/               # Test-related components (incl. HiraganaTest)
 │   └── common/              # Common components
 ├── lib/
-│   ├── types.ts             # TypeScript interfaces
-│   ├── storage.ts           # localStorage utilities (incl. export/import)
-│   ├── validation.ts        # Form validation schemas
-│   ├── analytics.ts         # Statistics calculations
-│   ├── constants.ts         # App constants
-│   ├── hiragana.ts          # Hiragana character database (104 chars)
-│   ├── testGenerator.ts     # Interactive test question generator
-│   └── utils.ts             # Utility functions
+│   ├── types.ts                    # TypeScript interfaces
+│   ├── storage.ts                  # localStorage utilities (incl. export/import)
+│   ├── validation.ts               # Form validation schemas
+│   ├── analytics.ts                # Statistics calculations
+│   ├── constants.ts                # App constants (incl. strategy config)
+│   ├── hiragana.ts                 # Hiragana character database (104 chars)
+│   ├── testGenerator.ts            # Interactive test question generator
+│   ├── answerAnalysis.ts           # Answer analysis (strategy dispatcher)
+│   ├── answerAnalysisWanaKana.ts   # WanaKana-based analysis (default)
+│   ├── syllableMatching.ts         # Syllable-matching algorithm
+│   ├── characterStorage.ts         # Character-level analytics storage
+│   ├── characterAnalytics.ts       # Character statistics engine
+│   └── utils.ts                    # Utility functions
 ├── hooks/
 │   ├── useTests.ts          # Custom hook for test data
 │   └── useTestSession.ts    # Custom hook for interactive test sessions
@@ -225,17 +240,27 @@ japanese/
 
 ## Data Storage
 
-All test data is stored in your browser's localStorage under the key `japanese-learning-tests`. The data structure includes:
+The app uses two localStorage keys for data persistence:
 
-```json
-{
-  "tests": [...],
-  "version": "1.0",
-  "lastUpdated": "2024-01-15T10:30:00.000Z"
-}
-```
+1. **Test Data**: `japanese-learning-tests`
+   ```json
+   {
+     "tests": [...],
+     "version": "1.0",
+     "lastUpdated": "2024-01-15T10:30:00.000Z"
+   }
+   ```
 
-**Note**: Data is stored locally and will persist across sessions. Use the Export/Import feature in the Data Management section to backup and restore your data.
+2. **Character Analytics**: `japanese-learning-character-attempts`
+   ```json
+   {
+     "attempts": [...],
+     "version": "1.0",
+     "lastUpdated": "2024-01-15T10:30:00.000Z"
+   }
+   ```
+
+**Note**: Data is stored locally and will persist across sessions. Use the Export/Import feature in the Data Management section to backup and restore **both** test data and character analytics.
 
 ## Form Validation
 
@@ -262,6 +287,8 @@ localStorage must be enabled for the app to function.
 - `npm run build` - Build for production
 - `npm start` - Start production server
 - `npm run lint` - Run ESLint
+- `npm test` - Run all tests (62 tests)
+- `npm run test:watch` - Run tests in watch mode
 
 ### Key Files to Understand
 
@@ -269,21 +296,37 @@ localStorage must be enabled for the app to function.
 2. **lib/storage.ts** - localStorage CRUD operations and export/import
 3. **lib/hiragana.ts** - Complete hiragana character database
 4. **lib/testGenerator.ts** - Question generation and answer validation
-5. **hooks/useTests.ts** - State management for tests
-6. **hooks/useTestSession.ts** - State management for interactive test sessions
-7. **lib/analytics.ts** - Statistics and analytics calculations
-8. **components/tests/TestForm.tsx** - Main form with dual mode support
-9. **components/tests/HiraganaTest.tsx** - Interactive test component
-10. **components/dashboard/DataManagement.tsx** - Export/import UI
+5. **lib/answerAnalysis.ts** - Answer analysis strategy dispatcher
+6. **lib/answerAnalysisWanaKana.ts** - WanaKana-based analysis (default strategy)
+7. **lib/syllableMatching.ts** - Syllable-matching algorithm (alternative strategy)
+8. **lib/characterStorage.ts** - Character-level performance tracking
+9. **lib/characterAnalytics.ts** - Character statistics and trend analysis
+10. **hooks/useTests.ts** - State management for tests
+11. **hooks/useTestSession.ts** - State management for interactive test sessions
+12. **lib/analytics.ts** - Statistics and analytics calculations
+13. **components/tests/TestForm.tsx** - Main form with dual mode support
+14. **components/tests/HiraganaTest.tsx** - Interactive test component
+15. **components/dashboard/DataManagement.tsx** - Export/import UI
+
+### Documentation
+
+- **INITIAL.md** - Original project specification and complete feature list
+- **ANSWER_ANALYSIS_STRATEGY.md** - Guide to dual answer analysis strategies
+- **IMPLEMENTATION_GUIDE_FOR_FRIEND.md** - Technical implementation details
 
 ## Completed Features
 
 ✅ Manual test entry with validation
 ✅ Interactive Hiragana reading tests (1-char and 3-char modes)
-✅ Export/import data as JSON
+✅ Dual answer analysis strategies (WanaKana default, syllable-matching alternative)
+✅ Character-level analytics with performance tracking
+✅ Immediate visual feedback with wrong syllable highlighting
+✅ Review mode for practicing incorrect answers
+✅ Export/import data as JSON (tests + character analytics)
 ✅ Dashboard with charts and analytics
 ✅ Category-specific statistics and trends
 ✅ Data persistence with localStorage
+✅ Comprehensive test suite (62 tests, all passing)
 
 ## Future Enhancements
 
