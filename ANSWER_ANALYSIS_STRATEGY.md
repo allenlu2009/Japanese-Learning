@@ -11,14 +11,20 @@ The app supports **two different algorithms** for analyzing multi-character hira
 **How it works:**
 1. Converts user's romaji input to hiragana using WanaKana library
 2. Compares hiragana character-by-character
-3. On length mismatch (malformed input), marks entire answer as wrong
+3. On length mismatch, uses **greedy alignment algorithm** to preserve correct syllables
+
+**Alignment Algorithm:**
+- Similar to syllable-matching resync logic but for hiragana
+- Looks ahead for sync points (matching characters)
+- Consumes mismatched parts as wrong, preserves correct ones
+- Example: "niyupebe" for にゅぺべ → [nyu]pebe (not [nyu][pe][be])
 
 **Pros:**
-- ✅ Simpler code (~80 lines vs ~200 lines)
+- ✅ Simpler code (~180 lines vs ~200 lines)
 - ✅ Leverages battle-tested WanaKana library
 - ✅ Auto-handles all variant spellings (shi/si, chi/ti, tsu/tu, etc.)
 - ✅ Auto-handles combo characters (きゃ, じゅ, りょ, etc.)
-- ✅ Graceful degradation on malformed input
+- ✅ **Intelligent alignment on length mismatch** (preserves correct syllables)
 
 **Cons:**
 - ❌ Shows correct answer only (not exact user typo)
@@ -26,7 +32,7 @@ The app supports **two different algorithms** for analyzing multi-character hira
 
 **Visual feedback:**
 - Partial error: `ka[ro]de` (shows which syllables are wrong)
-- Major error: `[banakawa]` (entire answer wrong = way off)
+- Alignment: `[nyu]pebe` (only first wrong, preserves correct)
 
 ---
 
@@ -72,12 +78,15 @@ That's it! The entire app will automatically use the new strategy.
 
 ## Test Coverage
 
-**Total:** 62 tests passing
+**Total:** 65 tests passing
 
 ### WanaKana Strategy Tests:
 - `__tests__/wanakana-robustness.test.ts` (16 tests)
   - Valid input, variants, combo characters
   - Typos and malformed input
+- `__tests__/nyupebe-issue.test.ts` (3 tests)
+  - Alignment algorithm validation
+  - にゅぺべ / "niyupebe" user-reported issue
   - Edge cases
 
 ### Syllable Matching Tests:
@@ -107,7 +116,7 @@ That's it! The entire app will automatically use the new strategy.
 
 | Strategy | Analysis | Visual Output |
 |----------|----------|---------------|
-| WanaKana | "kalude" → "かぅで" (length mismatch) | `[ka][ro][de]` (all wrong) |
+| WanaKana | "kalude" → "かぅで" (alignment) | `ka[ro]de` (middle wrong via alignment) |
 | Syllable | Split: ['ka', 'lu', 'de'] | `ka[lu][de]` (shows 'lu' typo) |
 
 ### Example 2: Completely correct
@@ -139,6 +148,18 @@ That's it! The entire app will automatically use the new strategy.
 |----------|----------|---------------|
 | WanaKana | "kyata" → "きゃた" ✓ | `kyata` (all correct) |
 | Syllable | Split: ['kya', 'ta'] ✓ | `kyata` (all correct) |
+
+### Example 5: Length mismatch with alignment (NEW!)
+
+**Question:** にゅぺべ (3 chars: nyu-pe-be)
+**User input:** "niyupebe"
+
+| Strategy | Analysis | Visual Output |
+|----------|----------|---------------|
+| WanaKana | "niyupebe" → "にゆぺべ" (4 chars)<br>Alignment: にゅ gets "にゆ" (wrong), ぺ→ぺ (✓), べ→べ (✓) | `[nyu]pebe` (only first wrong) ✅ |
+| Syllable | Split: ['niy', 'u', 'pe', 'be']<br>Resync finds 'pe' ahead | `[nyu]pebe` (only first wrong) ✅ |
+
+**Note:** Both strategies now produce identical high-quality output for this case! The WanaKana alignment algorithm preserves correct syllables just like syllable-matching resync.
 
 ---
 

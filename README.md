@@ -287,7 +287,7 @@ localStorage must be enabled for the app to function.
 - `npm run build` - Build for production
 - `npm start` - Start production server
 - `npm run lint` - Run ESLint
-- `npm test` - Run all tests (62 tests)
+- `npm test` - Run all tests (65 tests)
 - `npm run test:watch` - Run tests in watch mode
 
 ### Key Files to Understand
@@ -318,7 +318,7 @@ localStorage must be enabled for the app to function.
 
 ✅ Manual test entry with validation
 ✅ Interactive Hiragana reading tests (1-char and 3-char modes)
-✅ Dual answer analysis strategies (WanaKana default, syllable-matching alternative)
+✅ Dual answer analysis strategies (WanaKana default with alignment, syllable-matching alternative)
 ✅ Character-level analytics with performance tracking
 ✅ Immediate visual feedback with wrong syllable highlighting
 ✅ Review mode for practicing incorrect answers
@@ -326,7 +326,7 @@ localStorage must be enabled for the app to function.
 ✅ Dashboard with charts and analytics
 ✅ Category-specific statistics and trends
 ✅ Data persistence with localStorage
-✅ Comprehensive test suite (62 tests, all passing)
+✅ Comprehensive test suite (65 tests, all passing)
 
 ## Future Enhancements
 

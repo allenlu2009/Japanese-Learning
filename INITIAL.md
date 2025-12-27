@@ -75,9 +75,10 @@ SPECIFIC FUNCTIONALITY IMPLEMENTED:
    - **Dual Answer Analysis Strategy** (Configurable):
      * **WanaKana Strategy (DEFAULT)**: Progressive approach using battle-tested WanaKana library
        - Converts romaji→hiragana, then compares character-by-character
-       - Simpler code (~80 lines), auto-handles all variants and combo characters
-       - Graceful degradation: length mismatch → marks entire answer wrong
-       - Visual: Partial error `ka[ro]de`, Major error `[banakawa]` (all wrong)
+       - Simpler code (~180 lines), auto-handles all variants and combo characters
+       - **Greedy alignment algorithm** for length mismatches: preserves correct syllables
+       - Example: "niyupebe" for にゅぺべ → [nyu]pebe (only first wrong, not all wrong)
+       - Visual: Partial error `ka[ro]de`, Alignment `[nyu]pebe` (preserves correct)
      * **Syllable-Matching Strategy (ALTERNATIVE)**: Original custom algorithm
        - Intelligently splits user answers into Japanese romanji syllables
        - Uses greedy matching (longest syllable first) for accurate character-by-character evaluation
@@ -87,7 +88,7 @@ SPECIFIC FUNCTIONALITY IMPLEMENTED:
        - Example 2: "wogebo" for わぱぼ → [woge]bo (skips middle char, preserves 'bo')
        - Supports all ~80+ valid romanji syllables including variants (shi/si, chi/ti, etc.)
      * **Easy switching**: Change single constant in `lib/constants.ts`
-     * **Both strategies tested**: 62 comprehensive tests ensure reliability
+     * **Both strategies tested**: 65 comprehensive tests ensure reliability
      * See `ANSWER_ANALYSIS_STRATEGY.md` for detailed comparison and switching guide
    - **Immediate Visual Feedback** (ENHANCED):
      * Wrong syllables highlighted with red background and brackets: [syllable]
@@ -119,7 +120,7 @@ SPECIFIC FUNCTIONALITY IMPLEMENTED:
 7. **Unit Testing Infrastructure**
    - Jest testing framework with React Testing Library integration
    - TypeScript support for all tests
-   - Comprehensive test suite for answer analysis (**62 tests, all passing**)
+   - Comprehensive test suite for answer analysis (**65 tests, all passing**)
    - Test coverage includes:
      * **Syllable-Matching Strategy** (35 tests):
        - 1-character and 3-character test scenarios
@@ -130,10 +131,11 @@ SPECIFIC FUNCTIONALITY IMPLEMENTED:
        - **Resynchronization algorithm** (kalude, wogebo edge cases)
        - **Multiple occurrence handling** (banana - duplicate syllables)
        - **Combo character handling** (ばありゃ, じゅごを edge cases)
-     * **WanaKana Strategy** (16 robustness tests):
+     * **WanaKana Strategy** (19 robustness + alignment tests):
        - Valid input, variants, combo characters
        - Typos and malformed input handling
        - Edge cases and boundary conditions
+       - **Alignment algorithm** (にゅぺべ / niyupebe issue)
      * **Strategy Comparison** (7 tests):
        - Side-by-side validation of both strategies
        - User-reported bug cases
