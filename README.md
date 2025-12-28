@@ -315,7 +315,7 @@ localStorage must be enabled for the app to function.
 - `npm run build` - Build for production
 - `npm start` - Start production server
 - `npm run lint` - Run ESLint
-- `npm test` - Run all tests (65 tests)
+- `npm test` - Run all tests (96 tests)
 - `npm run test:watch` - Run tests in watch mode
 
 ### Key Files to Understand
@@ -356,7 +356,8 @@ localStorage must be enabled for the app to function.
 ✅ Dashboard with charts and analytics
 ✅ Category-specific statistics and trends
 ✅ Data persistence with localStorage
-✅ Comprehensive test suite (65 tests, all passing)
+✅ Comprehensive test suite (96 tests, all passing)
+✅ Bug fixes: Katakana empty brackets and Hiragana WanaKana small kana handling
 
 ## Future Enhancements
 

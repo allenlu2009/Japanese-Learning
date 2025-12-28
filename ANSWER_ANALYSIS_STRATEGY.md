@@ -78,7 +78,7 @@ That's it! The entire app will automatically use the new strategy.
 
 ## Test Coverage
 
-**Total:** 65 tests passing
+**Total:** 96 tests passing
 
 ### WanaKana Strategy Tests:
 - `__tests__/wanakana-robustness.test.ts` (16 tests)
@@ -104,6 +104,30 @@ That's it! The entire app will automatically use the new strategy.
 - `__tests__/answerAnalysisStrategy.test.ts` (4 tests)
   - Verifies default strategy works
   - Validates switching mechanism
+
+### Katakana Tests:
+- `__tests__/katakana-analysis.test.ts` (16 tests)
+  - Character counting and splitting for katakana
+  - Multi-character answer analysis
+  - Combo character handling
+  - Variant romanization support
+
+- `__tests__/katakana-lookup.test.ts` (4 tests)
+  - Character lookup for basic and combo katakana
+  - Character splitting validation
+  - Database completeness verification
+
+### Bug Regression Tests:
+- `__tests__/user-reported-bugs.test.ts` (3 tests)
+  - るまほ with "lomaho" - WanaKana small kana handling
+  - ヒャピョザ with "zzz" - Katakana correctSyllables population
+  - Direct WanaKana strategy validation
+
+### Component Tests:
+- `__tests__/components/KatakanaTest.test.tsx` (8 tests)
+  - Visual feedback rendering in KatakanaTest component
+  - Bracket display for wrong syllables
+  - User interaction and navigation flows
 
 ---
 
