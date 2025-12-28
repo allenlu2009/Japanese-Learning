@@ -1,4 +1,5 @@
 import type { HiraganaChar } from './hiragana';
+import type { KatakanaChar } from './katakana';
 
 // All valid romanji syllables (for syllable-aware splitting)
 export const VALID_ROMANJI_SYLLABLES = new Set([
@@ -46,7 +47,7 @@ export const VALID_ROMANJI_SYLLABLES = new Set([
  */
 export function splitUserAnswer(
   userAnswer: string,
-  hiraganaChars: (HiraganaChar | undefined)[]
+  hiraganaChars: (HiraganaChar | KatakanaChar | undefined)[]
 ): string[] {
   const parts: string[] = [];
   let remaining = userAnswer.toLowerCase().trim();

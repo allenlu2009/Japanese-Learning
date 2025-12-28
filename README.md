@@ -14,11 +14,22 @@ A modern, professional web application for tracking Japanese language learning p
   - **Dual answer analysis strategies** (WanaKana default, syllable-matching alternative)
   - **Immediate visual feedback** with wrong syllables highlighted
   - **Review mode** for practicing incorrect answers
-- **Character-Level Analytics**: Track individual hiragana character performance
+- **Interactive Katakana Tests**: Real-time interactive tests for Katakana reading practice
+  - Same features as Hiragana tests
+  - 104 katakana characters (basic, dakuten, combinations)
+  - Dual answer analysis and visual feedback
+  - Review mode for incorrect answers
+- **Interactive Mixed Tests**: Combined Hiragana and Katakana practice
+  - 1-character mode: Random selection of Hiragana OR Katakana per question
+  - 3-character mode: All Hiragana OR all Katakana per question (randomly selected)
+  - Same sophisticated answer analysis and feedback
+  - Perfect for reinforcing recognition across both scripts
+- **Character-Level Analytics**: Track individual hiragana and katakana character performance
   - Per-character success rates and trends (improving/declining/stable)
   - Weak character identification (<60% success rate)
   - Common mistakes tracking
   - Dedicated analytics dashboard with filtering and sorting
+  - Works with both Hiragana and Katakana characters
 - **View All Tests**: Browse all tests with filtering and sorting capabilities
 - **Dashboard Analytics**: Visualize progress with interactive charts and statistics
 - **Data Management**: Export and import test data for backup and portability
@@ -45,7 +56,7 @@ A modern, professional web application for tracking Japanese language learning p
 - **Keyboard Navigation**: Use Enter key to submit answers and advance
 
 ### Test Management
-- **Two Test Entry Modes**: Manual entry or interactive Hiragana tests
+- **Four Test Entry Modes**: Manual entry, interactive Hiragana, Katakana, or Mixed tests
 - Filter tests by category (Read, Listen, Write, Speak)
 - Sort by date or score (ascending/descending)
 - Delete tests with confirmation
@@ -167,6 +178,20 @@ npm start
 6. Review your results summary showing score and all answers
 7. Click "Save Test" to add to your test history
 
+#### Option 3: Interactive Katakana Test
+1. Click "Add Test" in the navigation or dashboard
+2. Select "Interactive Katakana Test" mode
+3. Configure your test (same options as Hiragana)
+4. Complete the test with instant feedback
+5. Save results to your test history
+
+#### Option 4: Interactive Mixed Test
+1. Click "Add Test" in the navigation or dashboard
+2. Select "Interactive Mixed Test" mode
+3. Configure your test (1-char or 3-char, 5/10/20 questions)
+4. Complete the test with random Hiragana/Katakana characters
+5. Save results to your test history
+
 ### Managing Your Data
 
 #### Export Data
@@ -225,7 +250,10 @@ japanese/
 │   ├── analytics.ts                # Statistics calculations
 │   ├── constants.ts                # App constants (incl. strategy config)
 │   ├── hiragana.ts                 # Hiragana character database (104 chars)
-│   ├── testGenerator.ts            # Interactive test question generator
+│   ├── katakana.ts                 # Katakana character database (104 chars)
+│   ├── testGenerator.ts            # Hiragana test question generator
+│   ├── katakanaTestGenerator.ts    # Katakana test question generator
+│   ├── mixedTestGenerator.ts       # Mixed test question generator
 │   ├── answerAnalysis.ts           # Answer analysis (strategy dispatcher)
 │   ├── answerAnalysisWanaKana.ts   # WanaKana-based analysis (default)
 │   ├── syllableMatching.ts         # Syllable-matching algorithm
@@ -318,8 +346,10 @@ localStorage must be enabled for the app to function.
 
 ✅ Manual test entry with validation
 ✅ Interactive Hiragana reading tests (1-char and 3-char modes)
+✅ Interactive Katakana reading tests (1-char and 3-char modes)
+✅ Interactive Mixed reading tests (Hiragana + Katakana)
 ✅ Dual answer analysis strategies (WanaKana default with alignment, syllable-matching alternative)
-✅ Character-level analytics with performance tracking
+✅ Character-level analytics with performance tracking (both Hiragana and Katakana)
 ✅ Immediate visual feedback with wrong syllable highlighting
 ✅ Review mode for practicing incorrect answers
 ✅ Export/import data as JSON (tests + character analytics)
@@ -332,7 +362,6 @@ localStorage must be enabled for the app to function.
 
 Potential features for future versions:
 - Cloud sync with backend API
-- Katakana interactive tests
 - Vocabulary and Kanji tests
 - More detailed analytics (monthly reports, comparisons)
 - Study reminders and goal setting
@@ -340,7 +369,7 @@ Potential features for future versions:
 - Dark mode toggle
 - Multi-language support
 - CSV export option
-- Test history review mode
+- Spaced repetition algorithm for challenging characters
 
 ## Troubleshooting
 

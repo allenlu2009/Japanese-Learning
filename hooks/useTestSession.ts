@@ -3,13 +3,27 @@
 import { useState, useCallback } from 'react';
 import { TestConfig, TestSession, TestType, QuestionCount } from '@/lib/types';
 import { generateQuestions, answerQuestion, calculateScore, type Question } from '@/lib/testGenerator';
+import { generateKatakanaQuestions } from '@/lib/katakanaTestGenerator';
+import { generateMixedQuestions } from '@/lib/mixedTestGenerator';
 
 export function useTestSession() {
   const [session, setSession] = useState<TestSession | null>(null);
 
   // Start a new test session
-  const startTest = useCallback((testType: TestType, questionCount: QuestionCount) => {
-    const questions = generateQuestions(testType, questionCount);
+  const startTest = useCallback((
+    testType: TestType,
+    questionCount: QuestionCount,
+    scriptType: 'hiragana' | 'katakana' | 'mixed' = 'hiragana'
+  ) => {
+    // Generate questions based on script type
+    let questions: Question[];
+    if (scriptType === 'katakana') {
+      questions = generateKatakanaQuestions(testType, questionCount);
+    } else if (scriptType === 'mixed') {
+      questions = generateMixedQuestions(testType, questionCount);
+    } else {
+      questions = generateQuestions(testType, questionCount);
+    }
 
     const newSession: TestSession = {
       config: {

@@ -150,6 +150,34 @@ SPECIFIC FUNCTIONALITY IMPLEMENTED:
    - All tests passing with TypeScript compilation verification
    - Continuous refinement based on real user feedback
 
+8. **Interactive Katakana Reading Tests** (NEW)
+   - Identical functionality to Hiragana tests with full feature parity
+   - Two test modes:
+     * 1-character tests: Single katakana character
+     * 3-character tests: Three-character combinations
+   - Configurable question counts: 5, 10, or 20 questions (default: 10)
+   - Complete katakana database: 104 characters (basic, dakuten, combinations)
+   - Same dual answer analysis strategies (WanaKana and syllable-matching)
+   - Same immediate visual feedback with wrong syllables highlighted
+   - Same review mode for practicing incorrect answers
+   - Character-level analytics for katakana (same infrastructure as hiragana)
+   - Shared test infrastructure with minimal code duplication (~40%)
+   - All existing answer validation works with katakana characters
+   - Red color theme for visual distinction from hiragana tests
+
+9. **Interactive Mixed Reading Tests** (NEW)
+   - Combined Hiragana and Katakana practice in a single test
+   - Two test modes:
+     * 1-character mode: Each question randomly selects Hiragana OR Katakana
+     * 3-character mode: Each question uses all Hiragana OR all Katakana (randomly per question)
+   - Simplified approach for better readability (no mixed scripts within a single word)
+   - Same configurable question counts: 5, 10, or 20 questions
+   - Same sophisticated answer analysis and visual feedback
+   - Character-level tracking works with both scripts transparently
+   - Perfect for reinforcing recognition across both character sets
+   - Purple color theme for visual distinction
+   - Helps transition between hiragana and katakana fluently
+
 DEVELOPMENT NOTES:
 - Project works best on native WSL filesystem (/home/allen/projects/) for optimal performance
 - Avoid running from Windows/Google Drive mounts (/mnt/c/) to prevent slow compilation times

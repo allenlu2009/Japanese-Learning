@@ -14,12 +14,18 @@ interface TestResultsProps {
   questions: Question[];
   score: number;
   testType: '1-char' | '3-char';
+  scriptType?: 'hiragana' | 'katakana' | 'mixed';
   onSave: () => void;
   onRetry: () => void;
   onReview?: () => void;
 }
 
-export function TestResults({ questions, score, testType, onSave, onRetry, onReview }: TestResultsProps) {
+export function TestResults({ questions, score, testType, scriptType = 'hiragana', onSave, onRetry, onReview }: TestResultsProps) {
+  const scriptName =
+    scriptType === 'hiragana' ? 'Hiragana' :
+    scriptType === 'katakana' ? 'Katakana' :
+    'Mixed';
+
   const correctCount = questions.filter(q => q.isCorrect).length;
   const incorrectCount = questions.filter(q => !q.isCorrect).length;
   const totalCount = questions.length;
