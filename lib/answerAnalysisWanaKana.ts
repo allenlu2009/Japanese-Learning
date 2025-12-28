@@ -1,12 +1,14 @@
 /**
  * Alternative answer analysis using WanaKana library
- * This is the ChatGPT-proposed approach: romaji → hiragana → compare
+ * This is the ChatGPT-proposed approach: romaji → hiragana/katakana → compare
+ * Updated to support both hiragana and katakana
  */
 
-import { toHiragana } from 'wanakana';
-import { splitHiraganaIntoCharacters } from './answerAnalysis';
+import { toHiragana, toKatakana, isKatakana, isHiragana } from 'wanakana';
+import { splitHiraganaIntoCharacters, splitJapaneseIntoCharacters } from './answerAnalysis';
 import type { CharacterAnalysis } from './answerAnalysis';
 import { findHiragana } from './hiragana';
+import { findKatakana } from './katakana';
 
 /**
  * Align two hiragana sequences with different lengths using greedy matching
@@ -133,12 +135,17 @@ export function analyzeMultiCharAnswerWithWanaKana(
   hiraganaSequence: string,
   userAnswer: string
 ): CharacterAnalysis[] {
-  // Step 1: Convert user's romaji to hiragana
-  const userHiragana = toHiragana(userAnswer.toLowerCase().trim());
+  // Step 1: Detect if input is hiragana or katakana
+  const isKatakanaInput = hiraganaSequence.length > 0 && isKatakana(hiraganaSequence[0]);
 
-  // Step 2: Split both into character tokens (handles combo chars)
-  const correctChars = splitHiraganaIntoCharacters(hiraganaSequence);
-  const userChars = splitHiraganaIntoCharacters(userHiragana);
+  // Step 2: Convert user's romaji to matching script
+  const userConverted = isKatakanaInput
+    ? toKatakana(userAnswer.toLowerCase().trim())
+    : toHiragana(userAnswer.toLowerCase().trim());
+
+  // Step 3: Split both into character tokens (handles combo chars)
+  const correctChars = splitJapaneseIntoCharacters(hiraganaSequence);
+  const userChars = splitJapaneseIntoCharacters(userConverted);
 
   // Step 3: Check for length mismatch - try alignment instead of failing
   const lengthMismatch = correctChars.length !== userChars.length;
@@ -152,10 +159,11 @@ export function analyzeMultiCharAnswerWithWanaKana(
 
   // Step 4: Normal path - Compare character-by-character
   return correctChars.map((correctChar, index) => {
-    const hiraganaChar = findHiragana(correctChar);
+    // Try to find in both hiragana and katakana
+    const japaneseChar = findHiragana(correctChar) || findKatakana(correctChar);
     const userChar = userChars[index] || '';
 
-    if (!hiraganaChar) {
+    if (!japaneseChar) {
       return {
         character: correctChar,
         userSyllable: userChar,
@@ -170,8 +178,8 @@ export function analyzeMultiCharAnswerWithWanaKana(
 
     return {
       character: correctChar,
-      userSyllable: userChar, // This is the hiragana, not romaji!
-      correctSyllables: hiraganaChar.romanji,
+      userSyllable: userChar, // This is the hiragana/katakana, not romaji!
+      correctSyllables: japaneseChar.romanji,
       isCorrect,
       position: index,
     };

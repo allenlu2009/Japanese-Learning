@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils';
 import type { Question } from '@/lib/testGenerator';
 import { getCharacterAttempts } from '@/lib/characterStorage';
 import { getCharacterInsight } from '@/lib/characterAnalytics';
-import { analyzeMultiCharAnswer, formatCorrectAnswerWithIndicators, countHiraganaCharacters } from '@/lib/answerAnalysis';
+import { analyzeMultiCharAnswer, formatCorrectAnswerWithIndicators, countJapaneseCharacters } from '@/lib/answerAnalysis';
 
 interface TestResultsProps {
   questions: Question[];
@@ -175,7 +175,7 @@ export function TestResults({ questions, score, testType, scriptType = 'hiragana
                       <div>
                         <span className="font-medium text-gray-700">Correct answer: </span>
                         {(() => {
-                          if (testType === '3-char' && question.userAnswer && countHiraganaCharacters(question.characters) === 3) {
+                          if (testType === '3-char' && question.userAnswer && countJapaneseCharacters(question.characters) === 3) {
                             try {
                               const analysis = analyzeMultiCharAnswer(
                                 question.characters,
