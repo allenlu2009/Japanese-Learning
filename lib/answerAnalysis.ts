@@ -91,7 +91,9 @@ export function splitJapaneseIntoCharacters(text: string): string[] {
         chars.push(oneChar);
         i += 1;
       } else {
-        // Not a valid hiragana or katakana, skip
+        // Not a valid character in our database, but preserve it to maintain alignment
+        // This handles small kana (ぉ, ぁ, etc.) that WanaKana may produce
+        chars.push(oneChar);
         i += 1;
       }
     }

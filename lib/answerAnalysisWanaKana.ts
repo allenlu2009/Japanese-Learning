@@ -33,9 +33,10 @@ function alignHiraganaSequences(
 
   for (let i = 0; i < correctChars.length; i++) {
     const correctChar = correctChars[i];
-    const hiraganaChar = findHiragana(correctChar);
+    // FIX: Support both hiragana and katakana
+    const japaneseChar = findHiragana(correctChar) || findKatakana(correctChar);
 
-    if (!hiraganaChar) {
+    if (!japaneseChar) {
       result.push({
         character: correctChar,
         userSyllable: '',
@@ -52,7 +53,7 @@ function alignHiraganaSequences(
       result.push({
         character: correctChar,
         userSyllable: userChars[userIndex],
-        correctSyllables: hiraganaChar.romanji,
+        correctSyllables: japaneseChar.romanji,
         isCorrect: true,
         position: i,
       });
@@ -76,8 +77,8 @@ function alignHiraganaSequences(
       const consumedChars = userChars.slice(userIndex, syncPoint);
       result.push({
         character: correctChar,
-        userSyllable: consumedChars.join(''), // Hiragana joined
-        correctSyllables: hiraganaChar.romanji,
+        userSyllable: consumedChars.join(''), // Hiragana/Katakana joined
+        correctSyllables: japaneseChar.romanji,
         isCorrect: false,
         position: i,
       });
@@ -89,7 +90,7 @@ function alignHiraganaSequences(
         result.push({
           character: correctChar,
           userSyllable: remaining.join(''),
-          correctSyllables: hiraganaChar.romanji,
+          correctSyllables: japaneseChar.romanji,
           isCorrect: false,
           position: i,
         });
@@ -98,7 +99,7 @@ function alignHiraganaSequences(
         result.push({
           character: correctChar,
           userSyllable: '',
-          correctSyllables: hiraganaChar.romanji,
+          correctSyllables: japaneseChar.romanji,
           isCorrect: false,
           position: i,
         });
