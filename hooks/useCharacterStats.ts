@@ -43,6 +43,11 @@ export function useCharacterStats() {
     (filter: CharacterAnalyticsFilter) => {
       let filtered = [...stats];
 
+      // Filter by script type (hiragana/katakana)
+      if (filter.scriptType) {
+        filtered = filtered.filter(s => s.scriptType === filter.scriptType);
+      }
+
       // Filter by character type
       if (filter.characterType) {
         filtered = filtered.filter(s => s.characterType === filter.characterType);

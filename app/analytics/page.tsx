@@ -57,7 +57,7 @@ export default function CharacterAnalyticsPage() {
     return (
       <EmptyState
         title="No Character Data Yet"
-        description="Complete some interactive Hiragana tests to start tracking your character-level performance."
+        description="Complete some interactive Hiragana, Katakana, or Mixed tests to start tracking your character-level performance."
         icon={<BarChart className="h-16 w-16" />}
       />
     );
@@ -69,7 +69,7 @@ export default function CharacterAnalyticsPage() {
       <div>
         <h1 className="text-3xl font-bold text-gray-900">Character Analytics</h1>
         <p className="mt-2 text-gray-600">
-          Track your performance on individual hiragana characters across all tests
+          Track your performance on individual hiragana and katakana characters across all tests
         </p>
       </div>
 
@@ -109,7 +109,35 @@ export default function CharacterAnalyticsPage() {
         <div className="flex flex-wrap items-center gap-4">
           <div className="flex items-center gap-2">
             <Filter className="h-4 w-4 text-gray-600" />
-            <span className="text-sm font-medium text-gray-700">Filter by type:</span>
+            <span className="text-sm font-medium text-gray-700">Script:</span>
+          </div>
+
+          <Button
+            variant={!filter.scriptType ? 'primary' : 'ghost'}
+            size="sm"
+            onClick={() => setFilter({ ...filter, scriptType: undefined })}
+          >
+            All
+          </Button>
+
+          <Button
+            variant={filter.scriptType === 'hiragana' ? 'primary' : 'ghost'}
+            size="sm"
+            onClick={() => setFilter({ ...filter, scriptType: 'hiragana' })}
+          >
+            Hiragana
+          </Button>
+
+          <Button
+            variant={filter.scriptType === 'katakana' ? 'primary' : 'ghost'}
+            size="sm"
+            onClick={() => setFilter({ ...filter, scriptType: 'katakana' })}
+          >
+            Katakana
+          </Button>
+
+          <div className="flex items-center gap-2 ml-4 pl-4 border-l border-gray-300">
+            <span className="text-sm font-medium text-gray-700">Type:</span>
           </div>
 
           <Button
@@ -238,7 +266,7 @@ export default function CharacterAnalyticsPage() {
                   <div>
                     <div className="flex items-center gap-2">
                       <span className="text-xs font-medium text-gray-500 uppercase">
-                        {stat.characterType}
+                        {stat.scriptType} - {stat.characterType}
                       </span>
                       <TrendIcon className={cn('h-4 w-4', trendColor)} />
                       <span className={cn('text-xs font-medium', trendColor)}>

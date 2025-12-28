@@ -94,6 +94,7 @@ export function calculateCharacterStats(
     // Return empty stats if no attempts
     return {
       character,
+      scriptType: 'hiragana', // Default, should not happen
       characterType: 'basic', // Default, should not happen
       totalAttempts: 0,
       correctAttempts: 0,
@@ -108,7 +109,8 @@ export function calculateCharacterStats(
     };
   }
 
-  // Get character type from first attempt (they should all be the same)
+  // Get character type and script type from first attempt (they should all be the same)
+  const scriptType = characterAttempts[0].scriptType;
   const characterType = characterAttempts[0].characterType;
 
   // Calculate counts
@@ -136,6 +138,7 @@ export function calculateCharacterStats(
 
   return {
     character,
+    scriptType,
     characterType,
     totalAttempts,
     correctAttempts,

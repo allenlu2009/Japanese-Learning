@@ -94,11 +94,14 @@ export interface TestSession {
 }
 
 // Character Analytics types
+export type ScriptType = 'hiragana' | 'katakana';
+
 export interface CharacterAttempt {
   id: string;                    // UUID for the attempt
   testId: string;                // Foreign key to Test.id
   timestamp: string;             // ISO timestamp when answered
-  character: string;             // Single hiragana character (e.g., 'あ')
+  character: string;             // Single hiragana or katakana character (e.g., 'あ', 'ア')
+  scriptType: ScriptType;        // Hiragana or Katakana
   characterType: 'basic' | 'dakuten' | 'combo';
   userAnswer: string;            // What user typed
   correctAnswers: string[];      // Valid romanji options
@@ -110,6 +113,7 @@ export interface CharacterAttempt {
 
 export interface CharacterStats {
   character: string;
+  scriptType: ScriptType;        // Hiragana or Katakana
   characterType: 'basic' | 'dakuten' | 'combo';
   totalAttempts: number;
   correctAttempts: number;
@@ -133,6 +137,7 @@ export interface CharacterStorageData {
 }
 
 export interface CharacterAnalyticsFilter {
+  scriptType?: ScriptType;       // Filter by hiragana or katakana
   characterType?: 'basic' | 'dakuten' | 'combo';
   minAttempts?: number;
   sortBy: 'character' | 'successRate' | 'totalAttempts' | 'recentPerformance';

@@ -34,14 +34,19 @@ function extractCharacterAttempts(
   session.questions.forEach((question) => {
     if (session.config.testType === '1-char') {
       // Single character - try hiragana first, then katakana
-      const char = findHiragana(question.characters) || findKatakana(question.characters);
+      const hiraganaChar = findHiragana(question.characters);
+      const katakanaChar = findKatakana(question.characters);
+      const char = hiraganaChar || katakanaChar;
       if (!char) return;
+
+      const scriptType = hiraganaChar ? 'hiragana' : 'katakana';
 
       attempts.push({
         id: uuidv4(),
         testId,
         timestamp,
         character: question.characters,
+        scriptType,
         characterType: char.type,
         userAnswer: question.userAnswer || '',
         correctAnswers: question.correctAnswers,
@@ -58,6 +63,10 @@ function extractCharacterAttempts(
         const japaneseChar = japaneseChars[index];
         if (!japaneseChar) return;
 
+        // Detect script type by checking which lookup succeeded
+        const isHiragana = findHiragana(char);
+        const scriptType = isHiragana ? 'hiragana' : 'katakana';
+
         const userAnswerPart = userAnswerParts[index] || '';
         const isCorrect = japaneseChar.romanji.some(
           valid => valid.toLowerCase() === userAnswerPart.toLowerCase()
@@ -68,6 +77,7 @@ function extractCharacterAttempts(
           testId,
           timestamp,
           character: char,
+          scriptType,
           characterType: japaneseChar.type,
           userAnswer: userAnswerPart,
           correctAnswers: japaneseChar.romanji,

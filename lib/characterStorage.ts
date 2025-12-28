@@ -127,6 +127,7 @@ export function importCharacterAttempts(jsonData: string): boolean {
       attempt.testId &&
       attempt.timestamp &&
       attempt.character &&
+      attempt.scriptType &&
       attempt.characterType &&
       typeof attempt.userAnswer === 'string' &&
       Array.isArray(attempt.correctAnswers) &&
