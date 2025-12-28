@@ -175,13 +175,26 @@ export function TestResults({ questions, score, testType, scriptType = 'hiragana
                       <div>
                         <span className="font-medium text-gray-700">Correct answer: </span>
                         {(() => {
-                          if (testType === '3-char' && question.userAnswer && countJapaneseCharacters(question.characters) === 3) {
+                          const charCount = countJapaneseCharacters(question.characters);
+                          const shouldAnalyze = testType === '3-char' && question.userAnswer && charCount === 3;
+
+                          console.log('TestResults debug:', {
+                            characters: question.characters,
+                            charCount,
+                            testType,
+                            hasUserAnswer: !!question.userAnswer,
+                            shouldAnalyze
+                          });
+
+                          if (shouldAnalyze) {
                             try {
                               const analysis = analyzeMultiCharAnswer(
                                 question.characters,
-                                question.userAnswer
+                                question.userAnswer || ''
                               );
+                              console.log('Analysis result:', analysis);
                               const formatted = formatCorrectAnswerWithIndicators(analysis);
+                              console.log('Formatted result:', formatted);
 
                               return (
                                 <span className="font-semibold">

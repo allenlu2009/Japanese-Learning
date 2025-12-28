@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/Input';
 import { ArrowRight, CheckCircle, XCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { Question } from '@/lib/mixedTestGenerator';
-import { analyzeMultiCharAnswer, formatCorrectAnswerWithIndicators, countHiraganaCharacters } from '@/lib/answerAnalysis';
+import { analyzeMultiCharAnswer, formatCorrectAnswerWithIndicators, countJapaneseCharacters } from '@/lib/answerAnalysis';
 
 interface MixedTestProps {
   currentQuestion: Question | null;
@@ -163,7 +163,7 @@ export function MixedTest({
                   {!currentQuestion.isCorrect && (
                     <div className="text-sm text-red-700 mt-1">
                       <div className="mb-1">Correct answer:</div>
-                      {countHiraganaCharacters(currentQuestion.characters) === 3 && currentQuestion.userAnswer ? (
+                      {countJapaneseCharacters(currentQuestion.characters) === 3 && currentQuestion.userAnswer ? (
                         // 3-character test: Show visual indicators for which syllables are wrong
                         <div className="font-semibold text-base">
                           {(() => {
