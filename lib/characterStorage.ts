@@ -1,5 +1,7 @@
-import type { CharacterAttempt, CharacterStorageData } from './types';
+import type { CharacterAttempt, CharacterStorageData, ScriptType } from './types';
 import { CHARACTER_STORAGE_KEY, CHARACTER_STORAGE_VERSION } from './constants';
+import { findHiragana } from './hiragana';
+import { findKatakana } from './katakana';
 
 // Check if localStorage is available
 function isLocalStorageAvailable(): boolean {
@@ -11,6 +13,30 @@ function isLocalStorageAvailable(): boolean {
   } catch (e) {
     return false;
   }
+}
+
+// Detect script type from character
+function detectScriptType(character: string): ScriptType {
+  const isHiragana = findHiragana(character);
+  return isHiragana ? 'hiragana' : 'katakana';
+}
+
+// Migrate old attempts to add scriptType field
+function migrateAttempts(attempts: CharacterAttempt[]): CharacterAttempt[] {
+  return attempts.map(attempt => {
+    // If scriptType already exists, return as-is
+    if (attempt.scriptType) {
+      return attempt;
+    }
+
+    // Auto-detect scriptType from character
+    const scriptType = detectScriptType(attempt.character);
+
+    return {
+      ...attempt,
+      scriptType,
+    };
+  });
 }
 
 // Get all character attempts from localStorage
@@ -34,7 +60,17 @@ export function getCharacterAttempts(): CharacterAttempt[] {
       return [];
     }
 
-    return parsed.attempts;
+    // Migrate old data to add scriptType field
+    const migratedAttempts = migrateAttempts(parsed.attempts);
+
+    // If migration occurred (any attempt was missing scriptType), save updated data
+    const hadMissingScriptType = parsed.attempts.some(a => !a.scriptType);
+    if (hadMissingScriptType) {
+      console.log('Migrating character attempts to add scriptType field...');
+      saveCharacterAttempts(migratedAttempts);
+    }
+
+    return migratedAttempts;
   } catch (error) {
     console.error('Error reading character attempts from localStorage:', error);
     return [];
@@ -121,13 +157,12 @@ export function importCharacterAttempts(jsonData: string): boolean {
       return false;
     }
 
-    // Validate each attempt has required fields
+    // Validate each attempt has required fields (scriptType is optional for backward compatibility)
     const isValid = data.attempts.every((attempt: any) =>
       attempt.id &&
       attempt.testId &&
       attempt.timestamp &&
       attempt.character &&
-      attempt.scriptType &&
       attempt.characterType &&
       typeof attempt.userAnswer === 'string' &&
       Array.isArray(attempt.correctAnswers) &&
@@ -140,7 +175,10 @@ export function importCharacterAttempts(jsonData: string): boolean {
       return false;
     }
 
-    return saveCharacterAttempts(data.attempts);
+    // Migrate imported data to add scriptType if missing
+    const migratedAttempts = migrateAttempts(data.attempts);
+
+    return saveCharacterAttempts(migratedAttempts);
   } catch (error) {
     console.error('Error importing character attempts:', error);
     return false;
