@@ -4,10 +4,12 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
-import { ArrowRight, CheckCircle, XCircle } from 'lucide-react';
+import { ArrowRight, CheckCircle, XCircle, Volume2, VolumeX } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { Question } from '@/lib/mixedTestGenerator';
 import { analyzeMultiCharAnswer, formatCorrectAnswerWithIndicators, countJapaneseCharacters } from '@/lib/answerAnalysis';
+import { playCharacterAudio } from '@/lib/audioPlayer';
+import { useAudioSettings } from '@/hooks/useAudioSettings';
 
 interface MixedTestProps {
   currentQuestion: Question | null;
@@ -31,13 +33,24 @@ export function MixedTest({
   const [answer, setAnswer] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
   const isLastQuestion = questionNumber === totalQuestions;
+  const { settings, toggleAudio } = useAudioSettings();
 
-  // Reset answer when question changes
+  // Reset answer and play audio when question changes
   useEffect(() => {
     if (currentQuestion) {
       setAnswer(currentQuestion.userAnswer || '');
       // Focus input on new question
       setTimeout(() => inputRef.current?.focus(), 100);
+
+      // Play audio for the character if audio is enabled
+      if (settings.enabled && !isAnswered) {
+        playCharacterAudio(currentQuestion.characters, {
+          rate: settings.rate,
+          volume: settings.volume,
+        }).catch(error => {
+          console.error('Error playing audio:', error);
+        });
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentQuestion?.id]);
@@ -88,7 +101,21 @@ export function MixedTest({
             <span className="text-sm font-medium text-gray-700">
               Question {questionNumber} of {totalQuestions}
             </span>
-            <span className="text-sm text-gray-500">{progress}%</span>
+            <div className="flex items-center gap-3">
+              <button
+                onClick={toggleAudio}
+                className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
+                title={settings.enabled ? 'Mute audio' : 'Unmute audio'}
+                type="button"
+              >
+                {settings.enabled ? (
+                  <Volume2 className="h-5 w-5 text-purple-600" />
+                ) : (
+                  <VolumeX className="h-5 w-5 text-gray-400" />
+                )}
+              </button>
+              <span className="text-sm text-gray-500">{progress}%</span>
+            </div>
           </div>
           <div className="w-full bg-gray-200 rounded-full h-2">
             <div
