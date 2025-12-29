@@ -2,6 +2,8 @@ import type { CharacterAttempt, CharacterStorageData, ScriptType } from './types
 import { CHARACTER_STORAGE_KEY, CHARACTER_STORAGE_VERSION } from './constants';
 import { findHiragana } from './hiragana';
 import { findKatakana } from './katakana';
+import { findKanji } from './kanji';
+import { findVocabulary } from './vocabulary';
 
 // Check if localStorage is available
 function isLocalStorageAvailable(): boolean {
@@ -17,8 +19,12 @@ function isLocalStorageAvailable(): boolean {
 
 // Detect script type from character
 function detectScriptType(character: string): ScriptType {
-  const isHiragana = findHiragana(character);
-  return isHiragana ? 'hiragana' : 'katakana';
+  if (findHiragana(character)) return 'hiragana';
+  if (findKatakana(character)) return 'katakana';
+  if (findKanji(character)) return 'kanji';
+  if (findVocabulary(character)) return 'vocabulary';
+  // Fallback to hiragana for unknown characters
+  return 'hiragana';
 }
 
 // Migrate old attempts to add scriptType field

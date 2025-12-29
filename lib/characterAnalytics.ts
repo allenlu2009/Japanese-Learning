@@ -233,3 +233,43 @@ export function getCharacterInsight(
     message,
   };
 }
+
+/**
+ * Group stats by JLPT level (for kanji and vocabulary)
+ */
+export function groupStatsByJLPTLevel(stats: CharacterStats[]): {
+  N5: CharacterStats[];
+  N4: CharacterStats[];
+  unclassified: CharacterStats[];
+} {
+  return {
+    N5: stats.filter(s => s.jlptLevel === 'N5'),
+    N4: stats.filter(s => s.jlptLevel === 'N4'),
+    unclassified: stats.filter(s => !s.jlptLevel),
+  };
+}
+
+/**
+ * Filter kanji stats by reading type (onyomi or kunyomi)
+ */
+export function getKanjiStatsByReadingType(
+  stats: CharacterStats[],
+  readingType: 'onyomi' | 'kunyomi'
+): CharacterStats[] {
+  return stats.filter(s =>
+    s.scriptType === 'kanji' && s.readingType === readingType
+  );
+}
+
+/**
+ * Get stats for a specific JLPT level and script type
+ */
+export function getStatsByLevelAndScript(
+  stats: CharacterStats[],
+  level: 'N5' | 'N4',
+  scriptType: 'kanji' | 'vocabulary'
+): CharacterStats[] {
+  return stats.filter(s =>
+    s.jlptLevel === level && s.scriptType === scriptType
+  );
+}

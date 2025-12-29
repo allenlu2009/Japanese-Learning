@@ -8,37 +8,74 @@ import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 import { EmptyState } from '@/components/common/EmptyState';
 import { BarChart, TrendingUp, TrendingDown, Minus, Filter } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import type { CharacterAnalyticsFilter } from '@/lib/types';
+import type { JLPTLevel } from '@/lib/kanjiTestGenerator';
 
-export default function CharacterAnalyticsPage() {
+type ScriptFilter = 'kanji' | 'vocabulary' | 'both';
+type ReadingTypeFilter = 'onyomi' | 'kunyomi' | 'all';
+
+export default function KanjiVocabAnalyticsPage() {
   const { stats, loading, filterStats } = useCharacterStats();
 
-  const [filter, setFilter] = useState<CharacterAnalyticsFilter>({
-    sortBy: 'successRate',
-    sortOrder: 'asc',
-  });
-
-  // State for showing all results vs. weak characters only (default: weak only)
+  // JLPT-specific filters
+  const [scriptFilter, setScriptFilter] = useState<ScriptFilter>('both');
+  const [jlptLevel, setJlptLevel] = useState<JLPTLevel | 'all'>('all');
+  const [readingTypeFilter, setReadingTypeFilter] = useState<ReadingTypeFilter>('all');
   const [showAllResults, setShowAllResults] = useState(false);
+  const [sortBy, setSortBy] = useState<'successRate' | 'totalAttempts' | 'recentPerformance' | 'character'>('successRate');
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
-  // Filter for kana only (exclude kanji and vocabulary)
-  const kanaStats = useMemo(() => {
-    return stats.filter(s => s.scriptType === 'hiragana' || s.scriptType === 'katakana');
+  // Filter for kanji and vocabulary only
+  const jlptStats = useMemo(() => {
+    return stats.filter(s => s.scriptType === 'kanji' || s.scriptType === 'vocabulary');
   }, [stats]);
 
   const filteredStats = useMemo(() => {
-    const baseFiltered = filterStats(filter);
+    let filtered = [...jlptStats];
 
-    // Filter out kanji and vocabulary (only show kana)
-    const kanaOnly = baseFiltered.filter(s => s.scriptType === 'hiragana' || s.scriptType === 'katakana');
+    // Filter by script type (kanji/vocabulary/both)
+    if (scriptFilter === 'kanji') {
+      filtered = filtered.filter(s => s.scriptType === 'kanji');
+    } else if (scriptFilter === 'vocabulary') {
+      filtered = filtered.filter(s => s.scriptType === 'vocabulary');
+    }
+
+    // Filter by JLPT level
+    if (jlptLevel !== 'all') {
+      filtered = filtered.filter(s => s.jlptLevel === jlptLevel);
+    }
+
+    // Filter by reading type (kanji only)
+    if (readingTypeFilter !== 'all') {
+      filtered = filtered.filter(s =>
+        s.scriptType === 'kanji' && s.readingType === readingTypeFilter
+      );
+    }
 
     // Apply weak character filter if showAllResults is false
     if (!showAllResults) {
-      return kanaOnly.filter(s => s.successRate <= 60);
+      filtered = filtered.filter(s => s.successRate <= 60);
     }
 
-    return kanaOnly;
-  }, [filter, filterStats, showAllResults]);
+    // Apply sorting
+    filtered.sort((a, b) => {
+      const multiplier = sortOrder === 'asc' ? 1 : -1;
+
+      switch (sortBy) {
+        case 'character':
+          return multiplier * a.character.localeCompare(b.character);
+        case 'successRate':
+          return multiplier * (a.successRate - b.successRate);
+        case 'totalAttempts':
+          return multiplier * (a.totalAttempts - b.totalAttempts);
+        case 'recentPerformance':
+          return multiplier * (a.recentSuccessRate - b.recentSuccessRate);
+        default:
+          return 0;
+      }
+    });
+
+    return filtered;
+  }, [jlptStats, scriptFilter, jlptLevel, readingTypeFilter, showAllResults, sortBy, sortOrder]);
 
   const weakCharacters = useMemo(() => {
     return filteredStats.filter(s => s.successRate < 60);
@@ -49,9 +86,9 @@ export default function CharacterAnalyticsPage() {
   }, [filteredStats]);
 
   const averageSuccessRate = useMemo(() => {
-    if (kanaStats.length === 0) return 0;
-    return Math.round(kanaStats.reduce((sum, s) => sum + s.successRate, 0) / kanaStats.length);
-  }, [kanaStats]);
+    if (jlptStats.length === 0) return 0;
+    return Math.round(jlptStats.reduce((sum, s) => sum + s.successRate, 0) / jlptStats.length);
+  }, [jlptStats]);
 
   if (loading) {
     return (
@@ -61,11 +98,11 @@ export default function CharacterAnalyticsPage() {
     );
   }
 
-  if (kanaStats.length === 0) {
+  if (jlptStats.length === 0) {
     return (
       <EmptyState
-        title="No Kana Data Yet"
-        description="Complete some interactive Hiragana, Katakana, or Mixed tests to start tracking your character-level performance."
+        title="No Kanji/Vocabulary Data Yet"
+        description="Complete some Kanji or Vocabulary tests to start tracking your JLPT-level performance."
         icon={<BarChart className="h-16 w-16" />}
       />
     );
@@ -75,9 +112,9 @@ export default function CharacterAnalyticsPage() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">Kana Analytics</h1>
+        <h1 className="text-3xl font-bold text-gray-900">Kanji & Vocabulary Analytics</h1>
         <p className="mt-2 text-gray-600">
-          Track your performance on individual hiragana and katakana characters across all tests
+          Track your performance on JLPT kanji and vocabulary across all tests
         </p>
       </div>
 
@@ -85,22 +122,22 @@ export default function CharacterAnalyticsPage() {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <Card>
           <div className="text-center py-4">
-            <div className="text-3xl font-bold text-gray-900">{kanaStats.length}</div>
-            <div className="text-sm text-gray-600 mt-1">Characters Practiced</div>
+            <div className="text-3xl font-bold text-gray-900">{jlptStats.length}</div>
+            <div className="text-sm text-gray-600 mt-1">Items Practiced</div>
           </div>
         </Card>
 
         <Card>
           <div className="text-center py-4">
             <div className="text-3xl font-bold text-green-600">{strongCharacters.length}</div>
-            <div className="text-sm text-gray-600 mt-1">Strong Characters (&gt;80%)</div>
+            <div className="text-sm text-gray-600 mt-1">Strong Items (&gt;80%)</div>
           </div>
         </Card>
 
         <Card>
           <div className="text-center py-4">
             <div className="text-3xl font-bold text-red-600">{weakCharacters.length}</div>
-            <div className="text-sm text-gray-600 mt-1">Weak Characters (&lt;60%)</div>
+            <div className="text-sm text-gray-600 mt-1">Weak Items (&lt;60%)</div>
           </div>
         </Card>
 
@@ -115,70 +152,97 @@ export default function CharacterAnalyticsPage() {
       {/* Filters */}
       <Card>
         <div className="flex flex-wrap items-center gap-4">
+          {/* Script Type Filter */}
           <div className="flex items-center gap-2">
             <Filter className="h-4 w-4 text-gray-600" />
-            <span className="text-sm font-medium text-gray-700">Script:</span>
-          </div>
-
-          <Button
-            variant={!filter.scriptType ? 'primary' : 'ghost'}
-            size="sm"
-            onClick={() => setFilter({ ...filter, scriptType: undefined })}
-          >
-            All
-          </Button>
-
-          <Button
-            variant={filter.scriptType === 'hiragana' ? 'primary' : 'ghost'}
-            size="sm"
-            onClick={() => setFilter({ ...filter, scriptType: 'hiragana' })}
-          >
-            Hiragana
-          </Button>
-
-          <Button
-            variant={filter.scriptType === 'katakana' ? 'primary' : 'ghost'}
-            size="sm"
-            onClick={() => setFilter({ ...filter, scriptType: 'katakana' })}
-          >
-            Katakana
-          </Button>
-
-          <div className="flex items-center gap-2 ml-4 pl-4 border-l border-gray-300">
             <span className="text-sm font-medium text-gray-700">Type:</span>
           </div>
 
           <Button
-            variant={!filter.characterType ? 'primary' : 'ghost'}
+            variant={scriptFilter === 'both' ? 'primary' : 'ghost'}
             size="sm"
-            onClick={() => setFilter({ ...filter, characterType: undefined })}
+            onClick={() => setScriptFilter('both')}
+          >
+            Both
+          </Button>
+
+          <Button
+            variant={scriptFilter === 'kanji' ? 'primary' : 'ghost'}
+            size="sm"
+            onClick={() => setScriptFilter('kanji')}
+          >
+            Kanji
+          </Button>
+
+          <Button
+            variant={scriptFilter === 'vocabulary' ? 'primary' : 'ghost'}
+            size="sm"
+            onClick={() => setScriptFilter('vocabulary')}
+          >
+            Vocabulary
+          </Button>
+
+          {/* JLPT Level Filter */}
+          <div className="flex items-center gap-2 ml-4 pl-4 border-l border-gray-300">
+            <span className="text-sm font-medium text-gray-700">JLPT:</span>
+          </div>
+
+          <Button
+            variant={jlptLevel === 'all' ? 'primary' : 'ghost'}
+            size="sm"
+            onClick={() => setJlptLevel('all')}
           >
             All
           </Button>
 
           <Button
-            variant={filter.characterType === 'basic' ? 'primary' : 'ghost'}
+            variant={jlptLevel === 'N5' ? 'primary' : 'ghost'}
             size="sm"
-            onClick={() => setFilter({ ...filter, characterType: 'basic' })}
+            onClick={() => setJlptLevel('N5')}
           >
-            Basic
+            N5
           </Button>
 
           <Button
-            variant={filter.characterType === 'dakuten' ? 'primary' : 'ghost'}
+            variant={jlptLevel === 'N4' ? 'primary' : 'ghost'}
             size="sm"
-            onClick={() => setFilter({ ...filter, characterType: 'dakuten' })}
+            onClick={() => setJlptLevel('N4')}
           >
-            Dakuten
+            N4
           </Button>
 
-          <Button
-            variant={filter.characterType === 'combo' ? 'primary' : 'ghost'}
-            size="sm"
-            onClick={() => setFilter({ ...filter, characterType: 'combo' })}
-          >
-            Combo
-          </Button>
+          {/* Reading Type Filter (Kanji only) */}
+          {scriptFilter === 'kanji' && (
+            <>
+              <div className="flex items-center gap-2 ml-4 pl-4 border-l border-gray-300">
+                <span className="text-sm font-medium text-gray-700">Reading:</span>
+              </div>
+
+              <Button
+                variant={readingTypeFilter === 'all' ? 'primary' : 'ghost'}
+                size="sm"
+                onClick={() => setReadingTypeFilter('all')}
+              >
+                All
+              </Button>
+
+              <Button
+                variant={readingTypeFilter === 'onyomi' ? 'primary' : 'ghost'}
+                size="sm"
+                onClick={() => setReadingTypeFilter('onyomi')}
+              >
+                Onyomi
+              </Button>
+
+              <Button
+                variant={readingTypeFilter === 'kunyomi' ? 'primary' : 'ghost'}
+                size="sm"
+                onClick={() => setReadingTypeFilter('kunyomi')}
+              >
+                Kunyomi
+              </Button>
+            </>
+          )}
 
           {/* Show All Results Checkbox */}
           <div className="flex items-center gap-2 ml-4 pl-4 border-l border-gray-300">
@@ -200,14 +264,12 @@ export default function CharacterAnalyticsPage() {
             </span>
           </div>
 
+          {/* Sort Controls */}
           <div className="ml-auto flex items-center gap-2">
             <span className="text-sm font-medium text-gray-700">Sort by:</span>
             <select
-              value={filter.sortBy}
-              onChange={(e) => setFilter({
-                ...filter,
-                sortBy: e.target.value as CharacterAnalyticsFilter['sortBy']
-              })}
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
               className="text-sm border-gray-300 rounded-lg"
             >
               <option value="successRate">Success Rate</option>
@@ -219,38 +281,35 @@ export default function CharacterAnalyticsPage() {
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => setFilter({
-                ...filter,
-                sortOrder: filter.sortOrder === 'asc' ? 'desc' : 'asc'
-              })}
+              onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
             >
-              {filter.sortOrder === 'asc' ? '↑' : '↓'}
+              {sortOrder === 'asc' ? '↑' : '↓'}
             </Button>
           </div>
         </div>
       </Card>
 
-      {/* Character List */}
+      {/* Character/Word List */}
       <Card>
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-xl font-bold text-gray-900">
-            {showAllResults ? 'All Characters' : 'Weak Characters (≤60%)'}
+            {showAllResults ? 'All Items' : 'Weak Items (≤60%)'}
           </h3>
           <span className="text-sm text-gray-600">
-            Showing {filteredStats.length} of {kanaStats.length} characters
+            Showing {filteredStats.length} of {jlptStats.length} items
           </span>
         </div>
 
         {filteredStats.length === 0 && !showAllResults ? (
           <div className="text-center py-12">
-            <p className="text-gray-600 mb-2">🎉 No weak characters found!</p>
+            <p className="text-gray-600 mb-2">🎉 No weak items found!</p>
             <p className="text-sm text-gray-500">
-              All characters have &gt;60% success rate. Check &quot;Show all results&quot; to view all.
+              All items have &gt;60% success rate. Check &quot;Show all results&quot; to view all.
             </p>
           </div>
         ) : filteredStats.length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-gray-600">No characters match the current filters.</p>
+            <p className="text-gray-600">No items match the current filters.</p>
           </div>
         ) : (
           <div className="space-y-2">
@@ -265,23 +324,52 @@ export default function CharacterAnalyticsPage() {
                 key={stat.character}
                 className="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
               >
-                {/* Character & Type */}
-                <div className="flex items-center gap-4">
-                  <span className="text-4xl font-bold text-gray-900 w-16 text-center">
+                {/* Character/Word & Info */}
+                <div className="flex items-center gap-4 flex-1">
+                  <span className={cn(
+                    "text-4xl font-bold w-20 text-center",
+                    stat.scriptType === 'kanji' ? 'text-blue-600' : 'text-orange-600'
+                  )}>
                     {stat.character}
                   </span>
 
-                  <div>
+                  <div className="flex-1">
                     <div className="flex items-center gap-2">
-                      <span className="text-xs font-medium text-gray-500 uppercase">
-                        {stat.scriptType} - {stat.characterType}
+                      <span className={cn(
+                        "text-xs font-medium uppercase px-2 py-1 rounded",
+                        stat.scriptType === 'kanji'
+                          ? 'bg-blue-100 text-blue-700'
+                          : 'bg-orange-100 text-orange-700'
+                      )}>
+                        {stat.scriptType}
                       </span>
+
+                      {stat.jlptLevel && (
+                        <span className="text-xs font-medium text-gray-500 uppercase px-2 py-1 rounded bg-gray-100">
+                          {stat.jlptLevel}
+                        </span>
+                      )}
+
+                      {stat.readingType && (
+                        <span className="text-xs font-medium text-gray-500 uppercase px-2 py-1 rounded bg-gray-100">
+                          {stat.readingType}
+                        </span>
+                      )}
+
                       <TrendIcon className={cn('h-4 w-4', trendColor)} />
                       <span className={cn('text-xs font-medium', trendColor)}>
                         {stat.trend}
                       </span>
                     </div>
 
+                    {/* Meanings */}
+                    {stat.meanings && stat.meanings.length > 0 && (
+                      <div className="text-sm text-gray-700 mt-1">
+                        {stat.meanings.join(', ')}
+                      </div>
+                    )}
+
+                    {/* Common Mistakes */}
                     {stat.commonMistakes.length > 0 && (
                       <div className="text-xs text-gray-600 mt-1">
                         Common mistakes: {stat.commonMistakes.map(m => m.answer).join(', ')}

@@ -27,12 +27,29 @@ A modern, professional web application for tracking Japanese language learning p
   - **Audio Pronunciation**: Automatic Japanese pronunciation with mute/unmute control
   - Same sophisticated answer analysis and feedback
   - Perfect for reinforcing recognition across both scripts
-- **Character-Level Analytics**: Track individual hiragana and katakana character performance
+- **Interactive Kanji Tests**: JLPT-based Kanji reading practice
+  - JLPT N5 and N4 levels (60 authentic kanji characters)
+  - Three reading modes: Onyomi only, Kunyomi only, or Mixed
+  - Configurable question counts (5, 10, or 20)
+  - English meaning hints provided
+  - **Audio Pronunciation**: Automatic Japanese pronunciation with mute/unmute control
+  - Romanji input with variant support (ou/ō, shi/si, etc.)
+  - Auto-scoring and character-level performance tracking
+- **Interactive Vocabulary Tests**: JLPT-based Vocabulary reading practice
+  - JLPT N5 and N4 levels (80 authentic vocabulary words)
+  - Kanji compounds with kana readings
+  - English meaning hints provided
+  - **Audio Pronunciation**: Automatic Japanese pronunciation with mute/unmute control
+  - Romanji input with variant support
+  - Auto-scoring and word-level performance tracking
+- **Character-Level Analytics**: Track individual character and vocabulary performance
   - Per-character success rates and trends (improving/declining/stable)
   - Weak character identification (<60% success rate)
   - Common mistakes tracking
   - Dedicated analytics dashboard with filtering and sorting
-  - Works with both Hiragana and Katakana characters
+  - Works with Hiragana, Katakana, Kanji, and Vocabulary
+  - JLPT level filtering for Kanji and Vocabulary analytics
+  - Reading type filtering (onyomi/kunyomi) for Kanji
 - **View All Tests**: Browse all tests with filtering and sorting capabilities
 - **Dashboard Analytics**: Visualize progress with interactive charts and statistics
 - **Data Management**: Export and import test data for backup and portability
@@ -59,7 +76,7 @@ A modern, professional web application for tracking Japanese language learning p
 - **Keyboard Navigation**: Use Enter key to submit answers and advance
 
 ### Test Management
-- **Four Test Entry Modes**: Manual entry, interactive Hiragana, Katakana, or Mixed tests
+- **Six Test Entry Modes**: Manual entry, interactive Hiragana, Katakana, Mixed, Kanji, or Vocabulary tests
 - Filter tests by category (Read, Listen, Write, Speak)
 - Sort by date or score (ascending/descending)
 - Delete tests with confirmation
@@ -78,6 +95,12 @@ A modern, professional web application for tracking Japanese language learning p
   - Listening: Amber
   - Writing: Purple
   - Speaking: Red
+- Test-specific colors:
+  - Hiragana: Green
+  - Katakana: Red
+  - Mixed: Purple
+  - Kanji: Blue
+  - Vocabulary: Orange
 - Mobile-responsive layout
 - Intuitive navigation
 - Loading states and error handling
@@ -195,6 +218,41 @@ npm start
 4. Complete the test with random Hiragana/Katakana characters
 5. Save results to your test history
 
+#### Option 5: Interactive Kanji Test
+1. Click "Add Test" in the navigation or dashboard
+2. Select "Interactive Kanji Test" mode
+3. Configure your test:
+   - **JLPT Level**: Choose N5 (30 basic kanji) or N4 (60 kanji, includes N5)
+   - **Reading Type**: Select Onyomi Only, Kunyomi Only, or Mixed (both)
+   - **Question Count**: Select 5, 10, or 20 questions (default: 10)
+4. Click "Start Kanji Test"
+5. For each question:
+   - View the kanji character with its English meaning(s)
+   - Type the romanji reading (onyomi or kunyomi based on mode)
+   - Multiple spellings accepted (ou/ō, shi/si, etc.)
+   - Press Enter or click "Submit Answer"
+   - View instant feedback with correct reading shown
+   - Press Enter or click "Next Question" to continue
+6. Review your results summary showing score and all answers
+7. Click "Save Test" to add to your test history
+
+#### Option 6: Interactive Vocabulary Test
+1. Click "Add Test" in the navigation or dashboard
+2. Select "Interactive Vocabulary Test" mode
+3. Configure your test:
+   - **JLPT Level**: Choose N5 (40 basic words) or N4 (80 words, includes N5)
+   - **Question Count**: Select 5, 10, or 20 questions (default: 10)
+4. Click "Start Vocabulary Test"
+5. For each question:
+   - View the vocabulary word (kanji + kana) with English meaning
+   - Type the romanji reading
+   - Multiple spellings accepted (ou/ō, shi/si, etc.)
+   - Press Enter or click "Submit Answer"
+   - View instant feedback with correct reading shown
+   - Press Enter or click "Next Question" to continue
+6. Review your results summary showing score and all answers
+7. Click "Save Test" to add to your test history
+
 ### Managing Your Data
 
 #### Export Data
@@ -238,6 +296,11 @@ japanese/
 │   ├── globals.css          # Global styles
 │   └── tests/
 │       ├── page.tsx         # All tests page
+│       ├── hiragana/page.tsx    # Hiragana test page
+│       ├── katakana/page.tsx    # Katakana test page
+│       ├── mixed/page.tsx       # Mixed test page
+│       ├── kanji/page.tsx       # Kanji test page
+│       ├── vocabulary/page.tsx  # Vocabulary test page
 │       └── new/
 │           └── page.tsx     # Add test page
 ├── components/
@@ -254,9 +317,14 @@ japanese/
 │   ├── constants.ts                # App constants (incl. strategy config)
 │   ├── hiragana.ts                 # Hiragana character database (104 chars)
 │   ├── katakana.ts                 # Katakana character database (104 chars)
+│   ├── kanji.ts                    # Kanji character database (60 JLPT kanji)
+│   ├── vocabulary.ts               # Vocabulary database (80 JLPT words)
 │   ├── testGenerator.ts            # Hiragana test question generator
 │   ├── katakanaTestGenerator.ts    # Katakana test question generator
 │   ├── mixedTestGenerator.ts       # Mixed test question generator
+│   ├── kanjiTestGenerator.ts       # Kanji test question generator
+│   ├── vocabularyTestGenerator.ts  # Vocabulary test question generator
+│   ├── romanjiNormalization.ts     # Romanji spelling variant handler
 │   ├── answerAnalysis.ts           # Answer analysis (strategy dispatcher)
 │   ├── answerAnalysisWanaKana.ts   # WanaKana-based analysis (default)
 │   ├── syllableMatching.ts         # Syllable-matching algorithm
@@ -325,19 +393,27 @@ localStorage must be enabled for the app to function.
 
 1. **lib/types.ts** - All TypeScript type definitions
 2. **lib/storage.ts** - localStorage CRUD operations and export/import
-3. **lib/hiragana.ts** - Complete hiragana character database
-4. **lib/testGenerator.ts** - Question generation and answer validation
-5. **lib/answerAnalysis.ts** - Answer analysis strategy dispatcher
-6. **lib/answerAnalysisWanaKana.ts** - WanaKana-based analysis (default strategy)
-7. **lib/syllableMatching.ts** - Syllable-matching algorithm (alternative strategy)
-8. **lib/characterStorage.ts** - Character-level performance tracking
-9. **lib/characterAnalytics.ts** - Character statistics and trend analysis
-10. **hooks/useTests.ts** - State management for tests
-11. **hooks/useTestSession.ts** - State management for interactive test sessions
-12. **lib/analytics.ts** - Statistics and analytics calculations
-13. **components/tests/TestForm.tsx** - Main form with dual mode support
-14. **components/tests/HiraganaTest.tsx** - Interactive test component
-15. **components/dashboard/DataManagement.tsx** - Export/import UI
+3. **lib/hiragana.ts** - Complete hiragana character database (104 chars)
+4. **lib/katakana.ts** - Complete katakana character database (104 chars)
+5. **lib/kanji.ts** - JLPT kanji database (60 N5/N4 kanji)
+6. **lib/vocabulary.ts** - JLPT vocabulary database (80 N5/N4 words)
+7. **lib/romanjiNormalization.ts** - Romanji spelling variant handler
+8. **lib/testGenerator.ts** - Hiragana question generation and answer validation
+9. **lib/kanjiTestGenerator.ts** - Kanji question generation and validation
+10. **lib/vocabularyTestGenerator.ts** - Vocabulary question generation
+11. **lib/answerAnalysis.ts** - Answer analysis strategy dispatcher
+12. **lib/answerAnalysisWanaKana.ts** - WanaKana-based analysis (default strategy)
+13. **lib/syllableMatching.ts** - Syllable-matching algorithm (alternative strategy)
+14. **lib/characterStorage.ts** - Character-level performance tracking
+15. **lib/characterAnalytics.ts** - Character statistics and trend analysis
+16. **hooks/useTests.ts** - State management for tests
+17. **hooks/useTestSession.ts** - State management for interactive test sessions
+18. **lib/analytics.ts** - Statistics and analytics calculations
+19. **components/tests/TestForm.tsx** - Main form with dual mode support
+20. **components/tests/HiraganaTest.tsx** - Interactive hiragana test component
+21. **components/tests/KanjiTestContainer.tsx** - Kanji test orchestration
+22. **components/tests/VocabularyTestContainer.tsx** - Vocabulary test orchestration
+23. **components/dashboard/DataManagement.tsx** - Export/import UI
 
 ### Documentation
 
@@ -351,9 +427,13 @@ localStorage must be enabled for the app to function.
 ✅ Interactive Hiragana reading tests (1-char and 3-char modes)
 ✅ Interactive Katakana reading tests (1-char and 3-char modes)
 ✅ Interactive Mixed reading tests (Hiragana + Katakana)
+✅ Interactive Kanji reading tests (JLPT N5/N4 with onyomi/kunyomi/mixed modes)
+✅ Interactive Vocabulary tests (JLPT N5/N4 kanji compounds)
 ✅ Audio pronunciation feature (Web Speech API with mute/unmute control)
+✅ Romanji variant normalization (ou/ō, shi/si, chi/ti, etc.)
 ✅ Dual answer analysis strategies (WanaKana default with alignment, syllable-matching alternative)
-✅ Character-level analytics with performance tracking (both Hiragana and Katakana)
+✅ Character-level analytics with performance tracking (Hiragana, Katakana, Kanji, and Vocabulary)
+✅ JLPT level filtering and reading type analytics for Kanji
 ✅ Immediate visual feedback with wrong syllable highlighting
 ✅ Review mode for practicing incorrect answers
 ✅ Export/import data as JSON (tests + character analytics)
@@ -367,7 +447,11 @@ localStorage must be enabled for the app to function.
 
 Potential features for future versions:
 - Cloud sync with backend API
-- Vocabulary and Kanji tests
+- Expand Kanji and Vocabulary datasets to JLPT N3/N2/N1 levels
+- Furigana display for Kanji readings
+- Writing practice tests with canvas-based kanji recognition
+- Context sentences for vocabulary words
+- Kanji stroke order animations
 - More detailed analytics (monthly reports, comparisons)
 - Study reminders and goal setting
 - Notes and study materials per category
@@ -375,6 +459,7 @@ Potential features for future versions:
 - Multi-language support
 - CSV export option
 - Spaced repetition algorithm for challenging characters
+- Custom study sets and flashcards
 
 ## Troubleshooting
 

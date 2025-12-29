@@ -103,6 +103,48 @@ export default function TestSelectionPage() {
             </Button>
           </div>
         </Card>
+
+        {/* Interactive Kanji Test */}
+        <Card className="p-6 hover:shadow-lg transition-all border-2 border-blue-200">
+          <div className="flex flex-col h-full">
+            <div className="mb-4">
+              <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-blue-100 mb-4">
+                <Gamepad2 className="h-6 w-6 text-blue-600" />
+              </div>
+              <h2 className="text-xl font-bold text-blue-800 mb-2">Interactive Kanji Test</h2>
+              <p className="text-sm text-gray-600">
+                JLPT N5/N4 kanji reading test with onyomi and kunyomi modes.
+              </p>
+            </div>
+            <Button
+              onClick={() => router.push('/tests/kanji')}
+              className="w-full mt-auto bg-blue-600 hover:bg-blue-700"
+            >
+              Start Kanji Test
+            </Button>
+          </div>
+        </Card>
+
+        {/* Interactive Vocabulary Test */}
+        <Card className="p-6 hover:shadow-lg transition-all border-2 border-orange-200">
+          <div className="flex flex-col h-full">
+            <div className="mb-4">
+              <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-orange-100 mb-4">
+                <Gamepad2 className="h-6 w-6 text-orange-600" />
+              </div>
+              <h2 className="text-xl font-bold text-orange-800 mb-2">Interactive Vocabulary Test</h2>
+              <p className="text-sm text-gray-600">
+                JLPT N5/N4 vocabulary reading test with kanji compounds.
+              </p>
+            </div>
+            <Button
+              onClick={() => router.push('/tests/vocabulary')}
+              className="w-full mt-auto bg-orange-600 hover:bg-orange-700"
+            >
+              Start Vocabulary Test
+            </Button>
+          </div>
+        </Card>
       </div>
     </div>
   );

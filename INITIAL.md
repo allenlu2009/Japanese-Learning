@@ -76,8 +76,10 @@ SPECIFIC FUNCTIONALITY IMPLEMENTED:
 
 6. **Character-Level Analytics**
    - Automatic tracking of individual character performance across all interactive tests
-   - Tracks both correct and incorrect answers for each hiragana character
+   - Tracks both correct and incorrect answers for each character (Hiragana, Katakana, Kanji, and Vocabulary)
    - 3-character test sequences automatically broken down into individual character attempts
+   - JLPT level tracking for Kanji and Vocabulary analytics
+   - Reading type tracking (onyomi/kunyomi) for Kanji
    - **Dual Answer Analysis Strategy** (Configurable):
      * **WanaKana Strategy (DEFAULT)**: Progressive approach using battle-tested WanaKana library
        - Converts romaji→hiragana, then compares character-by-character
@@ -112,8 +114,10 @@ SPECIFIC FUNCTIONALITY IMPLEMENTED:
      * Per-character success rates (all-time and recent performance)
      * Trend detection (improving/declining/stable based on temporal analysis)
      * Common mistakes tracking (top 3 incorrect answers per character)
-     * **Script type filtering** (hiragana, katakana, or all) - NEW
-     * Character type filtering (basic, dakuten, combo)
+     * **Script type filtering** (hiragana, katakana, kanji, vocabulary, or all)
+     * Character type filtering (basic, dakuten, combo for kana)
+     * **JLPT level filtering** (N5, N4 for kanji and vocabulary)
+     * **Reading type filtering** (onyomi, kunyomi for kanji)
      * Sorting and filtering capabilities
      * **Automatic data migration** for existing users (adds scriptType to legacy data)
    - Real-time insights in test results view:
@@ -217,6 +221,46 @@ SPECIFIC FUNCTIONALITY IMPLEMENTED:
    - Perfect for reinforcing recognition across both character sets
    - Purple color theme for visual distinction
    - Helps transition between hiragana and katakana fluently
+
+10. **Interactive Kanji Reading Tests** (NEW)
+   - JLPT-based Kanji reading practice with authentic test data
+   - Two JLPT levels:
+     * N5 (Basic): 30 foundational kanji characters
+     * N4 (Intermediate): 60 total kanji (includes all N5 + 30 N4 kanji)
+   - Three reading modes:
+     * Onyomi Only: Chinese-derived readings only
+     * Kunyomi Only: Native Japanese readings only
+     * Mixed: Accept both onyomi and kunyomi readings
+   - Configurable question counts: 5, 10, or 20 questions (default: 10)
+   - **Romanji Normalization**: Intelligent spelling variant support
+     * Long vowel variants: ou/ō/o, uu/ū/u, ei/ē/e, etc.
+     * Syllable variants: shi/si, chi/ti, tsu/tu, fu/hu, ji/zi
+     * Case insensitive matching
+     * Accepts all reasonable spellings for Japanese romanization
+   - English meaning hints displayed for each kanji
+   - **Audio Pronunciation**: Automatic Japanese pronunciation with mute/unmute control
+   - Character-level analytics with JLPT level and reading type tracking
+   - Auto-scoring with detailed performance metrics
+   - Blue color theme for visual distinction
+   - Database includes authentic JLPT kanji with verified readings
+
+11. **Interactive Vocabulary Reading Tests** (NEW)
+   - JLPT-based Vocabulary practice with authentic word data
+   - Two JLPT levels:
+     * N5 (Basic): 40 foundational vocabulary words
+     * N4 (Intermediate): 80 total words (includes all N5 + 40 N4 words)
+   - Kanji compound words with kana readings
+   - English meaning hints displayed for each word
+   - Configurable question counts: 5, 10, or 20 questions (default: 10)
+   - **Romanji Normalization**: Same intelligent spelling variant support as Kanji tests
+     * Accepts multiple valid romanizations (nihon/nippon, gakkou/gakkō, etc.)
+     * Case insensitive matching
+     * Handles long vowel and syllable variants
+   - **Audio Pronunciation**: Plays kana reading for clearer pronunciation
+   - Word-level analytics with JLPT level tracking
+   - Auto-scoring with detailed performance metrics
+   - Orange color theme for visual distinction
+   - Database includes common JLPT vocabulary with authentic readings and meanings
 
 DEVELOPMENT NOTES:
 - Project works best on native WSL filesystem (/home/allen/projects/) for optimal performance

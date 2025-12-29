@@ -71,6 +71,7 @@ export interface StorageData {
 // Interactive Test types
 export type TestMode = 'manual' | 'interactive';
 export type TestType = '1-char' | '3-char';
+export type QuestionType = '1-char' | '3-char' | 'kanji' | 'vocabulary';
 export type QuestionCount = 5 | 10 | 20;
 
 export interface TestConfig {
@@ -94,26 +95,31 @@ export interface TestSession {
 }
 
 // Character Analytics types
-export type ScriptType = 'hiragana' | 'katakana';
+export type ScriptType = 'hiragana' | 'katakana' | 'kanji' | 'vocabulary';
 
 export interface CharacterAttempt {
   id: string;                    // UUID for the attempt
   testId: string;                // Foreign key to Test.id
   timestamp: string;             // ISO timestamp when answered
-  character: string;             // Single hiragana or katakana character (e.g., 'あ', 'ア')
-  scriptType: ScriptType;        // Hiragana or Katakana
+  character: string;             // Single character or word (e.g., 'あ', 'ア', '日', '日本')
+  scriptType: ScriptType;        // Hiragana, Katakana, Kanji, or Vocabulary
   characterType: 'basic' | 'dakuten' | 'combo';
   userAnswer: string;            // What user typed
   correctAnswers: string[];      // Valid romanji options
   isCorrect: boolean;            // Was the answer correct?
-  questionType: '1-char' | '3-char';
+  questionType: QuestionType;    // Question type
   sequencePosition?: number;     // For 3-char: position (0, 1, 2)
   originalSequence?: string;     // For 3-char: full sequence
+
+  // Kanji/Vocabulary specific fields
+  readingType?: 'onyomi' | 'kunyomi' | 'mixed';  // For kanji tests
+  jlptLevel?: 'N5' | 'N4';                        // JLPT difficulty level
+  meanings?: string[];                             // English meanings
 }
 
 export interface CharacterStats {
   character: string;
-  scriptType: ScriptType;        // Hiragana or Katakana
+  scriptType: ScriptType;        // Hiragana, Katakana, Kanji, or Vocabulary
   characterType: 'basic' | 'dakuten' | 'combo';
   totalAttempts: number;
   correctAttempts: number;
@@ -128,6 +134,11 @@ export interface CharacterStats {
   }>;
   recentSuccessRate: number;     // Last 10 attempts
   allTimeSuccessRate: number;    // Same as successRate (for clarity)
+
+  // Kanji/Vocabulary specific fields
+  readingType?: 'onyomi' | 'kunyomi' | 'mixed';  // For kanji analytics
+  jlptLevel?: 'N5' | 'N4';                        // JLPT difficulty level
+  meanings?: string[];                             // English meanings
 }
 
 export interface CharacterStorageData {
@@ -137,8 +148,10 @@ export interface CharacterStorageData {
 }
 
 export interface CharacterAnalyticsFilter {
-  scriptType?: ScriptType;       // Filter by hiragana or katakana
+  scriptType?: ScriptType;       // Filter by script type
   characterType?: 'basic' | 'dakuten' | 'combo';
+  jlptLevel?: 'N5' | 'N4';       // Filter by JLPT level (for kanji/vocabulary)
+  readingType?: 'onyomi' | 'kunyomi' | 'mixed';  // Filter by reading type (for kanji)
   minAttempts?: number;
   sortBy: 'character' | 'successRate' | 'totalAttempts' | 'recentPerformance';
   sortOrder: 'asc' | 'desc';

@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, ListChecks, PlusCircle, BarChart } from 'lucide-react';
+import { LayoutDashboard, ListChecks, PlusCircle, BarChart, BookOpen } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const navItems = [
@@ -24,8 +24,13 @@ const navItems = [
   },
   {
     href: '/analytics',
-    label: 'Character Analytics',
+    label: 'Kana Analytics',
     icon: BarChart,
+  },
+  {
+    href: '/kanji-vocab-analytics',
+    label: 'JLPT Analytics',
+    icon: BookOpen,
   },
 ];
 
