@@ -14,7 +14,7 @@ export default function MixedTestPage() {
   return (
     <div className="max-w-4xl mx-auto">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Mixed Reading Test</h1>
+        <h1 className="text-3xl font-bold text-gray-900">Mixed (混合) Reading Test</h1>
         <p className="mt-2 text-gray-600">
           Test your reading skills with mixed hiragana and katakana characters.
         </p>

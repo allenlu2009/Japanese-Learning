@@ -25,6 +25,13 @@ DESIGN REQUIREMENTS:
 - Visual feedback for user actions
 - Loading states and error handling
 - Mobile-responsive design
+- **Japanese Script Notation** (NEW): All test page headings include Japanese characters
+  * Hiragana (平仮名) Reading Test
+  * Katakana (片仮名) Reading Test
+  * Mixed (混合) Reading Test
+  * JLPT Kanji (漢字) Reading Test
+  * JLPT Vocabulary (語彙) Test
+  * Uses authentic kanji notation for educational reinforcement
 
 SPECIFIC FUNCTIONALITY IMPLEMENTED:
 
@@ -44,6 +51,7 @@ SPECIFIC FUNCTIONALITY IMPLEMENTED:
    - **Audio Pronunciation** (NEW):
      * Automatic Japanese pronunciation using Web Speech API
      * Characters spoken aloud when each question is displayed
+     * **Replay button**: Manual audio replay on demand (separate from auto-play)
      * Mute/unmute toggle for audio control
      * Learning-optimized playback speed (0.8x)
      * Settings persist across sessions
@@ -127,6 +135,15 @@ SPECIFIC FUNCTIONALITY IMPLEMENTED:
    - Weak character identification (<60% success rate)
    - Storage-efficient design (~150 bytes per attempt, supports 10,000+ attempts)
    - Dedicated Character Analytics page accessible from navigation
+   - **Kana Analytics Display** (ENHANCED):
+     * Character romanji shown in lowercase (e.g., "HIRAGANA - yu - stable")
+     * Replaces character type (BASIC/Dakuten/Combo) with actual reading
+     * Makes it easier to see what you're practicing
+     * Common mistakes section preserved
+   - **Separate JLPT Analytics Page**: Dedicated page for Kanji and Vocabulary analytics
+     * Accessible via "JLPT Analytics" in navigation
+     * Keeps Kana Analytics clean and focused
+     * Full filtering by JLPT level, reading type, and script type
    - All-time history analysis for long-term progress tracking
 
 7. **Unit Testing Infrastructure**
@@ -199,7 +216,7 @@ SPECIFIC FUNCTIONALITY IMPLEMENTED:
      * 3-character tests: Three-character combinations
    - Configurable question counts: 5, 10, or 20 questions (default: 10)
    - Complete katakana database: 104 characters (basic, dakuten, combinations)
-   - **Audio Pronunciation**: Automatic Japanese pronunciation with mute/unmute control
+   - **Audio Pronunciation**: Automatic Japanese pronunciation with replay button and mute/unmute control
    - Same dual answer analysis strategies (WanaKana and syllable-matching)
    - Same immediate visual feedback with wrong syllables highlighted
    - Same review mode for practicing incorrect answers
@@ -215,7 +232,7 @@ SPECIFIC FUNCTIONALITY IMPLEMENTED:
      * 3-character mode: Each question uses all Hiragana OR all Katakana (randomly per question)
    - Simplified approach for better readability (no mixed scripts within a single word)
    - Same configurable question counts: 5, 10, or 20 questions
-   - **Audio Pronunciation**: Automatic Japanese pronunciation with mute/unmute control
+   - **Audio Pronunciation**: Automatic Japanese pronunciation with replay button and mute/unmute control
    - Same sophisticated answer analysis and visual feedback
    - Character-level tracking works with both scripts transparently
    - Perfect for reinforcing recognition across both character sets
@@ -232,13 +249,15 @@ SPECIFIC FUNCTIONALITY IMPLEMENTED:
      * Kunyomi Only: Native Japanese readings only
      * Mixed: Accept both onyomi and kunyomi readings
    - Configurable question counts: 5, 10, or 20 questions (default: 10)
-   - **Romanji Normalization**: Intelligent spelling variant support
-     * Long vowel variants: ou/ō/o, uu/ū/u, ei/ē/e, etc.
-     * Syllable variants: shi/si, chi/ti, tsu/tu, fu/hu, ji/zi
+   - **Romanji Normalization**: Enhanced intelligent spelling variant support
+     * Long vowel variants: ou/ō/o/oo, uu/ū/u, ei/ē/e, etc.
+     * Syllable variants: shi/si, chi/ti, tsu/tu, fu/hu, ji/zi/di, zu/du
+     * Bidirectional mappings: sha↔sya, chu↔tyu, ja↔zya, etc.
      * Case insensitive matching
      * Accepts all reasonable spellings for Japanese romanization
+     * Comprehensive test coverage: 18/18 validation tests passing
    - English meaning hints displayed for each kanji
-   - **Audio Pronunciation**: Automatic Japanese pronunciation with mute/unmute control
+   - **Audio Pronunciation**: Automatic Japanese pronunciation with replay button and mute/unmute control
    - Character-level analytics with JLPT level and reading type tracking
    - Auto-scoring with detailed performance metrics
    - Blue color theme for visual distinction
@@ -249,14 +268,19 @@ SPECIFIC FUNCTIONALITY IMPLEMENTED:
    - Two JLPT levels:
      * N5 (Basic): 40 foundational vocabulary words
      * N4 (Intermediate): 80 total words (includes all N5 + 40 N4 words)
+   - **Display Mode Tabs** (NEW): Switch between Kanji, Kana, or Both displays during tests
+     * Kanji mode: Shows only kanji characters
+     * Kana mode: Shows only kana reading
+     * Both mode: Shows both kanji and kana (default)
+     * Toggle anytime during the test for flexible learning
    - Kanji compound words with kana readings
    - English meaning hints displayed for each word
    - Configurable question counts: 5, 10, or 20 questions (default: 10)
-   - **Romanji Normalization**: Same intelligent spelling variant support as Kanji tests
+   - **Romanji Normalization**: Same enhanced intelligent spelling variant support as Kanji tests
      * Accepts multiple valid romanizations (nihon/nippon, gakkou/gakkō, etc.)
      * Case insensitive matching
      * Handles long vowel and syllable variants
-   - **Audio Pronunciation**: Plays kana reading for clearer pronunciation
+   - **Audio Pronunciation**: Plays kana reading for clearer pronunciation with replay button and mute/unmute control
    - Word-level analytics with JLPT level tracking
    - Auto-scoring with detailed performance metrics
    - Orange color theme for visual distinction

@@ -9,6 +9,18 @@ import { EmptyState } from '@/components/common/EmptyState';
 import { BarChart, TrendingUp, TrendingDown, Minus, Filter } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { CharacterAnalyticsFilter } from '@/lib/types';
+import { findHiragana } from '@/lib/hiragana';
+import { findKatakana } from '@/lib/katakana';
+
+function getCharacterReading(character: string, scriptType: 'hiragana' | 'katakana'): string {
+  if (scriptType === 'hiragana') {
+    const hiraganaChar = findHiragana(character);
+    return hiraganaChar?.romanji[0].toLowerCase() || '?';
+  } else {
+    const katakanaChar = findKatakana(character);
+    return katakanaChar?.romanji[0].toLowerCase() || '?';
+  }
+}
 
 export default function CharacterAnalyticsPage() {
   const { stats, loading, filterStats } = useCharacterStats();
@@ -274,7 +286,7 @@ export default function CharacterAnalyticsPage() {
                   <div>
                     <div className="flex items-center gap-2">
                       <span className="text-xs font-medium text-gray-500 uppercase">
-                        {stat.scriptType} - {stat.characterType}
+                        {stat.scriptType} - {getCharacterReading(stat.character, stat.scriptType as 'hiragana' | 'katakana')}
                       </span>
                       <TrendIcon className={cn('h-4 w-4', trendColor)} />
                       <span className={cn('text-xs font-medium', trendColor)}>

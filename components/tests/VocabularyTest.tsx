@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
-import { ArrowRight, CheckCircle, XCircle, Volume2, VolumeX } from 'lucide-react';
+import { ArrowRight, CheckCircle, XCircle, Volume2, VolumeX, RotateCcw } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { VocabularyQuestion } from '@/lib/vocabularyTestGenerator';
 import { playCharacterAudio } from '@/lib/audioPlayer';
@@ -20,6 +20,8 @@ interface VocabularyTestProps {
   onFinish: () => void;
 }
 
+type DisplayMode = 'kanji' | 'kana' | 'both';
+
 export function VocabularyTest({
   currentQuestion,
   questionNumber,
@@ -30,6 +32,7 @@ export function VocabularyTest({
   onFinish,
 }: VocabularyTestProps) {
   const [answer, setAnswer] = useState('');
+  const [displayMode, setDisplayMode] = useState<DisplayMode>('both');
   const inputRef = useRef<HTMLInputElement>(null);
   const isLastQuestion = questionNumber === totalQuestions;
   const { settings, toggleAudio } = useAudioSettings();
@@ -90,6 +93,17 @@ export function VocabularyTest({
     }
   };
 
+  const handleReplayAudio = () => {
+    if (currentQuestion && settings.enabled) {
+      playCharacterAudio(currentQuestion.kana, {
+        rate: settings.rate,
+        volume: settings.volume,
+      }).catch(error => {
+        console.error('Error replaying audio:', error);
+      });
+    }
+  };
+
   const progress = Math.round((questionNumber / totalQuestions) * 100);
 
   return (
@@ -102,6 +116,18 @@ export function VocabularyTest({
               Question {questionNumber} of {totalQuestions}
             </span>
             <div className="flex items-center gap-3">
+              <button
+                onClick={handleReplayAudio}
+                className="p-2 rounded-lg hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                title="Replay audio"
+                type="button"
+                disabled={!settings.enabled}
+              >
+                <RotateCcw className={cn(
+                  "h-5 w-5",
+                  settings.enabled ? "text-orange-600" : "text-gray-400"
+                )} />
+              </button>
               <button
                 onClick={toggleAudio}
                 className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
@@ -127,13 +153,67 @@ export function VocabularyTest({
 
         {/* Vocabulary Display */}
         <div className="text-center py-12 bg-gradient-to-br from-orange-50 to-white rounded-lg border-2 border-orange-100">
+          {/* Display Mode Tabs */}
+          <div className="flex justify-center gap-2 mb-6">
+            <button
+              onClick={() => setDisplayMode('kanji')}
+              className={cn(
+                "px-4 py-2 rounded-lg font-medium transition-colors",
+                displayMode === 'kanji'
+                  ? "bg-orange-600 text-white"
+                  : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50"
+              )}
+              type="button"
+            >
+              Kanji
+            </button>
+            <button
+              onClick={() => setDisplayMode('kana')}
+              className={cn(
+                "px-4 py-2 rounded-lg font-medium transition-colors",
+                displayMode === 'kana'
+                  ? "bg-orange-600 text-white"
+                  : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50"
+              )}
+              type="button"
+            >
+              Kana
+            </button>
+            <button
+              onClick={() => setDisplayMode('both')}
+              className={cn(
+                "px-4 py-2 rounded-lg font-medium transition-colors",
+                displayMode === 'both'
+                  ? "bg-orange-600 text-white"
+                  : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50"
+              )}
+              type="button"
+            >
+              Both
+            </button>
+          </div>
+
           <div className="mb-6">
-            <div className="text-6xl md:text-7xl font-bold text-gray-900 mb-2 select-none">
-              {currentQuestion.word}
-            </div>
-            <div className="text-3xl md:text-4xl text-gray-600 select-none">
-              {currentQuestion.kana}
-            </div>
+            {displayMode === 'kanji' && (
+              <div className="text-6xl md:text-7xl font-bold text-gray-900 mb-2 select-none">
+                {currentQuestion.word}
+              </div>
+            )}
+            {displayMode === 'kana' && (
+              <div className="text-6xl md:text-7xl font-bold text-gray-900 mb-2 select-none">
+                {currentQuestion.kana}
+              </div>
+            )}
+            {displayMode === 'both' && (
+              <>
+                <div className="text-6xl md:text-7xl font-bold text-gray-900 mb-2 select-none">
+                  {currentQuestion.word}
+                </div>
+                <div className="text-3xl md:text-4xl text-gray-600 select-none">
+                  {currentQuestion.kana}
+                </div>
+              </>
+            )}
           </div>
           <div className="text-gray-600 text-lg">
             Meaning: <span className="font-semibold text-orange-700">{currentQuestion.meaning}</span>

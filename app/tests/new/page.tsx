@@ -48,7 +48,7 @@ export default function TestSelectionPage() {
               <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-green-100 mb-4">
                 <Gamepad2 className="h-6 w-6 text-green-600" />
               </div>
-              <h2 className="text-xl font-bold text-green-800 mb-2">Interactive Hiragana Test</h2>
+              <h2 className="text-xl font-bold text-green-800 mb-2">Hiragana (平仮名)</h2>
               <p className="text-sm text-gray-600">
                 Take a real-time hiragana reading test with automatic scoring.
               </p>
@@ -69,7 +69,7 @@ export default function TestSelectionPage() {
               <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-red-100 mb-4">
                 <Gamepad2 className="h-6 w-6 text-red-600" />
               </div>
-              <h2 className="text-xl font-bold text-red-800 mb-2">Interactive Katakana Test</h2>
+              <h2 className="text-xl font-bold text-red-800 mb-2">Katakana (片仮名)</h2>
               <p className="text-sm text-gray-600">
                 Take a real-time katakana reading test with automatic scoring.
               </p>
@@ -90,7 +90,7 @@ export default function TestSelectionPage() {
               <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-purple-100 mb-4">
                 <Gamepad2 className="h-6 w-6 text-purple-600" />
               </div>
-              <h2 className="text-xl font-bold text-purple-800 mb-2">Interactive Mixed Test</h2>
+              <h2 className="text-xl font-bold text-purple-800 mb-2">Mixed (混合)</h2>
               <p className="text-sm text-gray-600">
                 Mixed hiragana and katakana reading test with automatic scoring.
               </p>
@@ -111,7 +111,7 @@ export default function TestSelectionPage() {
               <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-blue-100 mb-4">
                 <Gamepad2 className="h-6 w-6 text-blue-600" />
               </div>
-              <h2 className="text-xl font-bold text-blue-800 mb-2">Interactive Kanji Test</h2>
+              <h2 className="text-xl font-bold text-blue-800 mb-2">Kanji (漢字)</h2>
               <p className="text-sm text-gray-600">
                 JLPT N5/N4 kanji reading test with onyomi and kunyomi modes.
               </p>
@@ -132,7 +132,7 @@ export default function TestSelectionPage() {
               <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-orange-100 mb-4">
                 <Gamepad2 className="h-6 w-6 text-orange-600" />
               </div>
-              <h2 className="text-xl font-bold text-orange-800 mb-2">Interactive Vocabulary Test</h2>
+              <h2 className="text-xl font-bold text-orange-800 mb-2">Vocabulary (語彙)</h2>
               <p className="text-sm text-gray-600">
                 JLPT N5/N4 vocabulary reading test with kanji compounds.
               </p>

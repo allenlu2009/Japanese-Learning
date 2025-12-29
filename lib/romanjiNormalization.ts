@@ -12,7 +12,7 @@
  * Normalization rules mapping special characters to their variants
  */
 const LONG_VOWEL_RULES: Record<string, string[]> = {
-  'ō': ['o', 'ou', 'oh'],
+  'ō': ['o', 'ou', 'oh', 'oo'],
   'ū': ['u', 'uu', 'uh'],
   'ā': ['a', 'aa', 'ah'],
   'ē': ['e', 'ei', 'ee', 'eh'],
@@ -26,9 +26,10 @@ const LONG_VOWEL_RULES: Record<string, string[]> = {
 const SYLLABLE_VARIANTS: Record<string, string[]> = {
   'shi': ['si'],
   'chi': ['ti'],
-  'tsu': ['tu'],
+  'tsu': ['tu', 'tsu'],
   'fu': ['hu'],
-  'ji': ['zi'],
+  'ji': ['zi', 'di'],
+  'zu': ['du'],
   'sya': ['sha'],
   'syu': ['shu'],
   'syo': ['sho'],
@@ -38,6 +39,15 @@ const SYLLABLE_VARIANTS: Record<string, string[]> = {
   'zya': ['ja'],
   'zyu': ['ju'],
   'zyo': ['jo'],
+  'sha': ['sya'],
+  'shu': ['syu'],
+  'sho': ['syo'],
+  'cha': ['tya'],
+  'chu': ['tyu'],
+  'cho': ['tyo'],
+  'ja': ['zya'],
+  'ju': ['zyu'],
+  'jo': ['zyo'],
 };
 
 /**

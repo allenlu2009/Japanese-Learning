@@ -8,7 +8,7 @@ export default function VocabularyTestPage() {
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-gray-900 mb-2">
-            JLPT Vocabulary Test
+            JLPT Vocabulary (語彙) Test
           </h1>
           <p className="text-lg text-gray-600">
             Test your vocabulary knowledge with JLPT N5 and N4 words

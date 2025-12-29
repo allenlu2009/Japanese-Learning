@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
-import { ArrowRight, CheckCircle, XCircle, Volume2, VolumeX } from 'lucide-react';
+import { ArrowRight, CheckCircle, XCircle, Volume2, VolumeX, RotateCcw } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { Question } from '@/lib/testGenerator';
 import { analyzeMultiCharAnswer, formatCorrectAnswerWithIndicators, countJapaneseCharacters } from '@/lib/answerAnalysis';
@@ -90,6 +90,17 @@ export function HiraganaTest({
     }
   };
 
+  const handleReplayAudio = () => {
+    if (currentQuestion && settings.enabled) {
+      playCharacterAudio(currentQuestion.characters, {
+        rate: settings.rate,
+        volume: settings.volume,
+      }).catch(error => {
+        console.error('Error replaying audio:', error);
+      });
+    }
+  };
+
   const progress = Math.round((questionNumber / totalQuestions) * 100);
 
   return (
@@ -102,6 +113,18 @@ export function HiraganaTest({
               Question {questionNumber} of {totalQuestions}
             </span>
             <div className="flex items-center gap-3">
+              <button
+                onClick={handleReplayAudio}
+                className="p-2 rounded-lg hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                title="Replay audio"
+                type="button"
+                disabled={!settings.enabled}
+              >
+                <RotateCcw className={cn(
+                  "h-5 w-5",
+                  settings.enabled ? "text-primary-600" : "text-gray-400"
+                )} />
+              </button>
               <button
                 onClick={toggleAudio}
                 className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
