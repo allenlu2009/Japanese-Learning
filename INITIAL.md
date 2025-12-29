@@ -25,7 +25,7 @@ DESIGN REQUIREMENTS:
 - Visual feedback for user actions
 - Loading states and error handling
 - Mobile-responsive design
-- **Japanese Script Notation** (NEW): All test page headings include Japanese characters
+- **Japanese Script Notation**: All test page headings include Japanese characters
   * Hiragana (平仮名) Reading Test
   * Katakana (片仮名) Reading Test
   * Mixed (混合) Reading Test
@@ -40,34 +40,43 @@ SPECIFIC FUNCTIONALITY IMPLEMENTED:
    - Form validation with React Hook Form + Zod
    - Support for all four categories: Read, Listen, Write, Speak
 
-2. **Interactive Hiragana Reading Tests**
-   - Real-time interactive test generation for Hiragana reading practice
-   - Two test modes:
-     * 1-character tests: Single hiragana character
+2. **Interactive Kana Tests**
+   - Real-time interactive test generation for Hiragana, Katakana, and Mixed (both scripts) reading practice
+   - **Three Test Types**:
+     * **Hiragana Tests**: Green color theme, complete hiragana database (104 characters)
+     * **Katakana Tests**: Red color theme, complete katakana database (104 characters)
+     * **Mixed Tests**: Purple color theme, combined hiragana and katakana practice
+   - **Test Modes**:
+     * 1-character tests: Single character (hiragana or katakana)
      * 3-character tests: Three-character combinations
+     * Mixed mode uses all hiragana OR all katakana per question (no mixed scripts within a word)
    - Configurable question counts: 5, 10, or 20 questions (default: 10)
-   - Auto-scoring with support for multiple romanji variants (e.g., shi/si, tsu/tu, chi/ti, fu/hu)
-   - Complete hiragana database: 104 characters (basic, dakuten, combinations)
-   - **Audio Pronunciation** (NEW):
+   - **Audio Pronunciation**:
      * Automatic Japanese pronunciation using Web Speech API
      * Characters spoken aloud when each question is displayed
-     * **Replay button**: Manual audio replay on demand (separate from auto-play)
+     * Replay button for manual audio replay on demand
      * Mute/unmute toggle for audio control
      * Learning-optimized playback speed (0.8x)
      * Settings persist across sessions
+   - Auto-scoring with support for multiple romanji variants (e.g., shi/si, tsu/tu, chi/ti, fu/hu)
+   - Dual answer analysis strategies (WanaKana and Syllable-Matching) - see Character-Level Analytics section
+   - Immediate visual feedback with wrong syllables highlighted in red, correct in green
+   - Optional review mode for practicing incorrect answers after test completion
    - Instant feedback on answers with visual indicators
    - Progress tracking during test
    - Test results summary with score and detailed review
    - Automatic storage of completed interactive tests
+   - Character-level analytics tracking for all kana characters
+   - Shared test infrastructure with minimal code duplication (~40%)
 
 3. **Data Management**
    - Export test data as JSON file with full timestamp (date + time)
    - Import test data from previously exported JSON files
-   - **Dedicated `data/` folder** for organizing exports/imports
-   - **Enhanced filename format**: `japanese-learning-tests-YYYY-MM-DD-HH-MM-SS.json`
+   - Dedicated `data/` folder for organizing exports/imports
+   - Enhanced filename format: `japanese-learning-tests-YYYY-MM-DD-HH-MM-SS.json`
    - Multiple exports per day without filename conflicts
    - Data backup and restore across browsers/devices
-   - **Data Management visible on empty state** - import on first launch
+   - Data Management visible on empty state - import on first launch
    - Warning system to prevent accidental data loss
    - Files automatically excluded from git (.gitignore)
 
@@ -106,14 +115,14 @@ SPECIFIC FUNCTIONALITY IMPLEMENTED:
      * **Easy switching**: Change single constant in `lib/constants.ts`
      * **Both strategies tested**: 65 comprehensive tests ensure reliability
      * See `ANSWER_ANALYSIS_STRATEGY.md` for detailed comparison and switching guide
-   - **Immediate Visual Feedback** (ENHANCED):
+   - **Immediate Visual Feedback**:
      * Wrong syllables highlighted with red background and brackets: [syllable]
      * Correct syllables shown in green text
-     * Feedback appears **immediately after each answer** during the test
+     * Feedback appears immediately after each answer during the test
      * Also displayed in final test results for review
      * Users see exactly which syllables they confused in real-time
      * Example: For "banana" → [ba][na]na shows which syllables need practice
-   - **Optional Review Mode** (NEW):
+   - **Optional Review Mode**:
      * After completing a test, review only incorrect answers
      * Button shows count of wrong answers: "Review Wrong Answers (3)"
      * Preserves original test results while practicing mistakes
@@ -135,12 +144,13 @@ SPECIFIC FUNCTIONALITY IMPLEMENTED:
    - Weak character identification (<60% success rate)
    - Storage-efficient design (~150 bytes per attempt, supports 10,000+ attempts)
    - Dedicated Character Analytics page accessible from navigation
-   - **Kana Analytics Display** (ENHANCED):
+   - **Kana Analytics Display**:
      * Character romanji shown in lowercase (e.g., "HIRAGANA - yu - stable")
      * Replaces character type (BASIC/Dakuten/Combo) with actual reading
      * Makes it easier to see what you're practicing
      * Common mistakes section preserved
-   - **Separate JLPT Analytics Page**: Dedicated page for Kanji and Vocabulary analytics
+   - **Separate JLPT Analytics Page**:
+     * Dedicated page for Kanji and Vocabulary analytics
      * Accessible via "JLPT Analytics" in navigation
      * Keeps Kana Analytics clean and focused
      * Full filtering by JLPT level, reading type, and script type
@@ -209,37 +219,7 @@ SPECIFIC FUNCTIONALITY IMPLEMENTED:
    - All tests passing with TypeScript compilation verification
    - Continuous refinement based on real user feedback
 
-8. **Interactive Katakana Reading Tests**
-   - Identical functionality to Hiragana tests with full feature parity
-   - Two test modes:
-     * 1-character tests: Single katakana character
-     * 3-character tests: Three-character combinations
-   - Configurable question counts: 5, 10, or 20 questions (default: 10)
-   - Complete katakana database: 104 characters (basic, dakuten, combinations)
-   - **Audio Pronunciation**: Automatic Japanese pronunciation with replay button and mute/unmute control
-   - Same dual answer analysis strategies (WanaKana and syllable-matching)
-   - Same immediate visual feedback with wrong syllables highlighted
-   - Same review mode for practicing incorrect answers
-   - Character-level analytics for katakana (same infrastructure as hiragana)
-   - Shared test infrastructure with minimal code duplication (~40%)
-   - All existing answer validation works with katakana characters
-   - Red color theme for visual distinction from hiragana tests
-
-9. **Interactive Mixed Reading Tests**
-   - Combined Hiragana and Katakana practice in a single test
-   - Two test modes:
-     * 1-character mode: Each question randomly selects Hiragana OR Katakana
-     * 3-character mode: Each question uses all Hiragana OR all Katakana (randomly per question)
-   - Simplified approach for better readability (no mixed scripts within a single word)
-   - Same configurable question counts: 5, 10, or 20 questions
-   - **Audio Pronunciation**: Automatic Japanese pronunciation with replay button and mute/unmute control
-   - Same sophisticated answer analysis and visual feedback
-   - Character-level tracking works with both scripts transparently
-   - Perfect for reinforcing recognition across both character sets
-   - Purple color theme for visual distinction
-   - Helps transition between hiragana and katakana fluently
-
-10. **Interactive Kanji Reading Tests** (NEW)
+8. **Interactive Kanji Reading Tests**
    - JLPT-based Kanji reading practice with authentic test data
    - Two JLPT levels:
      * N5 (Basic): 30 foundational kanji characters
@@ -263,12 +243,12 @@ SPECIFIC FUNCTIONALITY IMPLEMENTED:
    - Blue color theme for visual distinction
    - Database includes authentic JLPT kanji with verified readings
 
-11. **Interactive Vocabulary Reading Tests** (NEW)
+9. **Interactive Vocabulary Reading Tests**
    - JLPT-based Vocabulary practice with authentic word data
    - Two JLPT levels:
      * N5 (Basic): 40 foundational vocabulary words
      * N4 (Intermediate): 80 total words (includes all N5 + 40 N4 words)
-   - **Display Mode Tabs** (NEW): Switch between Kanji, Kana, or Both displays during tests
+   - **Display Mode Tabs**: Switch between Kanji, Kana, or Both displays during tests
      * Kanji mode: Shows only kanji characters
      * Kana mode: Shows only kana reading
      * Both mode: Shows both kanji and kana (default)
