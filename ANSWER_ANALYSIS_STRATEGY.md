@@ -78,7 +78,7 @@ That's it! The entire app will automatically use the new strategy.
 
 ## Test Coverage
 
-**Total:** 96 tests passing
+**Total:** 104 tests passing
 
 ### WanaKana Strategy Tests:
 - `__tests__/wanakana-robustness.test.ts` (16 tests)
@@ -128,6 +128,15 @@ That's it! The entire app will automatically use the new strategy.
   - Visual feedback rendering in KatakanaTest component
   - Bracket display for wrong syllables
   - User interaction and navigation flows
+
+### Character Storage Migration Tests:
+- `__tests__/characterStorage-migration.test.ts` (8 tests)
+  - Automatic migration of legacy data without scriptType field
+  - Hiragana, katakana, and mixed character migration
+  - Combo character migration support
+  - Data persistence after migration
+  - Import/export with migration support
+  - Backward compatibility verification
 
 ---
 

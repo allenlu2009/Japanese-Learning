@@ -106,8 +106,10 @@ SPECIFIC FUNCTIONALITY IMPLEMENTED:
      * Per-character success rates (all-time and recent performance)
      * Trend detection (improving/declining/stable based on temporal analysis)
      * Common mistakes tracking (top 3 incorrect answers per character)
+     * **Script type filtering** (hiragana, katakana, or all) - NEW
      * Character type filtering (basic, dakuten, combo)
      * Sorting and filtering capabilities
+     * **Automatic data migration** for existing users (adds scriptType to legacy data)
    - Real-time insights in test results view:
      * Historical performance context for each character tested
      * Trend indicators with visual icons
@@ -120,7 +122,7 @@ SPECIFIC FUNCTIONALITY IMPLEMENTED:
 7. **Unit Testing Infrastructure**
    - Jest testing framework with React Testing Library integration
    - TypeScript support for all tests
-   - Comprehensive test suite for answer analysis (**96 tests, all passing**)
+   - Comprehensive test suite for answer analysis (**104 tests, all passing**)
    - Test coverage includes:
      * **Syllable-Matching Strategy** (35 tests):
        - 1-character and 3-character test scenarios
@@ -161,6 +163,13 @@ SPECIFIC FUNCTIONALITY IMPLEMENTED:
        - Visual feedback rendering in KatakanaTest component
        - Bracket display for wrong syllables
        - User interaction and navigation flows
+     * **Character Storage Migration Tests** (8 tests):
+       - Automatic migration of legacy data without scriptType field
+       - Hiragana, katakana, and mixed character migration
+       - Combo character migration support
+       - Data persistence after migration
+       - Import/export with migration support
+       - Backward compatibility verification
    - **Bug Fixes Verified by Tests**:
      * Fixed katakana empty brackets issue ([][][] → [hya][pyo][za])
      * Fixed hiragana alignment with WanaKana small kana (ぉ preservation)
