@@ -11,17 +11,20 @@ A modern, professional web application for tracking Japanese language learning p
   - Configurable question counts (5, 10, or 20)
   - Auto-scoring with multiple romanji variant support
   - 104 hiragana characters (basic, dakuten, combinations)
+  - **Audio Pronunciation**: Automatic Japanese pronunciation with mute/unmute control
   - **Dual answer analysis strategies** (WanaKana default, syllable-matching alternative)
   - **Immediate visual feedback** with wrong syllables highlighted
   - **Review mode** for practicing incorrect answers
 - **Interactive Katakana Tests**: Real-time interactive tests for Katakana reading practice
   - Same features as Hiragana tests
   - 104 katakana characters (basic, dakuten, combinations)
+  - **Audio Pronunciation**: Automatic Japanese pronunciation with mute/unmute control
   - Dual answer analysis and visual feedback
   - Review mode for incorrect answers
 - **Interactive Mixed Tests**: Combined Hiragana and Katakana practice
   - 1-character mode: Random selection of Hiragana OR Katakana per question
   - 3-character mode: All Hiragana OR all Katakana per question (randomly selected)
+  - **Audio Pronunciation**: Automatic Japanese pronunciation with mute/unmute control
   - Same sophisticated answer analysis and feedback
   - Perfect for reinforcing recognition across both scripts
 - **Character-Level Analytics**: Track individual hiragana and katakana character performance
@@ -348,6 +351,7 @@ localStorage must be enabled for the app to function.
 ✅ Interactive Hiragana reading tests (1-char and 3-char modes)
 ✅ Interactive Katakana reading tests (1-char and 3-char modes)
 ✅ Interactive Mixed reading tests (Hiragana + Katakana)
+✅ Audio pronunciation feature (Web Speech API with mute/unmute control)
 ✅ Dual answer analysis strategies (WanaKana default with alignment, syllable-matching alternative)
 ✅ Character-level analytics with performance tracking (both Hiragana and Katakana)
 ✅ Immediate visual feedback with wrong syllable highlighting

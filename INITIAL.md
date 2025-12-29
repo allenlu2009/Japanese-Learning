@@ -41,6 +41,12 @@ SPECIFIC FUNCTIONALITY IMPLEMENTED:
    - Configurable question counts: 5, 10, or 20 questions (default: 10)
    - Auto-scoring with support for multiple romanji variants (e.g., shi/si, tsu/tu, chi/ti, fu/hu)
    - Complete hiragana database: 104 characters (basic, dakuten, combinations)
+   - **Audio Pronunciation** (NEW):
+     * Automatic Japanese pronunciation using Web Speech API
+     * Characters spoken aloud when each question is displayed
+     * Mute/unmute toggle for audio control
+     * Learning-optimized playback speed (0.8x)
+     * Settings persist across sessions
    - Instant feedback on answers with visual indicators
    - Progress tracking during test
    - Test results summary with score and detailed review
@@ -182,13 +188,14 @@ SPECIFIC FUNCTIONALITY IMPLEMENTED:
    - All tests passing with TypeScript compilation verification
    - Continuous refinement based on real user feedback
 
-8. **Interactive Katakana Reading Tests** (NEW)
+8. **Interactive Katakana Reading Tests**
    - Identical functionality to Hiragana tests with full feature parity
    - Two test modes:
      * 1-character tests: Single katakana character
      * 3-character tests: Three-character combinations
    - Configurable question counts: 5, 10, or 20 questions (default: 10)
    - Complete katakana database: 104 characters (basic, dakuten, combinations)
+   - **Audio Pronunciation**: Automatic Japanese pronunciation with mute/unmute control
    - Same dual answer analysis strategies (WanaKana and syllable-matching)
    - Same immediate visual feedback with wrong syllables highlighted
    - Same review mode for practicing incorrect answers
@@ -197,13 +204,14 @@ SPECIFIC FUNCTIONALITY IMPLEMENTED:
    - All existing answer validation works with katakana characters
    - Red color theme for visual distinction from hiragana tests
 
-9. **Interactive Mixed Reading Tests** (NEW)
+9. **Interactive Mixed Reading Tests**
    - Combined Hiragana and Katakana practice in a single test
    - Two test modes:
      * 1-character mode: Each question randomly selects Hiragana OR Katakana
      * 3-character mode: Each question uses all Hiragana OR all Katakana (randomly per question)
    - Simplified approach for better readability (no mixed scripts within a single word)
    - Same configurable question counts: 5, 10, or 20 questions
+   - **Audio Pronunciation**: Automatic Japanese pronunciation with mute/unmute control
    - Same sophisticated answer analysis and visual feedback
    - Character-level tracking works with both scripts transparently
    - Perfect for reinforcing recognition across both character sets
