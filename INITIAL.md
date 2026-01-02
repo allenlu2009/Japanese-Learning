@@ -223,7 +223,8 @@ SPECIFIC FUNCTIONALITY IMPLEMENTED:
    - JLPT-based Kanji reading practice with authentic test data
    - Two JLPT levels:
      * N5 (Basic): 30 foundational kanji characters
-     * N4 (Intermediate): 60 total kanji (includes all N5 + 30 N4 kanji)
+     * N4 (Intermediate): 60 total kanji (includes all N5 + 30 N4 kanji) OR 30 N4-only kanji
+   - **"Include N5" Toggle**: For N4 tests, choose between comprehensive practice (N4+N5) or focused N4-only content
    - Three reading modes:
      * Onyomi Only: Chinese-derived readings only
      * Kunyomi Only: Native Japanese readings only
@@ -247,7 +248,8 @@ SPECIFIC FUNCTIONALITY IMPLEMENTED:
    - JLPT-based Vocabulary practice with authentic word data
    - Two JLPT levels:
      * N5 (Basic): 40 foundational vocabulary words
-     * N4 (Intermediate): 80 total words (includes all N5 + 40 N4 words)
+     * N4 (Intermediate): 80 total words (includes all N5 + 40 N4 words) OR 40 N4-only words
+   - **"Include N5" Toggle**: For N4 tests, choose between comprehensive practice (N4+N5) or focused N4-only content
    - **Display Mode Tabs**: Switch between Kanji, Kana, or Both displays during tests
      * Kanji mode: Shows only kanji characters
      * Kana mode: Shows only kana reading
