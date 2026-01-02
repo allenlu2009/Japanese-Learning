@@ -245,10 +245,10 @@ SPECIFIC FUNCTIONALITY IMPLEMENTED:
    - Database includes authentic JLPT kanji with verified readings
 
 9. **Interactive Vocabulary Reading Tests**
-   - JLPT-based Vocabulary practice with authentic word data from JLPTsensei.com
+   - JLPT-based Vocabulary practice with complete word dataset from elzup/jlpt-word-list repository
    - Two JLPT levels:
-     * N5 (Basic): 100 essential vocabulary words
-     * N4 (Intermediate): 200 total words (includes all 100 N5 + 100 N4 words) OR 100 N4-only words
+     * N5 (Basic): 718 vocabulary words (complete JLPT N5 coverage)
+     * N4 (Intermediate): 1,386 total words (includes all 718 N5 + 668 N4 words) OR 668 N4-only words
    - **"Include N5" Toggle**: For N4 tests, choose between comprehensive practice (N4+N5) or focused N4-only content
    - **Display Mode Tabs**: Switch between Kanji, Kana, or Both displays during tests
      * Kanji mode: Shows only kanji characters

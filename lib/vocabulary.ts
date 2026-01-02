@@ -1,12 +1,12 @@
 /**
  * Vocabulary Database - Dataset-Driven Architecture
  *
- * JLPT-based vocabulary organized by difficulty level (N5 and N4).
+ * Complete JLPT-based vocabulary organized by difficulty level (N5 and N4).
  * Data is loaded from JSON files for easier maintenance and expansion.
  *
- * Data source: JLPTsensei.com (January 2026)
- * N5: 100 essential vocabulary words
- * N4: 100 essential vocabulary words
+ * Data source: elzup/jlpt-word-list GitHub repository (January 2026)
+ * N5: 718 vocabulary words (complete JLPT N5 coverage)
+ * N4: 668 additional vocabulary words (total 1,386 for N4 level)
  */
 
 import vocabularyN5Data from '@/data/processed/vocabulary-n5.json';
