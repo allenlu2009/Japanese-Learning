@@ -1,0 +1,881 @@
+[
+  {
+    "word": "日本",
+    "kana": "にほん",
+    "romanji": [
+      "nihon",
+      "nippon"
+    ],
+    "meaning": "Japan",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "アメリカ",
+    "kana": "あめりか",
+    "romanji": [
+      "amerika"
+    ],
+    "meaning": "America",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "中国",
+    "kana": "ちゅうごく",
+    "romanji": [
+      "chūgoku",
+      "chuugoku",
+      "cyuugoku"
+    ],
+    "meaning": "China",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "韓国",
+    "kana": "かんこく",
+    "romanji": [
+      "kankoku"
+    ],
+    "meaning": "Korea",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "東京",
+    "kana": "とうきょう",
+    "romanji": [
+      "tōkyō",
+      "toukyou",
+      "tokyo",
+      "tokyou"
+    ],
+    "meaning": "Tokyo",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "外国",
+    "kana": "がいこく",
+    "romanji": [
+      "gaikoku"
+    ],
+    "meaning": "foreign country",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "学校",
+    "kana": "がっこう",
+    "romanji": [
+      "gakkō",
+      "gakkou",
+      "gakkoo"
+    ],
+    "meaning": "school",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "大学",
+    "kana": "だいがく",
+    "romanji": [
+      "daigaku"
+    ],
+    "meaning": "university",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "先生",
+    "kana": "せんせい",
+    "romanji": [
+      "sensei"
+    ],
+    "meaning": "teacher",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "学生",
+    "kana": "がくせい",
+    "romanji": [
+      "gakusei"
+    ],
+    "meaning": "student",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "勉強",
+    "kana": "べんきょう",
+    "romanji": [
+      "benkyō",
+      "benkyou",
+      "benkyoo"
+    ],
+    "meaning": "study",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "教室",
+    "kana": "きょうしつ",
+    "romanji": [
+      "kyōshitsu",
+      "kyoushitsu"
+    ],
+    "meaning": "classroom",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "今日",
+    "kana": "きょう",
+    "romanji": [
+      "kyō",
+      "kyou",
+      "kyoo"
+    ],
+    "meaning": "today",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "明日",
+    "kana": "あした",
+    "romanji": [
+      "ashita"
+    ],
+    "meaning": "tomorrow",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "昨日",
+    "kana": "きのう",
+    "romanji": [
+      "kinō",
+      "kinou",
+      "kinoo"
+    ],
+    "meaning": "yesterday",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "毎日",
+    "kana": "まいにち",
+    "romanji": [
+      "mainichi"
+    ],
+    "meaning": "every day",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "今年",
+    "kana": "ことし",
+    "romanji": [
+      "kotoshi"
+    ],
+    "meaning": "this year",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "去年",
+    "kana": "きょねん",
+    "romanji": [
+      "kyonen"
+    ],
+    "meaning": "last year",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "今",
+    "kana": "いま",
+    "romanji": [
+      "ima"
+    ],
+    "meaning": "now",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "朝",
+    "kana": "あさ",
+    "romanji": [
+      "asa"
+    ],
+    "meaning": "morning",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "昼",
+    "kana": "ひる",
+    "romanji": [
+      "hiru"
+    ],
+    "meaning": "noon, daytime",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "夜",
+    "kana": "よる",
+    "romanji": [
+      "yoru"
+    ],
+    "meaning": "night",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "晩",
+    "kana": "ばん",
+    "romanji": [
+      "ban"
+    ],
+    "meaning": "evening",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "家族",
+    "kana": "かぞく",
+    "romanji": [
+      "kazoku"
+    ],
+    "meaning": "family",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "父",
+    "kana": "ちち",
+    "romanji": [
+      "chichi"
+    ],
+    "meaning": "father",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "母",
+    "kana": "はは",
+    "romanji": [
+      "haha"
+    ],
+    "meaning": "mother",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "兄",
+    "kana": "あに",
+    "romanji": [
+      "ani"
+    ],
+    "meaning": "older brother",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "姉",
+    "kana": "あね",
+    "romanji": [
+      "ane"
+    ],
+    "meaning": "older sister",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "弟",
+    "kana": "おとうと",
+    "romanji": [
+      "otōto",
+      "otouto",
+      "ototo"
+    ],
+    "meaning": "younger brother",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "妹",
+    "kana": "いもうと",
+    "romanji": [
+      "imōto",
+      "imouto",
+      "imoto"
+    ],
+    "meaning": "younger sister",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "子供",
+    "kana": "こども",
+    "romanji": [
+      "kodomo"
+    ],
+    "meaning": "child",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "食べる",
+    "kana": "たべる",
+    "romanji": [
+      "taberu"
+    ],
+    "meaning": "to eat",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "飲む",
+    "kana": "のむ",
+    "romanji": [
+      "nomu"
+    ],
+    "meaning": "to drink",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "見る",
+    "kana": "みる",
+    "romanji": [
+      "miru"
+    ],
+    "meaning": "to see, to watch",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "聞く",
+    "kana": "きく",
+    "romanji": [
+      "kiku"
+    ],
+    "meaning": "to hear, to listen",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "読む",
+    "kana": "よむ",
+    "romanji": [
+      "yomu"
+    ],
+    "meaning": "to read",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "書く",
+    "kana": "かく",
+    "romanji": [
+      "kaku"
+    ],
+    "meaning": "to write",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "話す",
+    "kana": "はなす",
+    "romanji": [
+      "hanasu"
+    ],
+    "meaning": "to speak",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "行く",
+    "kana": "いく",
+    "romanji": [
+      "iku"
+    ],
+    "meaning": "to go",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "来る",
+    "kana": "くる",
+    "romanji": [
+      "kuru"
+    ],
+    "meaning": "to come",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "帰る",
+    "kana": "かえる",
+    "romanji": [
+      "kaeru"
+    ],
+    "meaning": "to return, to go home",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "買う",
+    "kana": "かう",
+    "romanji": [
+      "kau"
+    ],
+    "meaning": "to buy",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "売る",
+    "kana": "うる",
+    "romanji": [
+      "uru"
+    ],
+    "meaning": "to sell",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "駅",
+    "kana": "えき",
+    "romanji": [
+      "eki"
+    ],
+    "meaning": "station",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "銀行",
+    "kana": "ぎんこう",
+    "romanji": [
+      "ginkō",
+      "ginkou",
+      "ginkoo"
+    ],
+    "meaning": "bank",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "病院",
+    "kana": "びょういん",
+    "romanji": [
+      "byōin",
+      "byouin"
+    ],
+    "meaning": "hospital",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "レストラン",
+    "kana": "れすとらん",
+    "romanji": [
+      "resutoran"
+    ],
+    "meaning": "restaurant",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "デパート",
+    "kana": "でぱーと",
+    "romanji": [
+      "depāto",
+      "depaato"
+    ],
+    "meaning": "department store",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "図書館",
+    "kana": "としょかん",
+    "romanji": [
+      "toshokan"
+    ],
+    "meaning": "library",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "公園",
+    "kana": "こうえん",
+    "romanji": [
+      "kōen",
+      "kouen"
+    ],
+    "meaning": "park",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "ご飯",
+    "kana": "ごはん",
+    "romanji": [
+      "gohan"
+    ],
+    "meaning": "rice, meal",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "水",
+    "kana": "みず",
+    "romanji": [
+      "mizu"
+    ],
+    "meaning": "water",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "お茶",
+    "kana": "おちゃ",
+    "romanji": [
+      "ocha"
+    ],
+    "meaning": "tea",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "コーヒー",
+    "kana": "こーひー",
+    "romanji": [
+      "kōhī",
+      "koohii"
+    ],
+    "meaning": "coffee",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "牛乳",
+    "kana": "ぎゅうにゅう",
+    "romanji": [
+      "gyūnyū",
+      "gyuunyuu"
+    ],
+    "meaning": "milk",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "肉",
+    "kana": "にく",
+    "romanji": [
+      "niku"
+    ],
+    "meaning": "meat",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "魚",
+    "kana": "さかな",
+    "romanji": [
+      "sakana"
+    ],
+    "meaning": "fish",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "野菜",
+    "kana": "やさい",
+    "romanji": [
+      "yasai"
+    ],
+    "meaning": "vegetable",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "一つ",
+    "kana": "ひとつ",
+    "romanji": [
+      "hitotsu"
+    ],
+    "meaning": "one (object)",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "二つ",
+    "kana": "ふたつ",
+    "romanji": [
+      "futatsu"
+    ],
+    "meaning": "two (objects)",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "三つ",
+    "kana": "みっつ",
+    "romanji": [
+      "mittsu"
+    ],
+    "meaning": "three (objects)",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "一人",
+    "kana": "ひとり",
+    "romanji": [
+      "hitori"
+    ],
+    "meaning": "one person",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "二人",
+    "kana": "ふたり",
+    "romanji": [
+      "futari"
+    ],
+    "meaning": "two people",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "大きい",
+    "kana": "おおきい",
+    "romanji": [
+      "ōkii",
+      "ookii"
+    ],
+    "meaning": "big, large",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "小さい",
+    "kana": "ちいさい",
+    "romanji": [
+      "chīsai",
+      "chiisai"
+    ],
+    "meaning": "small, little",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "新しい",
+    "kana": "あたらしい",
+    "romanji": [
+      "atarashii"
+    ],
+    "meaning": "new",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "古い",
+    "kana": "ふるい",
+    "romanji": [
+      "furui"
+    ],
+    "meaning": "old (not for people)",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "良い",
+    "kana": "いい",
+    "romanji": [
+      "ii",
+      "yoi"
+    ],
+    "meaning": "good",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "悪い",
+    "kana": "わるい",
+    "romanji": [
+      "warui"
+    ],
+    "meaning": "bad",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "高い",
+    "kana": "たかい",
+    "romanji": [
+      "takai"
+    ],
+    "meaning": "high, tall, expensive",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "安い",
+    "kana": "やすい",
+    "romanji": [
+      "yasui"
+    ],
+    "meaning": "cheap, inexpensive",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "多い",
+    "kana": "おおい",
+    "romanji": [
+      "ōi",
+      "ooi"
+    ],
+    "meaning": "many, much",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "少ない",
+    "kana": "すくない",
+    "romanji": [
+      "sukunai"
+    ],
+    "meaning": "few, little",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "人",
+    "kana": "ひと",
+    "romanji": [
+      "hito"
+    ],
+    "meaning": "person, people",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "友達",
+    "kana": "ともだち",
+    "romanji": [
+      "tomodachi"
+    ],
+    "meaning": "friend",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "名前",
+    "kana": "なまえ",
+    "romanji": [
+      "namae"
+    ],
+    "meaning": "name",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "本",
+    "kana": "ほん",
+    "romanji": [
+      "hon"
+    ],
+    "meaning": "book",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "新聞",
+    "kana": "しんぶん",
+    "romanji": [
+      "shinbun"
+    ],
+    "meaning": "newspaper",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "手紙",
+    "kana": "てがみ",
+    "romanji": [
+      "tegami"
+    ],
+    "meaning": "letter",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "写真",
+    "kana": "しゃしん",
+    "romanji": [
+      "shashin",
+      "syashin"
+    ],
+    "meaning": "photograph",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "車",
+    "kana": "くるま",
+    "romanji": [
+      "kuruma"
+    ],
+    "meaning": "car",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "自転車",
+    "kana": "じてんしゃ",
+    "romanji": [
+      "jitensha",
+      "zitensya"
+    ],
+    "meaning": "bicycle",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "電車",
+    "kana": "でんしゃ",
+    "romanji": [
+      "densha",
+      "densya"
+    ],
+    "meaning": "train",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "天気",
+    "kana": "てんき",
+    "romanji": [
+      "tenki"
+    ],
+    "meaning": "weather",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "雨",
+    "kana": "あめ",
+    "romanji": [
+      "ame"
+    ],
+    "meaning": "rain",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "雪",
+    "kana": "ゆき",
+    "romanji": [
+      "yuki"
+    ],
+    "meaning": "snow",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "風",
+    "kana": "かぜ",
+    "romanji": [
+      "kaze"
+    ],
+    "meaning": "wind",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "山",
+    "kana": "やま",
+    "romanji": [
+      "yama"
+    ],
+    "meaning": "mountain",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "川",
+    "kana": "かわ",
+    "romanji": [
+      "kawa"
+    ],
+    "meaning": "river",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "海",
+    "kana": "うみ",
+    "romanji": [
+      "umi"
+    ],
+    "meaning": "sea, ocean",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "赤",
+    "kana": "あか",
+    "romanji": [
+      "aka"
+    ],
+    "meaning": "red",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "青",
+    "kana": "あお",
+    "romanji": [
+      "ao"
+    ],
+    "meaning": "blue",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "白",
+    "kana": "しろ",
+    "romanji": [
+      "shiro"
+    ],
+    "meaning": "white",
+    "jlptLevel": "N5"
+  },
+  {
+    "word": "黒",
+    "kana": "くろ",
+    "romanji": [
+      "kuro"
+    ],
+    "meaning": "black",
+    "jlptLevel": "N5"
+  }
+]

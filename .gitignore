@@ -43,6 +43,7 @@ japanese-learning-tests-*.json
 .claude/plans/
 .claude/settings.local.json
 
-# user data
+# user data (but allow processed datasets)
 /data/*.json
+!/data/processed/
 /backups/

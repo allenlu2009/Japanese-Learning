@@ -1,0 +1,911 @@
+[
+  {
+    "word": "集まる",
+    "kana": "あつまる",
+    "romanji": [
+      "atsumaru"
+    ],
+    "meaning": "to gather, to collect",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "集める",
+    "kana": "あつめる",
+    "romanji": [
+      "atsumeru"
+    ],
+    "meaning": "to collect, to gather",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "謝る",
+    "kana": "あやまる",
+    "romanji": [
+      "ayamaru"
+    ],
+    "meaning": "to apologize",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "増える",
+    "kana": "ふえる",
+    "romanji": [
+      "fueru"
+    ],
+    "meaning": "to increase",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "減る",
+    "kana": "へる",
+    "romanji": [
+      "heru"
+    ],
+    "meaning": "to decrease",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "動く",
+    "kana": "うごく",
+    "romanji": [
+      "ugoku"
+    ],
+    "meaning": "to move",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "止まる",
+    "kana": "とまる",
+    "romanji": [
+      "tomaru"
+    ],
+    "meaning": "to stop",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "続ける",
+    "kana": "つづける",
+    "romanji": [
+      "tsuzukeru",
+      "tudukeru"
+    ],
+    "meaning": "to continue",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "決める",
+    "kana": "きめる",
+    "romanji": [
+      "kimeru"
+    ],
+    "meaning": "to decide",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "始まる",
+    "kana": "はじまる",
+    "romanji": [
+      "hajimaru",
+      "hazimaru"
+    ],
+    "meaning": "to begin",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "終わる",
+    "kana": "おわる",
+    "romanji": [
+      "owaru"
+    ],
+    "meaning": "to end",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "変わる",
+    "kana": "かわる",
+    "romanji": [
+      "kawaru"
+    ],
+    "meaning": "to change",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "意見",
+    "kana": "いけん",
+    "romanji": [
+      "iken"
+    ],
+    "meaning": "opinion",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "意味",
+    "kana": "いみ",
+    "romanji": [
+      "imi"
+    ],
+    "meaning": "meaning",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "理由",
+    "kana": "りゆう",
+    "romanji": [
+      "riyū",
+      "riyuu"
+    ],
+    "meaning": "reason",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "例",
+    "kana": "れい",
+    "romanji": [
+      "rei"
+    ],
+    "meaning": "example",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "場合",
+    "kana": "ばあい",
+    "romanji": [
+      "baai"
+    ],
+    "meaning": "case, situation",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "問題",
+    "kana": "もんだい",
+    "romanji": [
+      "mondai"
+    ],
+    "meaning": "problem, question",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "答え",
+    "kana": "こたえ",
+    "romanji": [
+      "kotae"
+    ],
+    "meaning": "answer",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "質問",
+    "kana": "しつもん",
+    "romanji": [
+      "shitsumon",
+      "situmon"
+    ],
+    "meaning": "question",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "説明",
+    "kana": "せつめい",
+    "romanji": [
+      "setsumei",
+      "setumei"
+    ],
+    "meaning": "explanation",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "社会",
+    "kana": "しゃかい",
+    "romanji": [
+      "shakai",
+      "syakai"
+    ],
+    "meaning": "society",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "文化",
+    "kana": "ぶんか",
+    "romanji": [
+      "bunka"
+    ],
+    "meaning": "culture",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "歴史",
+    "kana": "れきし",
+    "romanji": [
+      "rekishi"
+    ],
+    "meaning": "history",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "伝統",
+    "kana": "でんとう",
+    "romanji": [
+      "dentō",
+      "dentou"
+    ],
+    "meaning": "tradition",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "経済",
+    "kana": "けいざい",
+    "romanji": [
+      "keizai"
+    ],
+    "meaning": "economy",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "政治",
+    "kana": "せいじ",
+    "romanji": [
+      "seiji",
+      "seizi"
+    ],
+    "meaning": "politics",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "法律",
+    "kana": "ほうりつ",
+    "romanji": [
+      "hōritsu",
+      "houritsu"
+    ],
+    "meaning": "law",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "会社",
+    "kana": "かいしゃ",
+    "romanji": [
+      "kaisha",
+      "kaisya"
+    ],
+    "meaning": "company",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "仕事",
+    "kana": "しごと",
+    "romanji": [
+      "shigoto"
+    ],
+    "meaning": "work, job",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "社員",
+    "kana": "しゃいん",
+    "romanji": [
+      "shain",
+      "syain"
+    ],
+    "meaning": "company employee",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "会議",
+    "kana": "かいぎ",
+    "romanji": [
+      "kaigi"
+    ],
+    "meaning": "meeting, conference",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "発表",
+    "kana": "はっぴょう",
+    "romanji": [
+      "happyō",
+      "happyou"
+    ],
+    "meaning": "announcement, presentation",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "報告",
+    "kana": "ほうこく",
+    "romanji": [
+      "hōkoku",
+      "houkoku"
+    ],
+    "meaning": "report",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "計画",
+    "kana": "けいかく",
+    "romanji": [
+      "keikaku"
+    ],
+    "meaning": "plan",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "研究",
+    "kana": "けんきゅう",
+    "romanji": [
+      "kenkyū",
+      "kenkyuu"
+    ],
+    "meaning": "research",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "試験",
+    "kana": "しけん",
+    "romanji": [
+      "shiken"
+    ],
+    "meaning": "examination, test",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "授業",
+    "kana": "じゅぎょう",
+    "romanji": [
+      "jugyō",
+      "jugyou",
+      "zyugyou"
+    ],
+    "meaning": "lesson, class",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "成績",
+    "kana": "せいせき",
+    "romanji": [
+      "seiseki"
+    ],
+    "meaning": "results, grades",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "卒業",
+    "kana": "そつぎょう",
+    "romanji": [
+      "sotsugyō",
+      "sotsugyou"
+    ],
+    "meaning": "graduation",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "留学",
+    "kana": "りゅうがく",
+    "romanji": [
+      "ryūgaku",
+      "ryuugaku"
+    ],
+    "meaning": "study abroad",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "連絡",
+    "kana": "れんらく",
+    "romanji": [
+      "renraku"
+    ],
+    "meaning": "contact, communication",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "相談",
+    "kana": "そうだん",
+    "romanji": [
+      "sōdan",
+      "soudan"
+    ],
+    "meaning": "consultation",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "約束",
+    "kana": "やくそく",
+    "romanji": [
+      "yakusoku"
+    ],
+    "meaning": "promise, appointment",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "注意",
+    "kana": "ちゅうい",
+    "romanji": [
+      "chūi",
+      "chuui"
+    ],
+    "meaning": "attention, caution",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "案内",
+    "kana": "あんない",
+    "romanji": [
+      "annai"
+    ],
+    "meaning": "guidance, information",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "挨拶",
+    "kana": "あいさつ",
+    "romanji": [
+      "aisatsu"
+    ],
+    "meaning": "greeting",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "用事",
+    "kana": "ようじ",
+    "romanji": [
+      "yōji",
+      "youzi"
+    ],
+    "meaning": "errand, business",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "準備",
+    "kana": "じゅんび",
+    "romanji": [
+      "junbi",
+      "zyunbi"
+    ],
+    "meaning": "preparation",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "片付ける",
+    "kana": "かたづける",
+    "romanji": [
+      "katazukeru",
+      "katadukeru"
+    ],
+    "meaning": "to tidy up",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "掃除",
+    "kana": "そうじ",
+    "romanji": [
+      "sōji",
+      "souzi"
+    ],
+    "meaning": "cleaning",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "洗濯",
+    "kana": "せんたく",
+    "romanji": [
+      "sentaku"
+    ],
+    "meaning": "laundry, washing",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "料理",
+    "kana": "りょうり",
+    "romanji": [
+      "ryōri",
+      "ryouri"
+    ],
+    "meaning": "cooking, cuisine",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "都合",
+    "kana": "つごう",
+    "romanji": [
+      "tsugō",
+      "tugou"
+    ],
+    "meaning": "convenience, circumstances",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "様子",
+    "kana": "ようす",
+    "romanji": [
+      "yōsu",
+      "yousu"
+    ],
+    "meaning": "situation, appearance",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "状態",
+    "kana": "じょうたい",
+    "romanji": [
+      "jōtai",
+      "joutai",
+      "zyoutai"
+    ],
+    "meaning": "condition, state",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "調子",
+    "kana": "ちょうし",
+    "romanji": [
+      "chōshi",
+      "choushi",
+      "tyousi"
+    ],
+    "meaning": "condition, tone",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "具合",
+    "kana": "ぐあい",
+    "romanji": [
+      "guai"
+    ],
+    "meaning": "condition, health",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "安全",
+    "kana": "あんぜん",
+    "romanji": [
+      "anzen"
+    ],
+    "meaning": "safety, security",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "危険",
+    "kana": "きけん",
+    "romanji": [
+      "kiken"
+    ],
+    "meaning": "danger",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "インターネット",
+    "kana": "いんたーねっと",
+    "romanji": [
+      "intānetto",
+      "intaanetto"
+    ],
+    "meaning": "internet",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "パソコン",
+    "kana": "ぱそこん",
+    "romanji": [
+      "pasokon"
+    ],
+    "meaning": "personal computer",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "メール",
+    "kana": "めーる",
+    "romanji": [
+      "mēru",
+      "meeru"
+    ],
+    "meaning": "email",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "携帯",
+    "kana": "けいたい",
+    "romanji": [
+      "keitai"
+    ],
+    "meaning": "mobile phone",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "アプリ",
+    "kana": "あぷり",
+    "romanji": [
+      "apuri"
+    ],
+    "meaning": "application, app",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "心配",
+    "kana": "しんぱい",
+    "romanji": [
+      "shinpai",
+      "sinpai"
+    ],
+    "meaning": "worry, concern",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "安心",
+    "kana": "あんしん",
+    "romanji": [
+      "anshin",
+      "ansin"
+    ],
+    "meaning": "relief, peace of mind",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "残念",
+    "kana": "ざんねん",
+    "romanji": [
+      "zannen"
+    ],
+    "meaning": "regrettable, disappointing",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "幸せ",
+    "kana": "しあわせ",
+    "romanji": [
+      "shiawase",
+      "siawase"
+    ],
+    "meaning": "happiness",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "悲しい",
+    "kana": "かなしい",
+    "romanji": [
+      "kanashii",
+      "kanasii"
+    ],
+    "meaning": "sad",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "嬉しい",
+    "kana": "うれしい",
+    "romanji": [
+      "ureshii",
+      "uresii"
+    ],
+    "meaning": "happy, glad",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "楽しい",
+    "kana": "たのしい",
+    "romanji": [
+      "tanoshii",
+      "tanosii"
+    ],
+    "meaning": "enjoyable, fun",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "怖い",
+    "kana": "こわい",
+    "romanji": [
+      "kowai"
+    ],
+    "meaning": "scary, frightening",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "自然",
+    "kana": "しぜん",
+    "romanji": [
+      "shizen",
+      "sizen"
+    ],
+    "meaning": "nature",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "環境",
+    "kana": "かんきょう",
+    "romanji": [
+      "kankyō",
+      "kankyou"
+    ],
+    "meaning": "environment",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "空気",
+    "kana": "くうき",
+    "romanji": [
+      "kūki",
+      "kuuki"
+    ],
+    "meaning": "air",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "光",
+    "kana": "ひかり",
+    "romanji": [
+      "hikari"
+    ],
+    "meaning": "light",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "音",
+    "kana": "おと",
+    "romanji": [
+      "oto"
+    ],
+    "meaning": "sound",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "熱",
+    "kana": "ねつ",
+    "romanji": [
+      "netsu",
+      "netu"
+    ],
+    "meaning": "heat, fever",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "交通",
+    "kana": "こうつう",
+    "romanji": [
+      "kōtsū",
+      "koutsuu",
+      "koutuu"
+    ],
+    "meaning": "traffic, transportation",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "旅行",
+    "kana": "りょこう",
+    "romanji": [
+      "ryokō",
+      "ryokou"
+    ],
+    "meaning": "travel, trip",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "出張",
+    "kana": "しゅっちょう",
+    "romanji": [
+      "shutchō",
+      "shucchou",
+      "syucchou"
+    ],
+    "meaning": "business trip",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "飛行機",
+    "kana": "ひこうき",
+    "romanji": [
+      "hikōki",
+      "hikouki"
+    ],
+    "meaning": "airplane",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "空港",
+    "kana": "くうこう",
+    "romanji": [
+      "kūkō",
+      "kuukou"
+    ],
+    "meaning": "airport",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "道",
+    "kana": "みち",
+    "romanji": [
+      "michi"
+    ],
+    "meaning": "road, way",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "値段",
+    "kana": "ねだん",
+    "romanji": [
+      "nedan"
+    ],
+    "meaning": "price",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "売り場",
+    "kana": "うりば",
+    "romanji": [
+      "uriba"
+    ],
+    "meaning": "sales counter, department",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "サイズ",
+    "kana": "さいず",
+    "romanji": [
+      "saizu"
+    ],
+    "meaning": "size",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "品物",
+    "kana": "しなもの",
+    "romanji": [
+      "shinamono",
+      "sinamono"
+    ],
+    "meaning": "goods, article",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "客",
+    "kana": "きゃく",
+    "romanji": [
+      "kyaku"
+    ],
+    "meaning": "customer, guest",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "最近",
+    "kana": "さいきん",
+    "romanji": [
+      "saikin"
+    ],
+    "meaning": "recently, lately",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "将来",
+    "kana": "しょうらい",
+    "romanji": [
+      "shōrai",
+      "shourai",
+      "syourai"
+    ],
+    "meaning": "future",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "途中",
+    "kana": "とちゅう",
+    "romanji": [
+      "tochū",
+      "tochuu"
+    ],
+    "meaning": "on the way, midway",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "すぐ",
+    "kana": "すぐ",
+    "romanji": [
+      "sugu"
+    ],
+    "meaning": "immediately, soon",
+    "jlptLevel": "N4"
+  },
+  {
+    "word": "まだ",
+    "kana": "まだ",
+    "romanji": [
+      "mada"
+    ],
+    "meaning": "still, not yet",
+    "jlptLevel": "N4"
+  }
+]
