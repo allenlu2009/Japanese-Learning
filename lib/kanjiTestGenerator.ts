@@ -39,20 +39,25 @@ export interface KanjiQuestion {
  * Generate kanji reading test questions
  *
  * @param count - Number of questions to generate
- * @param level - JLPT level ('N5' or 'N4', N4 includes N5)
+ * @param level - JLPT level ('N5' or 'N4')
  * @param readingMode - Reading type ('onyomi', 'kunyomi', or 'mixed')
+ * @param includeN5 - For N4 tests: include N5 kanji (true) or N4-only (false). Ignored for N5 tests.
  * @returns Array of kanji questions
  *
  * @example
- * const questions = generateKanjiQuestions(10, 'N5', 'onyomi');
+ * const questions = generateKanjiQuestions(10, 'N5', 'onyomi', true);
  * // Generates 10 N5 kanji questions testing only onyomi readings
+ *
+ * const questions = generateKanjiQuestions(10, 'N4', 'mixed', false);
+ * // Generates 10 N4-only kanji questions (excludes N5)
  */
 export function generateKanjiQuestions(
   count: number,
   level: JLPTLevel,
-  readingMode: KanjiReadingMode
+  readingMode: KanjiReadingMode,
+  includeN5: boolean = true
 ): KanjiQuestion[] {
-  const kanjiPool = getKanjiByLevel(level);
+  const kanjiPool = getKanjiByLevel(level, includeN5);
   const questions: KanjiQuestion[] = [];
 
   if (kanjiPool.length === 0) {

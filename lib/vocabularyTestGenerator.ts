@@ -30,18 +30,23 @@ export interface VocabularyQuestion {
  * Generate vocabulary reading test questions
  *
  * @param count - Number of questions to generate
- * @param level - JLPT level ('N5' or 'N4', N4 includes N5)
+ * @param level - JLPT level ('N5' or 'N4')
+ * @param includeN5 - For N4 tests: include N5 vocabulary (true) or N4-only (false). Ignored for N5 tests.
  * @returns Array of vocabulary questions
  *
  * @example
- * const questions = generateVocabularyQuestions(10, 'N5');
+ * const questions = generateVocabularyQuestions(10, 'N5', true);
  * // Generates 10 N5 vocabulary questions
+ *
+ * const questions = generateVocabularyQuestions(10, 'N4', false);
+ * // Generates 10 N4-only vocabulary questions (excludes N5)
  */
 export function generateVocabularyQuestions(
   count: number,
-  level: JLPTLevel
+  level: JLPTLevel,
+  includeN5: boolean = true
 ): VocabularyQuestion[] {
-  const vocabPool = getVocabularyByLevel(level);
+  const vocabPool = getVocabularyByLevel(level, includeN5);
   const questions: VocabularyQuestion[] = [];
 
   if (vocabPool.length === 0) {

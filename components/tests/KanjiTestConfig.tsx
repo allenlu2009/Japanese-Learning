@@ -10,7 +10,7 @@ import { cn } from '@/lib/utils';
 import { getKanjiCount } from '@/lib/kanji';
 
 interface KanjiTestConfigProps {
-  onStartTest: (level: JLPTLevel, readingMode: KanjiReadingMode, count: QuestionCount) => void;
+  onStartTest: (level: JLPTLevel, readingMode: KanjiReadingMode, count: QuestionCount, includeN5: boolean) => void;
   onBack: () => void;
 }
 
@@ -18,11 +18,13 @@ export function KanjiTestConfig({ onStartTest, onBack }: KanjiTestConfigProps) {
   const [jlptLevel, setJlptLevel] = useState<JLPTLevel>('N5');
   const [readingMode, setReadingMode] = useState<KanjiReadingMode>('mixed');
   const [questionCount, setQuestionCount] = useState<QuestionCount>(10);
+  const [includeN5, setIncludeN5] = useState(true);
 
   const handleStart = () => {
-    onStartTest(jlptLevel, readingMode, questionCount);
+    onStartTest(jlptLevel, readingMode, questionCount, includeN5);
   };
 
+  // Dynamic description based on includeN5 setting
   const jlptLevelOptions: Array<{ value: JLPTLevel; label: string; description: string }> = [
     {
       value: 'N5',
@@ -32,7 +34,9 @@ export function KanjiTestConfig({ onStartTest, onBack }: KanjiTestConfigProps) {
     {
       value: 'N4',
       label: 'JLPT N4',
-      description: `Intermediate (${getKanjiCount('N4')} kanji, includes N5)`,
+      description: includeN5
+        ? `Intermediate (${getKanjiCount('N4', true)} kanji, includes N5)`
+        : `Intermediate (${getKanjiCount('N4', false)} N4-only kanji)`,
     },
   ];
 
@@ -88,6 +92,26 @@ export function KanjiTestConfig({ onStartTest, onBack }: KanjiTestConfigProps) {
               </button>
             ))}
           </div>
+
+          {/* Include N5 Toggle (only show for N4) */}
+          {jlptLevel === 'N4' && (
+            <div className="mt-3 p-3 bg-gray-50 rounded-lg border border-gray-200">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={includeN5}
+                  onChange={(e) => setIncludeN5(e.target.checked)}
+                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                />
+                <span className="text-sm font-medium text-gray-700">
+                  Include N5 kanji
+                </span>
+                <span className="text-xs text-gray-500">
+                  (recommended for comprehensive practice)
+                </span>
+              </label>
+            </div>
+          )}
         </div>
 
         {/* Reading Mode Selection */}

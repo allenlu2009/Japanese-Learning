@@ -142,16 +142,18 @@ export function findVocabulary(word: string): VocabularyWord | undefined {
 }
 
 /**
- * Get all vocabulary for a specific JLPT level (cumulative)
+ * Get all vocabulary for a specific JLPT level
  *
  * @param level - The JLPT level ('N5' or 'N4')
- * @returns Array of vocabulary for that level (N4 includes N5)
+ * @param includeN5 - For N4: include N5 vocabulary (true, default) or N4-only (false). Ignored for N5.
+ * @returns Array of vocabulary for that level
  */
-export function getVocabularyByLevel(level: 'N5' | 'N4'): VocabularyWord[] {
+export function getVocabularyByLevel(level: 'N5' | 'N4', includeN5: boolean = true): VocabularyWord[] {
   if (level === 'N5') {
     return ALL_VOCABULARY_N5;
   } else {
-    return ALL_VOCABULARY_N4;  // N4 includes all N5 vocabulary
+    // N4: return combined or N4-only based on includeN5 flag
+    return includeN5 ? ALL_VOCABULARY_N4 : VOCABULARY_N4;
   }
 }
 
@@ -176,9 +178,12 @@ export function getRandomVocabulary(level: 'N5' | 'N4', count: number): Vocabula
 
 /**
  * Get total count of vocabulary for a level
+ *
+ * @param level - The JLPT level ('N5' or 'N4')
+ * @param includeN5 - For N4: include N5 vocabulary (true, default) or N4-only (false)
  */
-export function getVocabularyCount(level: 'N5' | 'N4'): number {
-  return getVocabularyByLevel(level).length;
+export function getVocabularyCount(level: 'N5' | 'N4', includeN5: boolean = true): number {
+  return getVocabularyByLevel(level, includeN5).length;
 }
 
 /**

@@ -22,6 +22,7 @@ interface KanjiTestSession {
   level: JLPTLevel;
   readingMode: KanjiReadingMode;
   questionCount: QuestionCount;
+  includeN5: boolean;
 }
 
 /**
@@ -68,15 +69,16 @@ export function KanjiTestContainer() {
   const [session, setSession] = useState<KanjiTestSession | null>(null);
 
   // Start the test
-  const handleStartTest = (level: JLPTLevel, readingMode: KanjiReadingMode, count: QuestionCount) => {
+  const handleStartTest = (level: JLPTLevel, readingMode: KanjiReadingMode, count: QuestionCount, includeN5: boolean) => {
     try {
-      const questions = generateKanjiQuestions(count, level, readingMode);
+      const questions = generateKanjiQuestions(count, level, readingMode, includeN5);
       setSession({
         questions,
         currentIndex: 0,
         level,
         readingMode,
         questionCount: count,
+        includeN5,
       });
       setTestState('testing');
     } catch (error) {
@@ -161,7 +163,7 @@ export function KanjiTestContainer() {
   const handleRetryTest = () => {
     if (!session) return;
 
-    handleStartTest(session.level, session.readingMode, session.questionCount);
+    handleStartTest(session.level, session.readingMode, session.questionCount, session.includeN5);
   };
 
   // Go back to config

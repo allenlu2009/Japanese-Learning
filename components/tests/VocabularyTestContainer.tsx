@@ -22,6 +22,7 @@ interface VocabularyTestSession {
   currentIndex: number;
   level: JLPTLevel;
   questionCount: QuestionCount;
+  includeN5: boolean;
 }
 
 /**
@@ -67,14 +68,15 @@ export function VocabularyTestContainer() {
   const [session, setSession] = useState<VocabularyTestSession | null>(null);
 
   // Start the test
-  const handleStartTest = (level: JLPTLevel, count: QuestionCount) => {
+  const handleStartTest = (level: JLPTLevel, count: QuestionCount, includeN5: boolean) => {
     try {
-      const questions = generateVocabularyQuestions(count, level);
+      const questions = generateVocabularyQuestions(count, level, includeN5);
       setSession({
         questions,
         currentIndex: 0,
         level,
         questionCount: count,
+        includeN5,
       });
       setTestState('testing');
     } catch (error) {
@@ -154,7 +156,7 @@ export function VocabularyTestContainer() {
   const handleRetryTest = () => {
     if (!session) return;
 
-    handleStartTest(session.level, session.questionCount);
+    handleStartTest(session.level, session.questionCount, session.includeN5);
   };
 
   // Go back to config

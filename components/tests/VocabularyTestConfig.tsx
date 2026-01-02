@@ -10,18 +10,20 @@ import { cn } from '@/lib/utils';
 import { getVocabularyCount } from '@/lib/vocabulary';
 
 interface VocabularyTestConfigProps {
-  onStartTest: (level: JLPTLevel, count: QuestionCount) => void;
+  onStartTest: (level: JLPTLevel, count: QuestionCount, includeN5: boolean) => void;
   onBack: () => void;
 }
 
 export function VocabularyTestConfig({ onStartTest, onBack }: VocabularyTestConfigProps) {
   const [jlptLevel, setJlptLevel] = useState<JLPTLevel>('N5');
   const [questionCount, setQuestionCount] = useState<QuestionCount>(10);
+  const [includeN5, setIncludeN5] = useState(true);
 
   const handleStart = () => {
-    onStartTest(jlptLevel, questionCount);
+    onStartTest(jlptLevel, questionCount, includeN5);
   };
 
+  // Dynamic description based on includeN5 setting
   const jlptLevelOptions: Array<{ value: JLPTLevel; label: string; description: string }> = [
     {
       value: 'N5',
@@ -31,7 +33,9 @@ export function VocabularyTestConfig({ onStartTest, onBack }: VocabularyTestConf
     {
       value: 'N4',
       label: 'JLPT N4',
-      description: `Intermediate (${getVocabularyCount('N4')} words, includes N5)`,
+      description: includeN5
+        ? `Intermediate (${getVocabularyCount('N4', true)} words, includes N5)`
+        : `Intermediate (${getVocabularyCount('N4', false)} N4-only words)`,
     },
   ];
 
@@ -69,6 +73,26 @@ export function VocabularyTestConfig({ onStartTest, onBack }: VocabularyTestConf
               </button>
             ))}
           </div>
+
+          {/* Include N5 Toggle (only show for N4) */}
+          {jlptLevel === 'N4' && (
+            <div className="mt-3 p-3 bg-gray-50 rounded-lg border border-gray-200">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={includeN5}
+                  onChange={(e) => setIncludeN5(e.target.checked)}
+                  className="w-4 h-4 text-orange-600 bg-gray-100 border-gray-300 rounded focus:ring-orange-500"
+                />
+                <span className="text-sm font-medium text-gray-700">
+                  Include N5 vocabulary
+                </span>
+                <span className="text-xs text-gray-500">
+                  (recommended for comprehensive practice)
+                </span>
+              </label>
+            </div>
+          )}
         </div>
 
         {/* Question Count Selection */}

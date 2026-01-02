@@ -108,16 +108,18 @@ export function findKanji(character: string): KanjiChar | undefined {
 }
 
 /**
- * Get all kanji for a specific JLPT level (cumulative)
+ * Get all kanji for a specific JLPT level
  *
  * @param level - The JLPT level ('N5' or 'N4')
- * @returns Array of kanji for that level (N4 includes N5)
+ * @param includeN5 - For N4: include N5 kanji (true, default) or N4-only (false). Ignored for N5.
+ * @returns Array of kanji for that level
  */
-export function getKanjiByLevel(level: 'N5' | 'N4'): KanjiChar[] {
+export function getKanjiByLevel(level: 'N5' | 'N4', includeN5: boolean = true): KanjiChar[] {
   if (level === 'N5') {
     return ALL_KANJI_N5;
   } else {
-    return ALL_KANJI_N4;  // N4 includes all N5 kanji
+    // N4: return combined or N4-only based on includeN5 flag
+    return includeN5 ? ALL_KANJI_N4 : KANJI_N4;
   }
 }
 
@@ -142,9 +144,12 @@ export function getRandomKanji(level: 'N5' | 'N4', count: number): KanjiChar[] {
 
 /**
  * Get total count of kanji for a level
+ *
+ * @param level - The JLPT level ('N5' or 'N4')
+ * @param includeN5 - For N4: include N5 kanji (true, default) or N4-only (false)
  */
-export function getKanjiCount(level: 'N5' | 'N4'): number {
-  return getKanjiByLevel(level).length;
+export function getKanjiCount(level: 'N5' | 'N4', includeN5: boolean = true): number {
+  return getKanjiByLevel(level, includeN5).length;
 }
 
 /**
