@@ -154,7 +154,7 @@ export function MixedTest({
             {currentQuestion.characters}
           </div>
           <p className="text-gray-600 text-lg">
-            Type the romanji for this character
+            Type the romaji for this character
           </p>
         </div>
 
@@ -167,7 +167,7 @@ export function MixedTest({
               type="text"
               value={answer}
               onChange={(e) => setAnswer(e.target.value)}
-              placeholder="Type romanji here..."
+              placeholder="Type romaji here..."
               readOnly={isAnswered}
               className="text-lg text-center"
               autoComplete="off"

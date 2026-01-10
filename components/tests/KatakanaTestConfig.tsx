@@ -103,7 +103,7 @@ export function KatakanaTestConfig({ onStartTest, onBack }: KatakanaTestConfigPr
             <span className="font-semibold">Test Summary:</span> You&apos;ll be shown{' '}
             <span className="font-semibold text-red-600">{questionCount} random{' '}
             {testType === '1-char' ? 'single katakana characters' : '3-character katakana sequences'}</span>.
-            Type the romanji for each character to answer.
+            Type the romaji for each character to answer.
           </div>
         </div>
 

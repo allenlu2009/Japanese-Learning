@@ -103,7 +103,7 @@ export function InteractiveTestConfig({ onStartTest, onBack }: InteractiveTestCo
             <span className="font-semibold">Test Summary:</span> You&apos;ll be shown{' '}
             <span className="font-semibold text-primary-600">{questionCount} random{' '}
             {testType === '1-char' ? 'single hiragana characters' : '3-character hiragana sequences'}</span>.
-            Type the romanji for each character to answer.
+            Type the romaji for each character to answer.
           </div>
         </div>
 

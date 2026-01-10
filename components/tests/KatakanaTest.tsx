@@ -154,7 +154,7 @@ export function KatakanaTest({
             {currentQuestion.characters}
           </div>
           <p className="text-gray-600 text-lg">
-            Type the romanji for this katakana
+            Type the romaji for this katakana
           </p>
         </div>
 
@@ -167,7 +167,7 @@ export function KatakanaTest({
               type="text"
               value={answer}
               onChange={(e) => setAnswer(e.target.value)}
-              placeholder="Type romanji here..."
+              placeholder="Type romaji here..."
               readOnly={isAnswered}
               className="text-lg text-center"
               autoComplete="off"

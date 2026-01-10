@@ -130,7 +130,7 @@ export function VocabularyTestConfig({ onStartTest, onBack }: VocabularyTestConf
             <span className="font-semibold text-orange-700">{questionCount} random vocabulary words</span>
             {' '}from{' '}
             <span className="font-semibold text-orange-700">{jlptLevel}</span>
-            {' '}level. Type the romanji reading for each word.
+            {' '}level. Type the romaji reading for each word.
           </div>
         </div>
 

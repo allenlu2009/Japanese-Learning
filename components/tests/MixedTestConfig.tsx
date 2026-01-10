@@ -106,7 +106,7 @@ export function MixedTestConfig({ onStartTest, onBack }: MixedTestConfigProps) {
               ? 'Each question will be a single hiragana or katakana character.'
               : 'Each question will be either 3 hiragana characters or 3 katakana characters.'
             }{' '}
-            Type the romanji for each character to answer.
+            Type the romaji for each character to answer.
           </div>
         </div>
 

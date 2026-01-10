@@ -166,7 +166,7 @@ export function KanjiTest({
           )}
           {currentQuestion.readingType === 'mixed' && (
             <p className="text-gray-600 text-lg mt-2">
-              Type the romanji reading (onyomi or kunyomi)
+              Type the romaji reading (onyomi or kunyomi)
             </p>
           )}
         </div>
@@ -180,7 +180,7 @@ export function KanjiTest({
               type="text"
               value={answer}
               onChange={(e) => setAnswer(e.target.value)}
-              placeholder="Type romanji here..."
+              placeholder="Type romaji here..."
               readOnly={isAnswered}
               className="text-lg text-center"
               autoComplete="off"

@@ -188,7 +188,7 @@ describe('KatakanaTest Component', () => {
         />
       );
 
-      const input = screen.getByPlaceholderText(/type romanji here/i);
+      const input = screen.getByPlaceholderText(/type romaji here/i);
       const submitButton = screen.getByText(/submit answer/i);
 
       fireEvent.change(input, { target: { value: 'ka' } });

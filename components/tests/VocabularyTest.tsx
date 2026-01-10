@@ -219,7 +219,7 @@ export function VocabularyTest({
             Meaning: <span className="font-semibold text-orange-700">{currentQuestion.meaning}</span>
           </div>
           <p className="text-gray-600 text-lg mt-2">
-            Type the romanji reading
+            Type the romaji reading
           </p>
         </div>
 
@@ -232,7 +232,7 @@ export function VocabularyTest({
               type="text"
               value={answer}
               onChange={(e) => setAnswer(e.target.value)}
-              placeholder="Type romanji here..."
+              placeholder="Type romaji here..."
               readOnly={isAnswered}
               className="text-lg text-center"
               autoComplete="off"

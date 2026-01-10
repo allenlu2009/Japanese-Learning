@@ -154,7 +154,7 @@ export function HiraganaTest({
             {currentQuestion.characters}
           </div>
           <p className="text-gray-600 text-lg">
-            Type the romanji for this hiragana
+            Type the romaji for this hiragana
           </p>
         </div>
 
@@ -167,7 +167,7 @@ export function HiraganaTest({
               type="text"
               value={answer}
               onChange={(e) => setAnswer(e.target.value)}
-              placeholder="Type romanji here..."
+              placeholder="Type romaji here..."
               readOnly={isAnswered}
               className="text-lg text-center"
               autoComplete="off"
