@@ -28,14 +28,20 @@ export function playCharacterAudio(
     voiceIndex?: number; // Specific voice index to use
   } = {}
 ): Promise<void> {
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
     if (!isSpeechSynthesisAvailable()) {
       reject(new Error('Speech synthesis not available'));
       return;
     }
 
+    // Wait for voices to load (important for Chrome/Edge)
+    await initializeVoices();
+
     // Cancel any ongoing speech
     window.speechSynthesis.cancel();
+
+    // Small delay after cancel to prevent interruption issues
+    await new Promise(r => setTimeout(r, 100));
 
     const utterance = new SpeechSynthesisUtterance(character);
 
@@ -52,11 +58,16 @@ export function playCharacterAudio(
     if (japaneseVoices.length > 0) {
       const voiceIndex = options.voiceIndex ?? 0;
       utterance.voice = japaneseVoices[Math.min(voiceIndex, japaneseVoices.length - 1)];
+    } else {
+      console.warn('No Japanese voices found. Speech may use default voice.');
     }
 
     // Event handlers
     utterance.onend = () => resolve();
-    utterance.onerror = (event) => reject(event);
+    utterance.onerror = (event) => {
+      console.error('Speech synthesis error:', event.error, event);
+      reject(event);
+    };
 
     // Speak
     window.speechSynthesis.speak(utterance);
@@ -95,6 +106,8 @@ export function stopAudio(): void {
 }
 
 // Initialize voices (some browsers need this)
+let voicesInitialized = false;
+
 export function initializeVoices(): Promise<void> {
   return new Promise((resolve) => {
     if (!isSpeechSynthesisAvailable()) {
@@ -102,18 +115,42 @@ export function initializeVoices(): Promise<void> {
       return;
     }
 
+    // Check if already initialized
+    if (voicesInitialized) {
+      resolve();
+      return;
+    }
+
     const voices = window.speechSynthesis.getVoices();
     if (voices.length > 0) {
+      voicesInitialized = true;
       resolve();
       return;
     }
 
     // Some browsers load voices asynchronously
-    window.speechSynthesis.onvoiceschanged = () => {
-      resolve();
+    let resolved = false;
+
+    const voicesChangedHandler = () => {
+      if (!resolved) {
+        const newVoices = window.speechSynthesis.getVoices();
+        if (newVoices.length > 0) {
+          voicesInitialized = true;
+          resolved = true;
+          resolve();
+        }
+      }
     };
 
+    window.speechSynthesis.addEventListener('voiceschanged', voicesChangedHandler, { once: true });
+
     // Fallback timeout
-    setTimeout(() => resolve(), 1000);
+    setTimeout(() => {
+      if (!resolved) {
+        resolved = true;
+        voicesInitialized = true;
+        resolve();
+      }
+    }, 2000);
   });
 }
