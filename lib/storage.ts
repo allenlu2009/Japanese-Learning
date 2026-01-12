@@ -191,6 +191,23 @@ export function exportAppData(): string {
   return JSON.stringify(payload, null, 2);
 }
 
+// Export to universal format (cross-platform compatible)
+export function exportToUniversalFormat(): string {
+  const { exportToUniversal, downloadJSON } = require('./exportAdapter');
+  const attempts = getCharacterAttempts();
+  const exportData = exportToUniversal(attempts);
+  return JSON.stringify(exportData, null, 2);
+}
+
+// Download universal format as file
+export function downloadUniversalExport(): void {
+  const { exportToUniversal, downloadJSON, TimestampUtils } = require('./exportAdapter');
+  const attempts = getCharacterAttempts();
+  const exportData = exportToUniversal(attempts);
+  const filename = `japanese-tests-${Date.now()}.json`;
+  downloadJSON(exportData, filename);
+}
+
 // Import full app data (tests + character attempts)
 export function importAppData(jsonData: string): boolean {
   try {
@@ -235,5 +252,50 @@ export function importAppData(jsonData: string): boolean {
   } catch (error) {
     console.error('Error importing app data:', error);
     return false;
+  }
+}
+
+// Import from universal format (cross-platform compatible)
+export function importFromUniversalFormat(jsonData: string): { success: boolean; imported: number; duplicates: number; error?: string } {
+  try {
+    const parsed = JSON.parse(jsonData);
+    const { validateImport, importFromUniversal } = require('./exportAdapter');
+
+    // Validate universal format
+    if (!validateImport(parsed)) {
+      return { success: false, imported: 0, duplicates: 0, error: 'Invalid universal export format' };
+    }
+
+    // Convert to Claude format
+    const newAttempts = importFromUniversal(parsed);
+
+    // Get existing attempts
+    const existing = getCharacterAttempts();
+
+    // Check for duplicates by testId
+    const existingIds = new Set(existing.map(a => a.testId));
+    const filtered = newAttempts.filter(a => !existingIds.has(a.testId));
+
+    if (filtered.length === 0) {
+      return { success: true, imported: 0, duplicates: newAttempts.length };
+    }
+
+    // Merge with existing
+    const merged = [...existing, ...filtered];
+    const saved = replaceCharacterAttempts(merged);
+
+    return {
+      success: saved,
+      imported: filtered.length,
+      duplicates: newAttempts.length - filtered.length
+    };
+  } catch (error) {
+    console.error('Error importing universal format:', error);
+    return {
+      success: false,
+      imported: 0,
+      duplicates: 0,
+      error: error instanceof Error ? error.message : 'Unknown error'
+    };
   }
 }

@@ -1,0 +1,3 @@
+[submodule "data/datasets"]
+	path = data/datasets
+	url = https://github.com/allenlu2009/japanese-learning-datasets.git
