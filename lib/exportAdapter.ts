@@ -168,7 +168,7 @@ export function importFromUniversal(data: UniversalExport): CharacterAttempt[] {
       correctAnswers: attempt.expected,
       isCorrect: attempt.correct,
       questionType: '1-char', // Default, could be enhanced
-      jlptLevel: attempt.jlptLevel
+      jlptLevel: (attempt.jlptLevel === 'N5' || attempt.jlptLevel === 'N4') ? attempt.jlptLevel : undefined
     };
     allAttempts.push(claudeAttempt);
   });
