@@ -1,45 +1,55 @@
 /**
- * Adapter for converting between Claude's internal format and Universal Export format
- * Based on: data/datasets/schema/examples/claude-adapter.ts
+ * Adapter for converting between Claude's internal format and Universal Export v1.0
+ * UPDATED to match finalized flat schema spec
  */
 
 import { CharacterAttempt } from './types';
+import { v4 as uuidv4 } from 'uuid';
 
-// Universal Export Schema Types
+// Universal Export Schema v1.0 Types (FLAT STRUCTURE)
 export type TestType = 'hiragana' | 'katakana' | 'kanji' | 'vocabulary' | 'mixed';
 
-export interface UniversalCharacterAttempt {
-  position: number;
-  character: string;
+export interface TestRecord {
+  id: string;
+  timestamp: string;
+  testType: TestType;
+  score: number;
+  totalQuestions: number;
+  correctAnswers: number;
+  jlptLevel?: 'N5' | 'N4' | 'N3' | 'N2' | 'N1';
+  difficulty?: string;
+}
+
+export interface CharacterAttemptRecord {
+  id: string;
+  testId: string;
+  timestamp: string;
+  prompt: string;
   expected: string[];
   response: string;
   correct: boolean;
-}
-
-export interface TestRecord {
-  testType: TestType;
-  timestamp: string;
-  totalQuestions: number;
-  correctAnswers: number;
-  scorePercentage: number;
+  scriptType?: 'hiragana' | 'katakana' | 'kanji' | 'vocabulary';
   jlptLevel?: 'N5' | 'N4' | 'N3' | 'N2' | 'N1';
-  isPractice?: boolean;
-  breakdown?: UniversalCharacterAttempt[];
+  characterType?: 'basic' | 'dakuten' | 'combo';
 }
 
 export interface UniversalExport {
-  version: string;
+  version: "1.0";
   exportedAt: string;
-  source: 'claude' | 'gemini' | 'codex';
-  platform: 'web' | 'mobile';
   tests: TestRecord[];
-  preferences?: {
+  attempts: CharacterAttemptRecord[];
+  settings: {
     romajiSystem?: 'hepburn' | 'kunrei' | 'nihon';
     audioSettings?: {
       enabled: boolean;
       rate?: number;
       volume?: number;
     };
+    [key: string]: unknown;
+  };
+  meta: {
+    exportedBy: 'claude' | 'gemini' | 'codex';
+    platform: 'web' | 'mobile';
     [key: string]: unknown;
   };
 }
@@ -72,75 +82,9 @@ function mapToTestType(scriptType: string): TestType {
   return mapping[scriptType] || 'mixed';
 }
 
-// Map canonical TestType to Claude's ScriptType
-function mapToScriptType(testType: TestType): string {
-  return testType; // Direct mapping for Claude
-}
-
 /**
- * Convert Claude's CharacterAttempts to universal breakdown format
- */
-function convertBreakdownToUniversal(attempts: CharacterAttempt[]): UniversalCharacterAttempt[] {
-  // Group by originalSequence to reconstruct the breakdown
-  const sequenceMap = new Map<string, CharacterAttempt[]>();
-
-  attempts.forEach(attempt => {
-    if (attempt.originalSequence) {
-      const key = attempt.originalSequence;
-      if (!sequenceMap.has(key)) {
-        sequenceMap.set(key, []);
-      }
-      sequenceMap.get(key)!.push(attempt);
-    }
-  });
-
-  // Convert first sequence found (for now, handle one test at a time)
-  const firstSequence = Array.from(sequenceMap.values())[0];
-  if (!firstSequence) return [];
-
-  // Sort by sequence position
-  firstSequence.sort((a, b) => (a.sequencePosition || 0) - (b.sequencePosition || 0));
-
-  return firstSequence.map(attempt => ({
-    position: attempt.sequencePosition || 0,
-    character: attempt.character,
-    expected: attempt.correctAnswers,
-    response: attempt.userAnswer,
-    correct: attempt.isCorrect
-  }));
-}
-
-/**
- * Convert universal breakdown to Claude's CharacterAttempt format
- */
-function convertBreakdownFromUniversal(
-  breakdown: UniversalCharacterAttempt[],
-  testId: string,
-  timestamp: string,
-  scriptType: string,
-  jlptLevel?: 'N5' | 'N4'
-): CharacterAttempt[] {
-  const originalSequence = breakdown.map(b => b.character).join('');
-
-  return breakdown.map((item, index) => ({
-    id: `${testId}-${index}`,
-    testId,
-    timestamp,
-    character: item.character,
-    scriptType: scriptType as 'hiragana' | 'katakana' | 'kanji' | 'vocabulary',
-    characterType: 'combo' as 'basic' | 'dakuten' | 'combo',
-    userAnswer: item.response,
-    correctAnswers: item.expected,
-    isCorrect: item.correct,
-    questionType: '3-char' as '1-char' | '3-char' | 'kanji' | 'vocabulary',
-    sequencePosition: item.position,
-    originalSequence,
-    jlptLevel
-  }));
-}
-
-/**
- * Export Claude's character attempts to universal format
+ * Export Claude's character attempts to Universal v1.0 format
+ * FLAT STRUCTURE: tests and attempts are separate arrays
  */
 export function exportToUniversal(attempts: CharacterAttempt[]): UniversalExport {
   // Group attempts by testId to create test sessions
@@ -153,82 +97,87 @@ export function exportToUniversal(attempts: CharacterAttempt[]): UniversalExport
     sessionMap.get(attempt.testId)!.push(attempt);
   });
 
-  const tests: TestRecord[] = Array.from(sessionMap.entries()).map(([testId, sessionAttempts]) => {
+  const tests: TestRecord[] = [];
+  const attemptRecords: CharacterAttemptRecord[] = [];
+
+  sessionMap.forEach((sessionAttempts, testId) => {
     const correctCount = sessionAttempts.filter(a => a.isCorrect).length;
     const firstAttempt = sessionAttempts[0];
+    const score = Math.round((correctCount / sessionAttempts.length) * 100);
 
-    // Create breakdown if this is a multi-character test
-    let breakdown: UniversalCharacterAttempt[] | undefined;
-    if (firstAttempt.originalSequence) {
-      breakdown = convertBreakdownToUniversal(sessionAttempts);
-    }
-
-    return {
-      testType: mapToTestType(firstAttempt.scriptType),
+    // Create test record
+    tests.push({
+      id: testId,
       timestamp: TimestampUtils.toISO(firstAttempt.timestamp),
+      testType: mapToTestType(firstAttempt.scriptType),
+      score,
       totalQuestions: sessionAttempts.length,
       correctAnswers: correctCount,
-      scorePercentage: Math.round((correctCount / sessionAttempts.length) * 100),
       jlptLevel: firstAttempt.jlptLevel,
-      breakdown
-    };
+      difficulty: firstAttempt.questionType
+    });
+
+    // Create flat attempt records
+    sessionAttempts.forEach(attempt => {
+      attemptRecords.push({
+        id: attempt.id,
+        testId: testId,
+        timestamp: TimestampUtils.toISO(attempt.timestamp),
+        prompt: attempt.character,
+        expected: attempt.correctAnswers,
+        response: attempt.userAnswer,
+        correct: attempt.isCorrect,
+        scriptType: attempt.scriptType,
+        jlptLevel: attempt.jlptLevel,
+        characterType: attempt.characterType
+      });
+    });
   });
 
   return {
-    version: '1.0.0',
+    version: "1.0",
     exportedAt: TimestampUtils.now(),
-    source: 'claude',
-    platform: 'web',
-    tests
+    tests,
+    attempts: attemptRecords,
+    settings: {
+      romajiSystem: 'hepburn'
+    },
+    meta: {
+      exportedBy: 'claude',
+      platform: 'web'
+    }
   };
 }
 
 /**
- * Import universal format into Claude's character attempts
+ * Import Universal v1.0 format into Claude's character attempts
  */
 export function importFromUniversal(data: UniversalExport): CharacterAttempt[] {
   const allAttempts: CharacterAttempt[] = [];
 
-  data.tests.forEach(test => {
-    const testId = `imported-${Date.now()}-${Math.random().toString(36).substring(7)}`;
-    const timestamp = test.timestamp;
-    const scriptType = mapToScriptType(test.testType);
-
-    if (test.breakdown) {
-      // Has character breakdown - reconstruct individual attempts
-      const attempts = convertBreakdownFromUniversal(
-        test.breakdown,
-        testId,
-        timestamp,
-        scriptType,
-        test.jlptLevel
-      );
-      allAttempts.push(...attempts);
-    } else {
-      // No breakdown - create summary attempt
-      // This is a simplified representation
-      const summaryAttempt: CharacterAttempt = {
-        id: testId,
-        testId,
-        timestamp,
-        character: `${test.testType} test`,
-        scriptType: scriptType as 'hiragana' | 'katakana' | 'kanji' | 'vocabulary',
-        characterType: 'basic',
-        userAnswer: `${test.correctAnswers}/${test.totalQuestions}`,
-        correctAnswers: [`${test.scorePercentage}%`],
-        isCorrect: test.scorePercentage >= 70,
-        questionType: test.testType === 'kanji' ? 'kanji' : test.testType === 'vocabulary' ? 'vocabulary' : '1-char',
-        jlptLevel: test.jlptLevel
-      };
-      allAttempts.push(summaryAttempt);
-    }
+  // Convert flat attempts back to Claude's format
+  data.attempts.forEach(attempt => {
+    const claudeAttempt: CharacterAttempt = {
+      id: attempt.id,
+      testId: attempt.testId,
+      timestamp: attempt.timestamp,
+      character: attempt.prompt,
+      scriptType: (attempt.scriptType || 'hiragana') as 'hiragana' | 'katakana' | 'kanji' | 'vocabulary',
+      characterType: attempt.characterType || 'basic',
+      userAnswer: attempt.response,
+      correctAnswers: attempt.expected,
+      isCorrect: attempt.correct,
+      questionType: '1-char', // Default, could be enhanced
+      jlptLevel: attempt.jlptLevel
+    };
+    allAttempts.push(claudeAttempt);
   });
 
   return allAttempts;
 }
 
 /**
- * Validate import data structure
+ * Validate import data structure (v1.0)
  */
 export function validateImport(data: unknown): data is UniversalExport {
   if (typeof data !== 'object' || data === null) return false;
@@ -236,11 +185,14 @@ export function validateImport(data: unknown): data is UniversalExport {
   const obj = data as Record<string, unknown>;
 
   return (
-    typeof obj.version === 'string' &&
+    obj.version === '1.0' &&
     typeof obj.exportedAt === 'string' &&
-    ['claude', 'gemini', 'codex'].includes(obj.source as string) &&
-    ['web', 'mobile'].includes(obj.platform as string) &&
-    Array.isArray(obj.tests)
+    Array.isArray(obj.tests) &&
+    Array.isArray(obj.attempts) &&
+    typeof obj.settings === 'object' &&
+    typeof obj.meta === 'object' &&
+    (obj.meta as any).exportedBy !== undefined &&
+    (obj.meta as any).platform !== undefined
   );
 }
 
