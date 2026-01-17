@@ -7,6 +7,7 @@ import { Download, Upload, Database, CheckCircle, XCircle, AlertCircle } from 'l
 import { downloadUniversalExport, importFromUniversalFormat, getTests } from '@/lib/storage';
 import { getCharacterAttempts } from '@/lib/characterStorage';
 import { cn } from '@/lib/utils';
+import { GoogleDriveSync } from '@/components/data/GoogleDriveSync';
 
 interface ImportResult {
   success: boolean;
@@ -154,6 +155,9 @@ export default function DataPage() {
         )}
 
         <div className="space-y-6">
+          {/* Google Drive Auto-Sync */}
+          <GoogleDriveSync />
+
           {/* Stats Card */}
           <Card className="bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-100">
             <div className="flex items-center gap-3 mb-4">
