@@ -6,12 +6,11 @@ import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 import { EmptyState } from '@/components/common/EmptyState';
-import { BarChart, TrendingUp, TrendingDown, Minus, Filter, Download, Upload } from 'lucide-react';
+import { BarChart, TrendingUp, TrendingDown, Minus, Filter } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { CharacterAnalyticsFilter } from '@/lib/types';
 import { findHiragana } from '@/lib/hiragana';
 import { findKatakana } from '@/lib/katakana';
-import { downloadUniversalExport, importFromUniversalFormat } from '@/lib/storage';
 
 function getCharacterReading(character: string, scriptType: 'hiragana' | 'katakana'): string {
   if (scriptType === 'hiragana') {
@@ -33,10 +32,6 @@ export default function CharacterAnalyticsPage() {
 
   // State for showing all results vs. weak characters only (default: weak only)
   const [showAllResults, setShowAllResults] = useState(false);
-
-  // Export/Import state
-  const [importStatus, setImportStatus] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Filter for kana only (exclude kanji and vocabulary)
   const kanaStats = useMemo(() => {
@@ -70,68 +65,6 @@ export default function CharacterAnalyticsPage() {
     return Math.round(kanaStats.reduce((sum, s) => sum + s.successRate, 0) / kanaStats.length);
   }, [kanaStats]);
 
-  // Export/Import handlers
-  const handleExport = () => {
-    try {
-      downloadUniversalExport();
-    } catch (error) {
-      console.error('Export failed:', error);
-      alert('Failed to export test history. Please try again.');
-    }
-  };
-
-  const handleImportClick = () => {
-    fileInputRef.current?.click();
-  };
-
-  const handleFileSelected = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      try {
-        const jsonData = event.target?.result as string;
-        const result = importFromUniversalFormat(jsonData);
-
-        if (result.success) {
-          const messages = [];
-          if (result.imported > 0) {
-            messages.push(`Successfully imported ${result.imported} test${result.imported > 1 ? 's' : ''}`);
-          }
-          if (result.duplicates > 0) {
-            messages.push(`${result.duplicates} duplicate${result.duplicates > 1 ? 's' : ''} skipped`);
-          }
-          setImportStatus({
-            message: messages.join('. '),
-            type: 'success'
-          });
-          setTimeout(() => {
-            window.location.reload(); // Reload to show new data
-          }, 2000);
-        } else {
-          setImportStatus({
-            message: result.error || 'Import failed',
-            type: 'error'
-          });
-        }
-      } catch (error) {
-        console.error('Import error:', error);
-        setImportStatus({
-          message: 'Failed to parse import file. Please check the file format.',
-          type: 'error'
-        });
-      }
-    };
-    reader.readAsText(file);
-
-    // Reset file input
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
-    }
-  };
-
-  if (loading) {
     return (
       <div className="flex justify-center items-center min-h-[400px]">
         <LoadingSpinner size="lg" />
@@ -159,54 +92,6 @@ export default function CharacterAnalyticsPage() {
         </p>
       </div>
 
-      {/* Export/Import Section */}
-      <Card>
-        <div className="flex items-center justify-between">
-          <div>
-            <h2 className="text-lg font-semibold text-gray-900">Test History</h2>
-            <p className="text-sm text-gray-600 mt-1">
-              Export your test history to backup or import to another device
-            </p>
-          </div>
-          <div className="flex items-center gap-3">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleExport}
-              className="flex items-center gap-2"
-            >
-              <Download className="h-4 w-4" />
-              Export
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleImportClick}
-              className="flex items-center gap-2"
-            >
-              <Upload className="h-4 w-4" />
-              Import
-            </Button>
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept=".json"
-              onChange={handleFileSelected}
-              className="hidden"
-            />
-          </div>
-        </div>
-        {importStatus && (
-          <div className={cn(
-            'mt-4 p-3 rounded-lg',
-            importStatus.type === 'success' ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'
-          )}>
-            {importStatus.message}
-          </div>
-        )}
-      </Card>
-
-      {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <Card>
           <div className="text-center py-4">

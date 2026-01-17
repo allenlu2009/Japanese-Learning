@@ -8,7 +8,6 @@ import { StatsCard } from '@/components/dashboard/StatsCard';
 import { CategoryChart } from '@/components/dashboard/CategoryChart';
 import { ProgressChart } from '@/components/dashboard/ProgressChart';
 import { RecentTests } from '@/components/dashboard/RecentTests';
-import { DataManagement } from '@/components/dashboard/DataManagement';
 import { EmptyState } from '@/components/common/EmptyState';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 import { Button } from '@/components/ui/Button';
@@ -58,9 +57,6 @@ export default function DashboardPage() {
             </Link>
           }
         />
-
-        {/* Allow importing data even when no tests exist */}
-        <DataManagement />
       </div>
     );
   }
@@ -117,9 +113,6 @@ export default function DashboardPage() {
 
       {/* Recent Tests */}
       <RecentTests tests={stats.recentTests} />
-
-      {/* Data Management */}
-      <DataManagement />
     </div>
   );
 }

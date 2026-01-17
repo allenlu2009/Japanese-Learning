@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, ListChecks, PlusCircle, BarChart, BookOpen } from 'lucide-react';
+import { LayoutDashboard, ListChecks, PlusCircle, BarChart, BookOpen, Database } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const navItems = [
@@ -31,6 +31,11 @@ const navItems = [
     href: '/kanji-vocab-analytics',
     label: 'JLPT Analytics',
     icon: BookOpen,
+  },
+  {
+    href: '/data',
+    label: 'Data',
+    icon: Database,
   },
 ];
 
