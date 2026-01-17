@@ -65,6 +65,7 @@ export default function CharacterAnalyticsPage() {
     return Math.round(kanaStats.reduce((sum, s) => sum + s.successRate, 0) / kanaStats.length);
   }, [kanaStats]);
 
+  if (loading) {
     return (
       <div className="flex justify-center items-center min-h-[400px]">
         <LoadingSpinner size="lg" />
