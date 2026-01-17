@@ -4,7 +4,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Download, Upload, Database, CheckCircle, XCircle, AlertCircle } from 'lucide-react';
-import { downloadUniversalExport, importFromUniversalFormat, getCharacterAttempts, getTests } from '@/lib/storage';
+import { downloadUniversalExport, importFromUniversalFormat, getTests } from '@/lib/storage';
+import { getCharacterAttempts } from '@/lib/characterStorage';
 import { cn } from '@/lib/utils';
 
 interface ImportResult {
